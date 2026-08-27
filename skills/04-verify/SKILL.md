@@ -11,9 +11,22 @@ description: 上線前的機器檢查與人眼確認，然後才部署
 node tools/check.mjs site/index.html
 ```
 
-回傳 0 才算過。這支擋的是三種一定會被抓包的錯：模板的示範內容忘了換、
-搜尋引擎與社群分享需要的標籤沒寫、會動的東西沒有辦法關掉。
-它不判斷好不好看，好不好看要人看。
+回傳 0 才算過。這支擋的是幾種一定會被抓包的錯：
+
+- 模板的示範內容忘了換
+- 搜尋引擎與社群分享需要的標籤沒寫
+- 會動的東西沒有辦法關掉
+- `<img>` 指到不存在的檔案（選了要圖的版面卻沒放圖）
+- 正體中文的頁面混進簡體字
+- 內文與背景、按鈕的字與底色，對比低於 4.5:1
+
+**最後三條是實測出來的。** 用非 Claude 的模型跑這條流程，
+它會把「根據」「必須」寫成簡體，使用者看不出來就上線了；
+換上自己的品牌色之後按鈕的字看不見，也是常見的翻車方式。
+
+對比是從 `tokens.css` 的變數直接算的，不是從截圖判斷，
+**所以它抓不到版面問題**：留白不對、字級沒有階層、圖片比例怪，
+這些機器看不出來，要靠下面那五件事跟 Lighthouse。
 
 檢查沒過就修到過，不要在報告裡寫「這幾項可以之後再處理」。
 
@@ -41,7 +54,7 @@ node tools/check.mjs site/index.html
 
 - [marketing-page-checker](https://github.com/yazelin/marketing-page-checker) 行銷頁健檢，看轉換路徑有沒有斷。
 - [landing-page-checker](https://github.com/jonathanposovatz/landing-page-checker) 十個類別的 CRO 稽核。
-- Lighthouse，瀏覽器內建，看效能與無障礙分數。
+- Lighthouse，瀏覽器內建，看效能與無障礙分數。這支補得到 `check.mjs` 算不到的那些。
 
 ## 部署
 

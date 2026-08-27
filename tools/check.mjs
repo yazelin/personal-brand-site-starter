@@ -117,7 +117,45 @@ else {
 }
 if (!/prefers-reduced-motion/.test(allCss)) warn('CSS 裡沒有 prefers-reduced-motion 的處理');
 
-// 九、預覽用的東西要刪掉
+// 九、顏色對比
+// 使用者換上自己的品牌色之後最常出事的地方：按鈕的字看不見、次要文字太淡。
+// 從 tokens 直接算，不用截圖，也就抓不到版面問題，那部分留給人眼與 Lighthouse
+function hex(v) {
+  var m = String(v).trim().match(/^#?([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (!m) return null;
+  var h = m[1].length === 3 ? m[1].replace(/./g, c => c + c) : m[1];
+  return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16));
+}
+function lum(rgb) {
+  var a = rgb.map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+  return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+}
+function ratio(a, b) {
+  var l1 = lum(a), l2 = lum(b);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+}
+var vibe = attr(/<html[^>]*\sdata-vibe=["']([^"']+)["']/i) || '';
+// 取這個 vibe 的區塊，找不到就退回 :root。同名 token 取最後一次定義
+var scope = allCss;
+var vb = vibe && allCss.match(new RegExp('\\[data-vibe=["\']' + vibe + '["\']\\][^{]*\\{([^}]*)\\}'));
+var root = allCss.match(/:root[^{]*\{([^}]*)\}/);
+function token(name) {
+  var re = new RegExp('--' + name + '\\s*:\\s*([^;]+);');
+  var m = (vb && vb[1].match(re)) || (root && root[1].match(re)) || scope.match(re);
+  return m ? hex(m[1]) : null;
+}
+var fg = token('fg'), bg = token('bg'), muted = token('fg-muted');
+var acc = token('accent'), accFg = token('accent-fg');
+function contrast(a, b, label, min, hard) {
+  if (!a || !b) return;
+  var r = ratio(a, b);
+  if (r < min) (hard ? fail : warn)(`${label} 的對比只有 ${r.toFixed(1)}:1，低於 ${min}:1，會有人看不清楚`);
+}
+contrast(fg, bg, '內文與背景', 4.5, true);
+contrast(accFg, acc, '主要按鈕的字與底色', 4.5, true);
+contrast(muted, bg, '次要文字與背景', 4.5, false);
+
+// 十、預覽用的東西要刪掉
 if (has(/URLSearchParams\(location\.search\)\.get\(['"]vibe['"]\)/))
   fail('還留著預覽用的 ?vibe 切換程式，上線前要刪掉');
 
