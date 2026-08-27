@@ -1,0 +1,109 @@
+# personal-brand-site-starter
+
+把一個人的話問出來，做成一頁式的個人品牌網站，首屏會流動。
+
+**In short:** paste this repo's URL into your AI coding agent and ask it to follow
+`AGENTS.md`. It interviews you, picks a host that matches your actual situation,
+builds a one-page personal site with an animated hero, and checks it before you ship.
+Docs are in Traditional Chinese. Zero dependencies, zero build step.
+
+## 這是什麼
+
+一份給 AI 代理人照著跑的作業流程。你不用會寫程式，也不用挑技術。
+
+網路上做個人網站的模板很多，問題是換上你的名字之後，它還是一份模板。
+這個 repo 的重點在**前面那段訪談**：先問出你到底要讓來的人做哪一件事，
+再決定要放什麼、放在哪裡、長什麼樣。
+
+## 怎麼用
+
+打開你在用的 AI 工具（Claude Code、Codex、Gemini CLI、Cursor 都可以），把這段貼進去：
+
+```
+請讀 https://github.com/yazelin/personal-brand-site-starter 的 AGENTS.md，
+照它的四個階段幫我做個人品牌網站。先訪談我，不要直接開始寫程式。
+```
+
+接下來它會問你問題，一次一題。老實回答就好，答不出來的說不知道，它會替你決定。
+
+想要在本機跑得更順的話，先把 repo 抓下來：
+
+```bash
+git clone https://github.com/yazelin/personal-brand-site-starter
+cd personal-brand-site-starter
+```
+
+然後叫你的 AI 讀 `AGENTS.md`。
+
+## 四個階段
+
+| 階段 | 做什麼 | 產出 |
+|---|---|---|
+| 一 訪談 | 問出你真正要促成哪一件事，賣東西、接案、作品集、求職，還是一張正式的名片 | `spec/site.yaml` |
+| 二 選型 | 依照你的狀況決定放在哪裡，要不要後端，要不要收錢 | spec 的 `hosting` 區塊 |
+| 三 建站 | 生出網站，配一種會流動的首屏 | `site/` |
+| 四 驗收 | 機器檢查加人眼確認，然後上線 | 一個能用的網址 |
+
+每個階段結束會停下來給你看，不會一路做到底再一次丟給你。
+
+## 四種風格
+
+寫在 `<html data-vibe="...">` 一個字就換整站氣質。
+
+- `calm` 克制：淺底、細字、大量留白。求職、顧問、專業服務。
+- `bold` 明確：深底、大字、一個亮色。賣東西、接案。
+- `gallery` 作品優先：介面退到最淡，圖片佔滿。設計、攝影、影像。
+- `grand` 大氣：墨底、襯線大標、金屬色、超大留白。講者、顧問。
+
+## 四種會流動的首屏
+
+`hero/` 底下四支，各自獨立一個檔案，零依賴。開 `hero/preview.html` 一次看到四種在動。
+
+- **流體漸層** 色塊疊加後模糊，緩慢流動。最省效能，也最搶眼。
+- **粒子場** 點漂移並連線，滑鼠經過會推開。技術感重。
+- **噪聲線條** 一疊橫線緩緩起伏，像等高線。最安靜。
+- **幾何緩動** 大型線稿圖形極慢地漂移，像一張會呼吸的海報。
+
+四支都是起手式，參數開在檔案最上面，AI 會照你的內容調過再用。
+四種都不對的時候，照同一組介面自己寫一支。
+
+四支都做好了三件事：跟著系統設定關掉動畫、分頁切走停止運算、高解析螢幕不糊。
+
+## 檢查
+
+```bash
+node tools/check.mjs site/index.html
+```
+
+擋的是三種一定會被抓包的錯：模板的示範內容忘了換、
+搜尋引擎與社群分享要的標籤沒寫、會動的東西沒辦法關掉。
+通過回傳 0。好不好看它不管，那要你自己看，清單在 `skills/04-verify/SKILL.md`。
+
+## repo 長什麼樣
+
+```
+AGENTS.md              總控，AI 從這裡開始讀
+skills/                四個階段各一份作業指引
+templates/             一頁式骨架，單檔可跑，已經填了示範內容
+templates/tokens.css   顏色、字級、間距的變數，改這裡就換掉整站氣質
+hero/                  四種首屏動效，外加一頁可以一次比較的預覽
+tools/check.mjs        上線前的機器檢查，零依賴
+spec/site.example.yaml 訪談產出長什麼樣
+docs/                  部署步驟、可以另外裝的第三方 skills
+```
+
+## 沒有做的事
+
+沒有 build step，沒有 npm install，沒有框架。
+產出就是可以直接丟上任何靜態空間的 HTML、CSS 跟一支 JS。
+
+沒有夾帶別人寫的 skills。找到的相關工具列在 `docs/external-skills.md`，
+要用自己去裝。
+
+## 授權
+
+MIT，© 2026 林亞澤。做出來的網站是你的，內容、文案、圖片都歸你。
+
+---
+
+亞澤的其他作品：[GitHub](https://github.com/yazelin) · [個人網站](https://yazelin.github.io/) · [Facebook](https://www.facebook.com/yazelin.j303) · [請我喝杯咖啡](https://buymeacoffee.com/yazelin)

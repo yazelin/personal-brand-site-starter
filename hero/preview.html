@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首屏動效四選一</title>
+<style>
+  body { margin: 0; background: #101215; color: #e8eaee; font-size: 15px;
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif; }
+  header { padding: 1.6rem 1.4rem 0; max-width: 76rem; margin-inline: auto; }
+  header h1 { font-size: 1.3rem; margin: 0 0 0.4rem; font-weight: 600; }
+  header p { margin: 0; color: #9aa0ad; }
+  .grid { display: grid; gap: 1.1rem; padding: 1.4rem; max-width: 76rem; margin-inline: auto;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); }
+  figure { margin: 0; border: 1px solid #262b36; border-radius: 10px; overflow: hidden; }
+  .stage { position: relative; height: 15rem; background: #0b0d12; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  figcaption { padding: 0.85rem 1rem; border-top: 1px solid #262b36; }
+  figcaption b { display: block; font-weight: 600; margin-bottom: 0.2rem; }
+  figcaption span { color: #9aa0ad; font-size: 0.86rem; }
+  code { color: #ffd23f; font-size: 0.86rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>首屏動效四選一</h1>
+  <p>四種都是零依賴的單一檔案。挑一種，把那支複製成網站目錄底下的 hero.js。</p>
+</header>
+
+<div class="grid">
+  <figure><div class="stage"><canvas data-fx="flowGradient" aria-hidden="true"></canvas></div>
+    <figcaption><b>流體漸層 <code>flow-gradient.js</code></b>
+    <span>色塊互相疊加後模糊，整片緩慢流動。最省效能，也最搶眼。適合深色底、賣東西或接案的版面。</span></figcaption></figure>
+
+  <figure><div class="stage"><canvas data-fx="particleField" aria-hidden="true"></canvas></div>
+    <figcaption><b>粒子場 <code>particle-field.js</code></b>
+    <span>稀疏的點漂移並連線，滑鼠經過會推開。技術感重，密度預設壓得很低，不要調高。</span></figcaption></figure>
+
+  <figure><div class="stage"><canvas data-fx="noiseLines" aria-hidden="true"></canvas></div>
+    <figcaption><b>噪聲線條 <code>noise-lines.js</code></b>
+    <span>一疊橫線緩緩起伏，像等高線。最安靜的一種，深淺底都吃得住，適合克制的版面。</span></figcaption></figure>
+
+  <figure><div class="stage"><canvas data-fx="geoDrift" aria-hidden="true"></canvas></div>
+    <figcaption><b>幾何緩動 <code>geo-drift.js</code></b>
+    <span>幾個大型線稿圖形極慢地漂移旋轉。像一張會呼吸的海報，適合作品優先的版面。</span></figcaption></figure>
+</div>
+
+<script src="flow-gradient.js"></script>
+<script src="particle-field.js"></script>
+<script src="noise-lines.js"></script>
+<script src="geo-drift.js"></script>
+<script>
+  var conf = {
+    flowGradient: { colors: ['#4f46e5', '#0ea5e9', '#ec4899'], background: '#0b0d12', blur: 40, scale: 8 },
+    particleField: { color: '#8b93a7' },
+    noiseLines: { color: '#e6e8ee', lines: 22, amp: 34, spread: 0.8 },
+    geoDrift: { color: '#c9a227', shapes: 7 }
+  };
+  document.querySelectorAll('canvas[data-fx]').forEach(function (c) {
+    var fx = c.dataset.fx;
+    Hero[fx](c, conf[fx]);
+  });
+</script>
+</body>
+</html>

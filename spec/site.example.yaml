@@ -1,0 +1,57 @@
+# 訪談的產出。這份檔案是後面所有步驟的唯一依據。
+# 每一句文案都要是使用者自己講過的話，只做刪修，不要替他發明。
+
+goal: contact        # buy | contact | remember | hire | card，對應訪談第一題的 A 到 E
+one_line: 這個網站要讓看到的人寄信給我談案子。
+
+person:
+  name: 王思齊
+  title: 產品設計師
+  tagline: 讓工廠的數字自己說話          # 首屏大標，只講做什麼、給誰
+  lede: 十年做內部系統與工具類產品。專接一種案子：現有系統很難用，但是不能停下來重做。
+  location: 台中，可配合台北出差
+  email: hi@example.tw
+  links:
+    - { label: LinkedIn, url: https://example.tw/in }
+    - { label: GitHub,   url: https://example.tw/gh }
+
+audience: 製造業與物流業的資訊主管，或是被指派要改系統的專案窗口。懂流程，不一定懂設計。
+
+style:
+  vibe: grand           # calm | bold | gallery | grand
+  hero: geoDrift        # noiseLines | flowGradient | particleField | geoDrift
+  hero_opts:            # 照內容調過的參數，不要照抄預設值
+    shapes: 6
+    speed: 0.25
+  brand_color: "#c9a227"   # 沒有就留空，由 AI 配
+
+# 用得到的區塊才留，用不到的整塊刪掉
+sections:
+  - hero
+  - about
+  - offer
+  - work
+  - faq
+  - contact
+
+offer:
+  - { name: 介面健檢,     price: 兩週 · 六萬起,      what: 走一遍現有系統，交一份卡點報告 }
+  - { name: 單一流程改版, price: 六到八週 · 二十萬起, what: 從訪談到上線全程參與 }
+
+work:
+  - title: 物流排車系統改版
+    year: 2025
+    role: 負責流程設計與介面，工程由客戶團隊執行
+    hard: 排車員的判斷靠經驗，講不出規則。跟車六趟才翻譯成三個可以寫進系統的條件。
+    result: 新人上手時間從六週縮到十天
+
+faq:
+  - { q: 可以只做設計稿嗎, a: 可以，但是我會要求參與到第一次上線。 }
+  - { q: 報價怎麼算,       a: 按週計價，不按頁數。 }
+
+hosting:
+  platform: github-pages    # github-pages | cloudflare-pages | render | vercel
+  domain: wangsiqi.tw       # 沒有網域就留空
+  backend: none             # none | forms | api
+  payment: none             # none | stripe-link | ecpay | newebpay | shopline
+  why: 純展示，沒有要收表單也沒有要收錢。免費、不會突然收費、之後要搬走成本最低。

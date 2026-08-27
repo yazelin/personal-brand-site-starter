@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="calm">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- 這一行代表整份檔案還是示範內容。內容換成使用者自己的之後，把這一行刪掉。
+     tools/check.mjs 看到這一行就會直接判定不通過。 -->
+<meta name="x-demo-content" content="yes">
+
+<title>李默 — 把複雜的流程做成人看得懂的介面</title>
+<meta name="description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<link rel="canonical" href="https://example.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="李默 — 把複雜的流程做成人看得懂的介面">
+<meta property="og:description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▲</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--font-sans); font-size: var(--step-0); line-height: 1.75;
+    -webkit-font-smoothing: antialiased; text-wrap: pretty;
+  }
+  h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; text-wrap: balance;
+    letter-spacing: -0.01em; margin: 0 0 var(--space-2); font-weight: 600; }
+  p { margin: 0 0 var(--space-3); }
+  a { color: inherit; text-underline-offset: 0.25em; text-decoration-thickness: 1px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  img { max-width: 100%; height: auto; display: block; }
+
+  .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--space-3); }
+  .prose { max-width: var(--maxw-text); }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: var(--space-3); top: var(--space-3); z-index: 99; background: var(--accent);
+    color: var(--accent-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+
+  /* 導覽 */
+  .nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(10px); border-bottom: var(--border); }
+  .nav .wrap { display: flex; align-items: center; gap: var(--space-3);
+    min-height: 3.6rem; }
+  .nav strong { font-size: var(--step-0); letter-spacing: 0.02em; }
+  .nav ul { display: flex; gap: var(--space-3); list-style: none; margin: 0 0 0 auto; padding: 0;
+    font-size: var(--step-s); color: var(--fg-muted); }
+  .nav a { text-decoration: none; }
+  .nav a:hover { color: var(--fg); }
+  @media (max-width: 40rem) { .nav ul li:not(:last-child) { display: none; } }
+
+  /* 首屏 */
+  .hero { position: relative; overflow: hidden; background: var(--hero-bg);
+    min-height: min(88svh, 46rem); display: grid; align-items: center;
+    border-bottom: var(--border); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero .wrap { position: relative; padding-block: var(--space-6); }
+  .hero h1 { font-size: var(--step-4); max-width: 18ch; margin-bottom: var(--space-3); }
+  .hero .lede { font-size: var(--step-1); color: var(--fg-muted); max-width: 34ch; }
+  .eyebrow { font-size: var(--step-s); letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--fg-muted); margin: 0 0 var(--space-2); }
+
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+  .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.35em;
+    border-radius: var(--radius); text-decoration: none; font-size: var(--step-s);
+    border: 1px solid transparent; transition: transform 0.18s var(--ease), opacity 0.18s var(--ease); }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--accent); color: var(--accent-fg); }
+  .btn-ghost { border-color: var(--line); color: var(--fg); }
+
+  /* 區塊 */
+  section { padding-block: var(--space-6); }
+  section + section { border-top: var(--border); }
+  .sec-head { margin-bottom: var(--space-4); }
+  .sec-head h2 { font-size: var(--step-2); }
+  .sec-head p { color: var(--fg-muted); max-width: var(--maxw-text); margin: 0; }
+
+  .grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+  .card { border: var(--border); border-radius: var(--radius); padding: var(--space-3);
+    background: var(--bg-soft); }
+  .card h3 { font-size: var(--step-1); }
+  .card p:last-child { margin-bottom: 0; }
+  .card .price { font-size: var(--step-s); color: var(--fg-muted); }
+
+  .facts { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .facts li { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-2);
+    padding-block: var(--space-1); border-bottom: var(--border); font-size: var(--step-s); }
+  .facts b { font-weight: 500; color: var(--fg-muted); }
+
+  .work { list-style: none; margin: 0; padding: 0; }
+  .work li { padding-block: var(--space-3); border-bottom: var(--border); }
+  .work h3 { font-size: var(--step-1); margin-bottom: var(--space-1); }
+  .work .meta { font-size: var(--step-s); color: var(--fg-muted); margin: 0 0 var(--space-2); }
+  .work p:last-child { margin-bottom: 0; max-width: var(--maxw-text); }
+
+  details { border-bottom: var(--border); padding-block: var(--space-2); }
+  summary { cursor: pointer; font-weight: 500; list-style-position: outside; }
+  details p { margin: var(--space-2) 0 0; color: var(--fg-muted); max-width: var(--maxw-text); }
+
+  .close { background: var(--bg-soft); }
+  .close .wrap { text-align: center; }
+  .close h2 { font-size: var(--step-3); }
+  .close p { color: var(--fg-muted); margin-inline: auto; max-width: 34ch; }
+  .close .actions { justify-content: center; }
+
+  footer { padding-block: var(--space-4); border-top: var(--border); font-size: var(--step-s);
+    color: var(--fg-muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  footer ul { display: flex; gap: var(--space-3); list-style: none; margin: 0 0 0 auto; padding: 0; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="nav">
+  <div class="wrap">
+    <strong>李默</strong>
+    <ul>
+      <li><a href="#about">關於</a></li>
+      <li><a href="#offer">服務</a></li>
+      <li><a href="#work">作品</a></li>
+      <li><a href="#faq">常見問題</a></li>
+      <li><a href="#contact">聯絡</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <canvas aria-hidden="true"></canvas>
+    <div class="wrap">
+      <p class="eyebrow">產品設計 · 接案中</p>
+      <h1>把複雜的流程做成人看得懂的介面</h1>
+      <p class="lede">十年做內部系統與工具類產品。專接一種案子：現有系統很難用，但是不能停下來重做。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#contact">談談你的案子</a>
+        <a class="btn btn-ghost" href="#work">先看作品</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><h2>我是誰</h2></div>
+      <div class="prose">
+        <p>我在製造業與物流業待過十年，多數時間在處理同一個問題：一套系統當初是照流程圖做的，
+        用久了流程變了，介面沒變，於是每個部門都長出自己的一張表格繞過它。</p>
+        <p>我的做法是先去看那些表格。表格會誠實地告訴你系統少了什麼。</p>
+      </div>
+      <ul class="facts">
+        <li><b>擅長</b><span>內部系統改版、後台介面、報表與流程工具</span></li>
+        <li><b>不接</b><span>純視覺稿、活動網頁、需要我掛名但不參與決策的案子</span></li>
+        <li><b>合作方式</b><span>遠端為主，每兩週一次現場，一次只接一件</span></li>
+        <li><b>所在地</b><span>台中，可配合台北出差</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="offer">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>可以找我做什麼</h2>
+        <p>三種合作規模，從最小的開始也可以。</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>介面健檢</h3>
+          <p class="price">兩週 · 六萬起</p>
+          <p>我把你現在的系統從頭走一遍，交一份報告，列出使用者卡在哪幾個地方、
+          哪些可以下週就改、哪些要等改版。</p>
+        </article>
+        <article class="card">
+          <h3>單一流程改版</h3>
+          <p class="price">六到八週 · 二十萬起</p>
+          <p>挑一條最痛的流程，從訪談到設計稿到跟工程師交付，我全程參與到上線。</p>
+        </article>
+        <article class="card">
+          <h3>長期顧問</h3>
+          <p class="price">每月 · 八萬起</p>
+          <p>每週固定時段，你們的設計與工程決策我一起看。適合已經有團隊、缺的是判斷。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>做過的事</h2>
+        <p>只列三件，每一件都寫清楚難在哪、我負責哪一段。</p>
+      </div>
+      <ul class="work">
+        <li>
+          <h3>物流排車系統改版</h3>
+          <p class="meta">2025 · 負責流程設計與介面 · 工程由客戶團隊執行</p>
+          <p>難的地方是排車員的判斷靠的是經驗，講不出規則。我跟著跑了六趟車，
+          把他們口中的「這條線不能給新人」翻譯成三個可以寫進系統的條件。上線後新人上手時間從六週縮到十天。</p>
+        </li>
+        <li>
+          <h3>工廠報工介面</h3>
+          <p class="meta">2024 · 負責全部設計 · 與兩位工程師協作</p>
+          <p>原本的介面要點七次才能報完一筆，現場戴手套。改成一個畫面兩顆大按鈕，
+          代價是後台要多存一份原始資料。這個取捨是我提的，也是我去跟財務解釋的。</p>
+        </li>
+        <li>
+          <h3>維修派工的報表重做</h3>
+          <p class="meta">2023 · 負責資訊架構 · 視覺由客戶端設計師完成</p>
+          <p>他們每個月印出來的報表有四十二頁，實際上被看的是其中兩頁。
+          我做的事是把另外四十頁刪掉，然後花三個月說服所有人這樣可以。</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head"><h2>常見問題</h2></div>
+      <div class="prose">
+        <details>
+          <summary>可以只做設計稿，我們自己開發嗎</summary>
+          <p>可以，但是我會要求參與到第一次上線。設計稿交出去就結案的案子，
+          最後長出來的東西通常跟稿子沒什麼關係，對雙方都不划算。</p>
+        </details>
+        <details>
+          <summary>報價怎麼算</summary>
+          <p>按週計價，不按頁數。第一次談完我會給一個週數區間，超出的部分事先說。</p>
+        </details>
+        <details>
+          <summary>最快什麼時候可以開始</summary>
+          <p>一次只接一件，通常要等一到兩個月。急件我會直接說沒辦法，不會勉強接下來拖延你。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" id="contact">
+    <div class="wrap">
+      <h2>先講你的狀況就好</h2>
+      <p>不用先想好要做什麼。寫一段現在哪裡卡住，我看得懂的話會回你，看不懂會問你。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:hello@example.com">寄信給我</a>
+        <a class="btn btn-ghost" href="https://example.com" rel="noopener">看我的其他文章</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 李默</span>
+    <ul>
+      <li><a href="mailto:hello@example.com">Email</a></li>
+      <li><a href="https://example.com" rel="me noopener">LinkedIn</a></li>
+      <li><a href="https://example.com" rel="me noopener">GitHub</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // 預覽用：網址加 ?vibe=bold 就換一種風格看看，四種是 calm / bold / gallery / grand。
+  // 定案之後把 <html data-vibe> 直接寫死，然後刪掉這段。
+  var v = new URLSearchParams(location.search).get('vibe');
+  if (v) document.documentElement.dataset.vibe = v;
+</script>
+<script src="hero.js"></script>
+<script>
+  // 首屏動效。換一種效果就做兩件事：把 hero/ 底下那支複製成同目錄的 hero.js，
+  // 然後把這裡的 fx 改成對應的函式名。參數請照使用者的內容調，不要原樣照抄。
+  // 可選：noiseLines / flowGradient / particleField / geoDrift
+  var HERO = {
+    fx: 'noiseLines',
+    opts: { lines: 24, amp: 78 }
+  };
+  (function () {
+    var canvas = document.querySelector('.hero canvas');
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
+    Hero[HERO.fx](canvas, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
+  })();
+</script>
+</body>
+</html>
