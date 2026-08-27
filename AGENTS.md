@@ -23,8 +23,10 @@
 |---|---|---|
 | 階段一問到風格 | `templates/preview.html` | **先給他看做得出來的東西**，讓他從十六種組合裡挑 |
 | 挑完版面之後 | `docs/inspiration.md` | 去 personalsit.es 篩他那一行，找同行的站補充討論 |
+| 階段一問概念 | `docs/concept.md` | 問出一個屬於他這一行的東西。**這一題最決定成品像不像他** |
 | 階段三挑版面 | `templates/preview.html` | 四種版面各自適合誰，都寫在那一頁 |
 | 階段三排版前 | `docs/images.md` | 使用者手上沒有能用的圖的時候怎麼辦，還有一條不能踩的紅線 |
+| 階段三排版時 | `docs/concept.md` | 把概念變成三個具體決定，只在首屏做足 |
 | 階段二決定放哪裡 | `docs/deploy.md` | 照選定平台的步驟寫給他 |
 | 階段三開始排版前 | `docs/inspiration.md` | 看完就關掉。對著別人的站排版，做出來的是別人的站 |
 | 使用者說要更酷的效果 | `docs/effects.md` | 先確認他真的需要，再去挑 |

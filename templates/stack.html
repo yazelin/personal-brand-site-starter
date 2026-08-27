@@ -38,9 +38,23 @@
   .hero { position: relative; overflow: hidden; background: var(--hero-bg);
     min-height: min(88svh, 46rem); display: grid; align-items: center; border-bottom: var(--border); }
   .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-  .hero .wrap { position: relative; padding-block: var(--space-6); }
+  /* 首屏刻意做成不對稱的 7:4：左邊講故事，右邊放事實。
+     對稱置中的首屏是「看起來像模板」最主要的來源，這一欄是拿來破對稱的 */
+  .hero .wrap { position: relative; padding-block: var(--space-6);
+    display: grid; grid-template-columns: 7fr 4fr; gap: var(--space-5); align-items: end; }
   .hero h1 { font-size: var(--step-4); max-width: 18ch; margin-bottom: var(--space-3); }
   .hero .lede { font-size: var(--step-1); color: var(--fg-muted); max-width: 34ch; }
+
+  /* 右欄：檔期、地點、怎麼找你。接案的人把檔期寫在這裡，可以擋掉一半不合的詢問 */
+  .hero__aside { border-top: 2px solid var(--fg); padding-top: var(--space-2);
+    font-size: var(--step-s); display: grid; gap: var(--space-2); }
+  .hero__aside div { display: grid; gap: 2px; }
+  .hero__aside b { font-weight: 500; color: var(--fg-muted); letter-spacing: 0.08em;
+    text-transform: uppercase; font-size: 0.78em; }
+  @media (max-width: 52rem) {
+    .hero .wrap { grid-template-columns: 1fr; gap: var(--space-4); align-items: start; }
+    .hero__aside { max-width: 22rem; }
+  }
   /* 中文標題預設會從任何一個字中間斷開。把標題依語意切成幾段各包一個 span，
      斷行就只會發生在段與段之間 */
   h1 span, h2 span { display: inline-block; }
@@ -74,13 +88,20 @@
   <section class="hero">
     <canvas aria-hidden="true"></canvas>
     <div class="wrap">
-      <p class="eyebrow">產品設計 · 接案中</p>
-      <h1><span>把複雜的流程</span><span>做成人看得懂的介面</span></h1>
-      <p class="lede">十年做內部系統與工具類產品。專接一種案子：現有系統很難用，但是不能停下來重做。</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="#contact">談談你的案子</a>
-        <a class="btn btn-ghost" href="#work">先看作品</a>
+      <div>
+        <p class="eyebrow">產品設計</p>
+        <h1><span>把複雜的流程</span><span>做成人</span><span>看得懂的介面</span></h1>
+        <p class="lede">十年做內部系統與工具類產品。專接一種案子：現有系統很難用，但是不能停下來重做。</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#contact">談談你的案子</a>
+          <a class="btn btn-ghost" href="#work">先看作品</a>
+        </div>
       </div>
+      <aside class="hero__aside">
+        <div><b>檔期</b><span>接十一月之後的案子</span></div>
+        <div><b>所在地</b><span>台中，可配合台北出差</span></div>
+        <div><b>聯絡</b><span><a href="mailto:hello@example.com">hello@example.com</a></span></div>
+      </aside>
     </div>
   </section>
 
