@@ -21,11 +21,12 @@
 
 | 什麼時候 | 打開哪一份 | 要做什麼 |
 |---|---|---|
-| 階段一問到風格 | `docs/inspiration.md` | 挑兩三個真人做的站丟給使用者看，問他哪一個像他 |
-| 階段三挑版面 | `templates/preview.html` | 四種版面的說明與各自適合誰，都在那一頁 |
+| 階段一問到風格 | `templates/preview.html` | **先給他看做得出來的東西**，讓他從十六種組合裡挑 |
+| 挑完版面之後 | `docs/inspiration.md` | 去 personalsit.es 篩他那一行，找同行的站補充討論 |
+| 階段三挑版面 | `templates/preview.html` | 四種版面各自適合誰，都寫在那一頁 |
 | 階段三排版前 | `docs/images.md` | 使用者手上沒有能用的圖的時候怎麼辦，還有一條不能踩的紅線 |
 | 階段二決定放哪裡 | `docs/deploy.md` | 照選定平台的步驟寫給他 |
-| 階段三開始排版前 | `docs/inspiration.md` | 對齊野心，看完就關掉 |
+| 階段三開始排版前 | `docs/inspiration.md` | 看完就關掉。對著別人的站排版，做出來的是別人的站 |
 | 使用者說要更酷的效果 | `docs/effects.md` | 先確認他真的需要，再去挑 |
 | 階段三、四開始時 | `docs/external-skills.md` | 看有沒有已經裝好的 skill 可以搭，**有就用，沒有就講一句帶過** |
 
