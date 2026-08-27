@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="calm">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- 這一行代表整份檔案還是示範內容。內容換成使用者自己的之後，把這一行刪掉。
+     tools/check.mjs 看到這一行就會直接判定不通過。 -->
+<meta name="x-demo-content" content="yes">
+
+<title>李默 — 把複雜的流程做成人看得懂的介面</title>
+<meta name="description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<link rel="canonical" href="https://example.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="李默 — 把複雜的流程做成人看得懂的介面">
+<meta property="og:description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▲</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* ── 版面：左右分屏 ──
+     首屏左字右動效，內容區左邊是黏著的區塊標題、右邊捲動。雜誌感最強的一種。
+     內容量中等的人適合；區塊超過六個的話黏著標題會一直換，改用堆疊版。 */
+  .topbar { position: fixed; inset: 0 0 auto 0; z-index: 20; display: flex; align-items: center;
+    padding: var(--space-3); gap: var(--space-3); mix-blend-mode: difference; color: #fff; }
+  .topbar strong { letter-spacing: 0.02em; }
+  .topbar a { margin-left: auto; font-size: var(--step-s); text-decoration: none;
+    border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+
+  .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 100svh; }
+  .hero__text { display: grid; align-content: center; padding: var(--space-6) var(--space-5);
+    background: var(--bg); }
+  .hero__art { position: relative; overflow: hidden; background: var(--hero-bg); }
+  .hero__art canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  /* 分屏的欄位只有一半寬，標題沿用堆疊版的尺寸會斷成四行，所以降一級 */
+  .hero h1 { font-size: var(--step-3); margin-bottom: var(--space-3); }
+  .hero .lede { font-size: var(--step-1); color: var(--fg-muted); max-width: 30ch; }
+  h1 span, h2 span { display: inline-block; }
+  @media (max-width: 52rem) {
+    .hero { grid-template-columns: 1fr; }
+    .hero__art { min-height: 42svh; order: -1; }
+    .hero__text { padding: var(--space-5) var(--space-3); }
+  }
+
+  /* 兩欄：左標題黏著，右內容捲動 */
+  .duo { display: grid; grid-template-columns: 14rem 1fr; gap: var(--space-5);
+    max-width: var(--maxw); margin-inline: auto; padding: var(--space-6) var(--space-3);
+    border-top: var(--border); }
+  .duo > h2 { position: sticky; top: var(--space-5); align-self: start;
+    font-size: var(--step-1); color: var(--fg-muted); font-weight: 500;
+    letter-spacing: 0.04em; margin: 0; }
+  .duo__body > :last-child { margin-bottom: 0; }
+  @media (max-width: 52rem) {
+    .duo { grid-template-columns: 1fr; gap: var(--space-3); padding-block: var(--space-5); }
+    .duo > h2 { position: static; }
+  }
+
+  .close { display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+    gap: var(--space-4); max-width: var(--maxw); margin-inline: auto;
+    padding: var(--space-7) var(--space-3); border-top: var(--border); }
+  .close h2 { font-size: var(--step-3); margin: 0; }
+  .close p { color: var(--fg-muted); margin-bottom: var(--space-3); }
+  @media (max-width: 52rem) { .close { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="topbar">
+  <strong>李默</strong>
+  <a href="#contact">談談你的案子</a>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="hero__text">
+      <p class="eyebrow">產品設計 · 接案中</p>
+      <h1><span>把複雜的流程</span><span>做成人</span><span>看得懂的介面</span></h1>
+      <p class="lede">十年做內部系統與工具類產品。專接一種案子：現有系統很難用，但是不能停下來重做。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#contact">談談你的案子</a>
+        <a class="btn btn-ghost" href="#work">先看作品</a>
+      </div>
+    </div>
+    <div class="hero__art"><canvas aria-hidden="true"></canvas></div>
+  </section>
+
+  <section class="duo" id="about">
+    <h2>我是誰</h2>
+    <div class="duo__body prose">
+      <p>我在製造業與物流業待過十年，多數時間在處理同一個問題：一套系統當初是照流程圖做的，
+      用久了流程變了，介面沒變，於是每個部門都長出自己的一張表格繞過它。</p>
+      <p>我的做法是先去看那些表格。表格會誠實地告訴你系統少了什麼。</p>
+      <ul class="facts">
+        <li><b>擅長</b><span>內部系統改版、後台介面、報表與流程工具</span></li>
+        <li><b>不接</b><span>純視覺稿、活動網頁、需要我掛名但不參與決策的案子</span></li>
+        <li><b>合作方式</b><span>遠端為主，每兩週一次現場，一次只接一件</span></li>
+        <li><b>所在地</b><span>台中，可配合台北出差</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="duo" id="offer">
+    <h2>可以找我做什麼</h2>
+    <div class="duo__body">
+      <div class="grid">
+        <article class="card">
+          <h3>介面健檢</h3>
+          <p class="price">兩週 · 六萬起</p>
+          <p>我把你現在的系統從頭走一遍，交一份報告，列出使用者卡在哪幾個地方。</p>
+        </article>
+        <article class="card">
+          <h3>單一流程改版</h3>
+          <p class="price">六到八週 · 二十萬起</p>
+          <p>挑一條最痛的流程，從訪談到設計稿到跟工程師交付，我全程參與到上線。</p>
+        </article>
+        <article class="card">
+          <h3>長期顧問</h3>
+          <p class="price">每月 · 八萬起</p>
+          <p>每週固定時段，你們的設計與工程決策我一起看。適合已經有團隊、缺的是判斷。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="duo" id="work">
+    <h2>做過的事</h2>
+    <div class="duo__body">
+      <ul class="work">
+        <li>
+          <h3>物流排車系統改版</h3>
+          <p class="meta">2025 · 負責流程設計與介面 · 工程由客戶團隊執行</p>
+          <p>排車員的判斷靠經驗，講不出規則。我跟著跑了六趟車，把他們口中的
+          「這條線不能給新人」翻譯成三個可以寫進系統的條件。新人上手時間從六週縮到十天。</p>
+        </li>
+        <li>
+          <h3>工廠報工介面</h3>
+          <p class="meta">2024 · 負責全部設計 · 與兩位工程師協作</p>
+          <p>原本要點七次才能報完一筆，現場戴手套。改成一個畫面兩顆大按鈕，
+          代價是後台要多存一份原始資料。這個取捨是我提的，也是我去跟財務解釋的。</p>
+        </li>
+        <li>
+          <h3>維修派工的報表重做</h3>
+          <p class="meta">2023 · 負責資訊架構 · 視覺由客戶端設計師完成</p>
+          <p>每個月印出來的報表有四十二頁，實際被看的是其中兩頁。我做的事是把另外四十頁刪掉，
+          然後花三個月說服所有人這樣可以。</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="duo" id="faq">
+    <h2>常見問題</h2>
+    <div class="duo__body prose">
+      <details>
+        <summary>可以只做設計稿，我們自己開發嗎</summary>
+        <p>可以，但是我會要求參與到第一次上線。設計稿交出去就結案的案子，
+        最後長出來的東西通常跟稿子沒什麼關係。</p>
+      </details>
+      <details>
+        <summary>報價怎麼算</summary>
+        <p>按週計價，不按頁數。第一次談完我會給一個週數區間，超出的部分事先說。</p>
+      </details>
+      <details>
+        <summary>最快什麼時候可以開始</summary>
+        <p>一次只接一件，通常要等一到兩個月。急件我會直接說沒辦法。</p>
+      </details>
+    </div>
+  </section>
+
+  <section class="close" id="contact">
+    <h2><span>先講你的狀況</span><span>就好</span></h2>
+    <div>
+      <p>不用先想好要做什麼。寫一段現在哪裡卡住，我看得懂的話會回你，看不懂會問你。</p>
+      <div class="actions" style="margin-top:0">
+        <a class="btn btn-primary" href="mailto:hello@example.com">寄信給我</a>
+        <a class="btn btn-ghost" href="https://example.com" rel="noopener">看我的其他文章</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 李默</span>
+    <ul>
+      <li><a href="mailto:hello@example.com">Email</a></li>
+      <li><a href="https://example.com" rel="me noopener">LinkedIn</a></li>
+      <li><a href="https://example.com" rel="me noopener">GitHub</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // 預覽用：網址加 ?vibe=bold 就換一種風格看看，四種是 calm / bold / gallery / grand。
+  // 定案之後把 <html data-vibe> 直接寫死，然後刪掉這段。
+  var v = new URLSearchParams(location.search).get('vibe');
+  if (v) document.documentElement.dataset.vibe = v;
+</script>
+<script src="hero.js"></script>
+<script>
+  // 首屏動效。換一種效果就把 hero/ 底下那支複製成同目錄的 hero.js，再改 fx。
+  // 可選：noiseLines / flowGradient / particleField / geoDrift / fluidInk
+  var HERO = {
+    fx: 'flowGradient',
+    opts: { blur: 56 }
+  };
+  (function () {
+    var canvas = document.querySelector('.hero__art canvas');
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
+    // hero.js 換過但忘了改 fx 的時候，用載進來的那一支，不要讓首屏整片空掉
+    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
+    fx(canvas, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
+  })();
+</script>
+</body>
+</html>

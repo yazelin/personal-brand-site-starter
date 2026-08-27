@@ -46,6 +46,17 @@ cd personal-brand-site-starter
 
 每個階段結束會停下來給你看，不會一路做到底再一次丟給你。
 
+## 四種版面
+
+**結構不一樣，不只是換顏色。** [線上一次比較](https://yazelin.github.io/personal-brand-site-starter/templates/preview.html)。
+
+- **堆疊** 吸頂導覽、靠左首屏、區塊上下堆疊。最通用，判斷不出來就用這個。
+- **左右分屏** 首屏左字右動效，內容區左邊黏著標題右邊捲動。雜誌感最強。
+- **編號索引** 每個區塊掛一個大編號，字級對比拉到最大。內容少的人用這個最划算。
+- **滿版出血** 圖片鋪滿寬度，文字疊在上面。手上有好圖的人才選。
+
+版面決定於內容有多少、有沒有圖，不是決定於好不好看。四種版面各自可以再套四種風格。
+
 ## 四種風格
 
 寫在 `<html data-vibe="...">` 一個字就換整站氣質。
@@ -81,8 +92,9 @@ cd personal-brand-site-starter
 node tools/check.mjs site/index.html
 ```
 
-擋的是三種一定會被抓包的錯：模板的示範內容忘了換、
-搜尋引擎與社群分享要的標籤沒寫、會動的東西沒辦法關掉。
+擋的是幾種一定會被抓包的錯：模板的示範內容忘了換、搜尋引擎與社群分享要的標籤沒寫、
+會動的東西沒辦法關掉、圖片檔案不存在、正體中文的頁面混進簡體字。
+最後那兩條是實測出來的：用非 Claude 的模型跑這條流程，它會把「根據」「必須」寫成簡體。
 通過回傳 0。好不好看它不管，那要你自己看，清單在 `skills/04-verify/SKILL.md`。
 
 ## repo 長什麼樣
@@ -90,8 +102,9 @@ node tools/check.mjs site/index.html
 ```
 AGENTS.md              總控，AI 從這裡開始讀
 skills/                四個階段各一份作業指引
-templates/             一頁式骨架，單檔可跑，已經填了示範內容
+templates/             四種版面骨架，preview.html 可以一次比較
 templates/tokens.css   顏色、字級、間距的變數，改這裡就換掉整站氣質
+templates/base.css     四種版面共用的元件樣式
 hero/                  四種首屏動效，外加一頁可以一次比較的預覽
 tools/check.mjs        上線前的機器檢查，零依賴
 spec/site.example.yaml 訪談產出長什麼樣

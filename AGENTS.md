@@ -22,6 +22,7 @@
 | 什麼時候 | 打開哪一份 | 要做什麼 |
 |---|---|---|
 | 階段一問到風格 | `docs/inspiration.md` | 挑兩三個真人做的站丟給使用者看，問他哪一個像他 |
+| 階段三挑版面 | `templates/preview.html` | 四種版面的說明與各自適合誰，都在那一頁 |
 | 階段二決定放哪裡 | `docs/deploy.md` | 照選定平台的步驟寫給他 |
 | 階段三開始排版前 | `docs/inspiration.md` | 對齊野心，看完就關掉 |
 | 使用者說要更酷的效果 | `docs/effects.md` | 先確認他真的需要，再去挑 |
@@ -47,8 +48,9 @@
 ```
 AGENTS.md              你正在讀的這份，總控
 skills/                四個階段各一份作業指引
-templates/index.html   一頁式網站骨架，單檔可跑，已經填了示範內容
+templates/             四種版面骨架，開 templates/preview.html 一次比較
 templates/tokens.css   顏色、字級、間距的變數，改這裡就換掉整站氣質
+templates/base.css     四種版面共用的元件樣式
 hero/                  四種首屏動效，零依賴，各自獨立一支
 tools/check.mjs        上線前的機器檢查，零依賴，node 直接跑
 spec/site.example.yaml 訪談產出長什麼樣的範例
@@ -57,7 +59,13 @@ docs/                  部署步驟、參考站清單、更兇的特效、可以
 
 ## 開工
 
-複製一份 `templates/` 到 `site/` 之後才動手改，不要直接改 `templates/`。
-使用者之後想重來一次，模板要是乾淨的。
+挑好版面之後這樣開工，不要直接改 `templates/`。使用者之後想重來一次，模板要是乾淨的。
+
+```bash
+mkdir -p site
+cp templates/<挑的版面>.html site/index.html
+cp templates/tokens.css templates/base.css site/
+cp hero/<挑的動效>.js site/hero.js
+```
 
 從 `skills/01-interview/SKILL.md` 開始。

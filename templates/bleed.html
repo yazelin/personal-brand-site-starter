@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="calm">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- 這一行代表整份檔案還是示範內容。內容換成使用者自己的之後，把這一行刪掉。
+     tools/check.mjs 看到這一行就會直接判定不通過。 -->
+<meta name="x-demo-content" content="yes">
+
+<title>李默 — 把複雜的流程做成人看得懂的介面</title>
+<meta name="description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<link rel="canonical" href="https://example.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="李默 — 把複雜的流程做成人看得懂的介面">
+<meta property="og:description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▲</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* ── 版面：滿版出血 ──
+     首屏滿版、作品一張一列鋪滿寬度，文字疊在圖上。
+     **這個版面一定要有圖**，攝影、設計、影像的人才選它。
+     沒有圖就用堆疊版，空的滿版區塊比小圖更難看。 */
+  .topbar { position: fixed; inset: 0 0 auto 0; z-index: 20; display: flex; align-items: center;
+    padding: var(--space-3); gap: var(--space-3); color: #fff; mix-blend-mode: difference; }
+  .topbar strong { letter-spacing: 0.02em; }
+  .topbar a { margin-left: auto; font-size: var(--step-s); text-decoration: none;
+    border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+
+  .hero { position: relative; overflow: hidden; min-height: 100svh; display: grid;
+    align-items: end; background: var(--hero-bg); }
+  .hero canvas, .hero > img { position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block; }
+  /* 圖上面壓一層由下往上的暗角，字才讀得到。沒有這一層，白字配亮圖必糊 */
+  .hero::after { content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.35) 38%, rgba(0,0,0,0) 70%); }
+  .hero .wrap { position: relative; z-index: 1; padding-block: var(--space-5); color: #fff; }
+  .hero h1 { font-size: var(--step-4); margin-bottom: var(--space-2); }
+  .hero .lede { font-size: var(--step-1); max-width: 36ch; color: rgba(255,255,255,.82); }
+  .hero .eyebrow { color: rgba(255,255,255,.72); }
+  h1 span, h2 span { display: inline-block; }
+
+  /* 作品：一張一列，滿版寬，文字疊在左下角 */
+  .shots { margin: 0; padding: 0; list-style: none; }
+  .shots li { position: relative; }
+  .shots img { width: 100%; height: min(80svh, 44rem); object-fit: cover; display: block; }
+  .shots figcaption { position: absolute; left: 0; right: 0; bottom: 0; color: #fff;
+    padding: var(--space-5) var(--space-3) var(--space-3);
+    background: linear-gradient(to top, rgba(0,0,0,.72), rgba(0,0,0,0)); }
+  .shots figcaption > div { max-width: var(--maxw); margin-inline: auto; }
+  .shots h3 { font-size: var(--step-2); margin: 0 0 var(--space-1); }
+  .shots p { margin: 0; color: rgba(255,255,255,.8); max-width: 46ch; font-size: var(--step-s); }
+
+  section { padding-block: var(--space-6); }
+  section + section { border-top: var(--border); }
+  .close { background: var(--bg-soft); text-align: center; }
+  .close h2 { font-size: var(--step-3); }
+  .close p { color: var(--fg-muted); margin-inline: auto; max-width: 34ch; }
+  .close .actions { justify-content: center; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<header class="topbar">
+  <strong>李默</strong>
+  <a href="#contact">談談你的案子</a>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <!-- 首屏放你最好的一張圖。要放圖就用下面這一行，並且把 canvas 那行刪掉：
+         <img src="photos/hero.jpg" alt="（描述這張圖）" width="2400" height="1600"> -->
+    <img src="photos/hero.jpg" alt="拍攝現場，作業員正在操作改版後的報工介面" width="2400" height="1600">
+    <canvas aria-hidden="true" hidden></canvas>
+    <div class="wrap">
+      <p class="eyebrow">產品設計 · 接案中</p>
+      <h1><span>把複雜的流程</span><span>做成人看得懂的介面</span></h1>
+      <p class="lede">十年做內部系統與工具類產品。專接一種案子：現有系統很難用，但是不能停下來重做。</p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap prose">
+      <p>我在製造業與物流業待過十年，多數時間在處理同一個問題：一套系統當初是照流程圖做的，
+      用久了流程變了，介面沒變，於是每個部門都長出自己的一張表格繞過它。</p>
+      <p>我的做法是先去看那些表格。表格會誠實地告訴你系統少了什麼。</p>
+    </div>
+    <div class="wrap">
+      <ul class="facts">
+        <li><b>擅長</b><span>內部系統改版、後台介面、報表與流程工具</span></li>
+        <li><b>不接</b><span>純視覺稿、活動網頁、需要我掛名但不參與決策的案子</span></li>
+        <li><b>合作方式</b><span>遠端為主，每兩週一次現場，一次只接一件</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work" style="padding-block:0">
+    <ul class="shots">
+      <li><figure style="margin:0">
+        <img src="photos/01.jpg" alt="排車系統改版後的排程畫面" width="2400" height="1600">
+        <figcaption><div>
+          <h3>物流排車系統改版</h3>
+          <p>2025 · 排車員的判斷靠經驗，講不出規則。跟車六趟之後，翻譯成三個可以寫進系統的條件。</p>
+        </div></figcaption>
+      </figure></li>
+      <li><figure style="margin:0">
+        <img src="photos/02.jpg" alt="工廠現場的報工終端機" width="2400" height="1600">
+        <figcaption><div>
+          <h3>工廠報工介面</h3>
+          <p>2024 · 原本要點七次，現場戴手套。改成一個畫面兩顆大按鈕，代價寫在後台。</p>
+        </div></figcaption>
+      </figure></li>
+      <li><figure style="margin:0">
+        <img src="photos/03.jpg" alt="重做後的維修派工報表" width="2400" height="1600">
+        <figcaption><div>
+          <h3>維修派工的報表重做</h3>
+          <p>2023 · 四十二頁刪到兩頁，然後花三個月說服所有人這樣可以。</p>
+        </div></figcaption>
+      </figure></li>
+    </ul>
+  </section>
+
+  <section class="close" id="contact">
+    <div class="wrap">
+      <h2><span>先講你的狀況</span><span>就好</span></h2>
+      <p>不用先想好要做什麼。寫一段現在哪裡卡住，我看得懂的話會回你，看不懂會問你。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:hello@example.com">寄信給我</a>
+        <a class="btn btn-ghost" href="https://example.com" rel="noopener">看我的其他文章</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 李默</span>
+    <ul>
+      <li><a href="mailto:hello@example.com">Email</a></li>
+      <li><a href="https://example.com" rel="me noopener">LinkedIn</a></li>
+      <li><a href="https://example.com" rel="me noopener">GitHub</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // 預覽用：網址加 ?vibe=bold 就換一種風格看看，四種是 calm / bold / gallery / grand。
+  // 定案之後把 <html data-vibe> 直接寫死，然後刪掉這段。
+  var v = new URLSearchParams(location.search).get('vibe');
+  if (v) document.documentElement.dataset.vibe = v;
+</script>
+<script src="hero.js"></script>
+<script>
+  // 這個版面預設用圖當首屏。真的沒有夠好的圖，就把上面 <img> 那行刪掉、
+  // 把 <canvas> 的 hidden 拿掉，改用動效當底。
+  var HERO = {
+    fx: 'fluidInk',
+    opts: { intensity: 0.7 }
+  };
+  (function () {
+    var canvas = document.querySelector('.hero canvas');
+    if (!canvas || canvas.hidden) return;
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
+    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
+    fx(canvas, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
+  })();
+</script>
+</body>
+</html>

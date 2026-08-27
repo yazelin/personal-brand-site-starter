@@ -21,36 +21,13 @@
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▲</text></svg>">
 <link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  }
-  body {
-    margin: 0; background: var(--bg); color: var(--fg);
-    font-family: var(--font-sans); font-size: var(--step-0); line-height: 1.75;
-    -webkit-font-smoothing: antialiased; text-wrap: pretty;
-  }
-  h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; text-wrap: balance;
-    letter-spacing: -0.01em; margin: 0 0 var(--space-2); font-weight: 600; }
-  p { margin: 0 0 var(--space-3); }
-  a { color: inherit; text-underline-offset: 0.25em; text-decoration-thickness: 1px; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-  img { max-width: 100%; height: auto; display: block; }
-
-  .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--space-3); }
-  .prose { max-width: var(--maxw-text); }
-  .skip { position: absolute; left: -9999px; }
-  .skip:focus { left: var(--space-3); top: var(--space-3); z-index: 99; background: var(--accent);
-    color: var(--accent-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
-
-  /* 導覽 */
+  /* ── 版面：堆疊 ──
+     吸頂導覽、靠左首屏、區塊上下堆疊。最通用的一種，內容多也撐得住。 */
   .nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 86%, transparent);
     backdrop-filter: blur(10px); border-bottom: var(--border); }
-  .nav .wrap { display: flex; align-items: center; gap: var(--space-3);
-    min-height: 3.6rem; }
+  .nav .wrap { display: flex; align-items: center; gap: var(--space-3); min-height: 3.6rem; }
   .nav strong { font-size: var(--step-0); letter-spacing: 0.02em; }
   .nav ul { display: flex; gap: var(--space-3); list-style: none; margin: 0 0 0 auto; padding: 0;
     font-size: var(--step-s); color: var(--fg-muted); }
@@ -58,67 +35,22 @@
   .nav a:hover { color: var(--fg); }
   @media (max-width: 40rem) { .nav ul li:not(:last-child) { display: none; } }
 
-  /* 首屏 */
   .hero { position: relative; overflow: hidden; background: var(--hero-bg);
-    min-height: min(88svh, 46rem); display: grid; align-items: center;
-    border-bottom: var(--border); }
+    min-height: min(88svh, 46rem); display: grid; align-items: center; border-bottom: var(--border); }
   .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .hero .wrap { position: relative; padding-block: var(--space-6); }
   .hero h1 { font-size: var(--step-4); max-width: 18ch; margin-bottom: var(--space-3); }
-  /* 中文標題預設會從任何一個字中間斷開。把標題依語意切成幾段各包一個 span，
-     斷行就只會發生在段與段之間。窄螢幕上這一招最有效 */
-  h1 span, h2 span { display: inline-block; }
   .hero .lede { font-size: var(--step-1); color: var(--fg-muted); max-width: 34ch; }
-  .eyebrow { font-size: var(--step-s); letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--fg-muted); margin: 0 0 var(--space-2); }
+  /* 中文標題預設會從任何一個字中間斷開。把標題依語意切成幾段各包一個 span，
+     斷行就只會發生在段與段之間 */
+  h1 span, h2 span { display: inline-block; }
 
-  .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
-  .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.35em;
-    border-radius: var(--radius); text-decoration: none; font-size: var(--step-s);
-    border: 1px solid transparent; transition: transform 0.18s var(--ease), opacity 0.18s var(--ease); }
-  .btn:hover { transform: translateY(-1px); }
-  .btn-primary { background: var(--accent); color: var(--accent-fg); }
-  .btn-ghost { border-color: var(--line); color: var(--fg); }
-
-  /* 區塊 */
-  section { padding-block: var(--space-6); }
   section + section { border-top: var(--border); }
-  .sec-head { margin-bottom: var(--space-4); }
-  .sec-head h2 { font-size: var(--step-2); }
-  .sec-head p { color: var(--fg-muted); max-width: var(--maxw-text); margin: 0; }
-
-  .grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
-  .card { border: var(--border); border-radius: var(--radius); padding: var(--space-3);
-    background: var(--bg-soft); }
-  .card h3 { font-size: var(--step-1); }
-  .card p:last-child { margin-bottom: 0; }
-  .card .price { font-size: var(--step-s); color: var(--fg-muted); }
-
-  .facts { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
-  .facts li { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-2);
-    padding-block: var(--space-1); border-bottom: var(--border); font-size: var(--step-s); }
-  .facts b { font-weight: 500; color: var(--fg-muted); }
-
-  .work { list-style: none; margin: 0; padding: 0; }
-  .work li { padding-block: var(--space-3); border-bottom: var(--border); }
-  .work h3 { font-size: var(--step-1); margin-bottom: var(--space-1); }
-  .work .meta { font-size: var(--step-s); color: var(--fg-muted); margin: 0 0 var(--space-2); }
-  .work p:last-child { margin-bottom: 0; max-width: var(--maxw-text); }
-
-  details { border-bottom: var(--border); padding-block: var(--space-2); }
-  summary { cursor: pointer; font-weight: 500; list-style-position: outside; }
-  details p { margin: var(--space-2) 0 0; color: var(--fg-muted); max-width: var(--maxw-text); }
-
   .close { background: var(--bg-soft); }
   .close .wrap { text-align: center; }
   .close h2 { font-size: var(--step-3); }
   .close p { color: var(--fg-muted); margin-inline: auto; max-width: 34ch; }
   .close .actions { justify-content: center; }
-
-  footer { padding-block: var(--space-4); border-top: var(--border); font-size: var(--step-s);
-    color: var(--fg-muted); }
-  footer .wrap { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
-  footer ul { display: flex; gap: var(--space-3); list-style: none; margin: 0 0 0 auto; padding: 0; }
 </style>
 </head>
 <body>
@@ -288,7 +220,9 @@
   (function () {
     var canvas = document.querySelector('.hero canvas');
     var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
-    Hero[HERO.fx](canvas, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
+    // hero.js 換過但忘了改 fx 的時候，用載進來的那一支，不要讓首屏整片空掉
+    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
+    fx(canvas, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
   })();
 </script>
 </body>

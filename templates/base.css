@@ -1,0 +1,72 @@
+/* 共用元件。顏色與字級在 tokens.css，版面骨架在各個 .html 自己的 <style> 裡。
+   這裡只放四種版面都一樣的東西：重置、排版基礎、按鈕、卡片、頁尾。 */
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--font-sans); font-size: var(--step-0); line-height: 1.75;
+    -webkit-font-smoothing: antialiased; text-wrap: pretty;
+  }
+  h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; text-wrap: balance;
+    letter-spacing: -0.01em; margin: 0 0 var(--space-2); font-weight: 600; }
+  p { margin: 0 0 var(--space-3); }
+  a { color: inherit; text-underline-offset: 0.25em; text-decoration-thickness: 1px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  img { max-width: 100%; height: auto; display: block; }
+
+  .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--space-3); }
+  .prose { max-width: var(--maxw-text); }
+  .skip { position: absolute; left: -9999px; }
+  .skip:focus { left: var(--space-3); top: var(--space-3); z-index: 99; background: var(--accent);
+    color: var(--accent-fg); padding: var(--space-1) var(--space-2); border-radius: var(--radius); }
+
+
+  /* 按鈕 */
+  .btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.7em 1.35em;
+    border-radius: var(--radius); text-decoration: none; font-size: var(--step-s);
+    border: 1px solid transparent; transition: transform 0.18s var(--ease), opacity 0.18s var(--ease); }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--accent); color: var(--accent-fg); }
+  .btn-ghost { border-color: var(--line); color: var(--fg); }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
+
+  .eyebrow { font-size: var(--step-s); letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--fg-muted); margin: 0 0 var(--space-2); }
+
+  /* 區塊 */
+  section { padding-block: var(--space-6); }
+  .sec-head { margin-bottom: var(--space-4); }
+  .sec-head h2 { font-size: var(--step-2); }
+  .sec-head p { color: var(--fg-muted); max-width: var(--maxw-text); margin: 0; }
+
+  .grid { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+  .card { border: var(--border); border-radius: var(--radius); padding: var(--space-3);
+    background: var(--bg-soft); }
+  .card h3 { font-size: var(--step-1); }
+  .card p:last-child { margin-bottom: 0; }
+  .card .price { font-size: var(--step-s); color: var(--fg-muted); }
+
+  .facts { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .facts li { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-2);
+    padding-block: var(--space-1); border-bottom: var(--border); font-size: var(--step-s); }
+  .facts b { font-weight: 500; color: var(--fg-muted); }
+
+  .work { list-style: none; margin: 0; padding: 0; }
+  .work li { padding-block: var(--space-3); border-bottom: var(--border); }
+  .work h3 { font-size: var(--step-1); margin-bottom: var(--space-1); }
+  .work .meta { font-size: var(--step-s); color: var(--fg-muted); margin: 0 0 var(--space-2); }
+  .work p:last-child { margin-bottom: 0; max-width: var(--maxw-text); }
+
+  details { border-bottom: var(--border); padding-block: var(--space-2); }
+  summary { cursor: pointer; font-weight: 500; list-style-position: outside; }
+  details p { margin: var(--space-2) 0 0; color: var(--fg-muted); max-width: var(--maxw-text); }
+
+  footer { padding-block: var(--space-4); border-top: var(--border); font-size: var(--step-s);
+    color: var(--fg-muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  footer ul { display: flex; gap: var(--space-3); list-style: none; margin: 0 0 0 auto; padding: 0; }

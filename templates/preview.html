@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>四種版面</title>
+<style>
+  body { margin: 0; background: #101215; color: #e8eaee; font-size: 15px; line-height: 1.7;
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif; }
+  main { max-width: 62rem; margin-inline: auto; padding: 2rem 1.4rem 4rem; }
+  h1 { font-size: 1.4rem; margin: 0 0 .4rem; }
+  .sub { color: #9aa0ad; margin: 0 0 2rem; }
+  .row { border: 1px solid #262b36; border-radius: 10px; padding: 1.1rem 1.2rem; margin-bottom: 1rem; }
+  .row h2 { font-size: 1.1rem; margin: 0 0 .3rem; }
+  .row code { color: #ffd23f; font-size: .88rem; }
+  .row p { margin: 0 0 .8rem; color: #b7bcc6; }
+  .row .who { color: #9aa0ad; font-size: .88rem; }
+  .links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
+  .links a { font-size: .85rem; text-decoration: none; color: #e8eaee;
+    border: 1px solid #303643; border-radius: 6px; padding: .35rem .7rem; }
+  .links a:hover { border-color: #5a6373; }
+  .note { color: #9aa0ad; font-size: .9rem; border-top: 1px solid #262b36;
+    margin-top: 2rem; padding-top: 1rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>四種版面</h1>
+  <p class="sub">結構不一樣，不只是換顏色。四種都可以再套四種風格，網址後面加 <code>?vibe=</code> 就換。</p>
+
+  <div class="row">
+    <h2>堆疊 <code>stack.html</code></h2>
+    <p>吸頂導覽、靠左首屏、區塊上下堆疊。最通用，內容多也撐得住，不會出錯。</p>
+    <p class="who">給誰：內容量中等到大的人，接案、顧問、求職。判斷不出來就用這個。</p>
+    <div class="links">
+      <a href="stack.html?vibe=calm">克制</a><a href="stack.html?vibe=bold">明確</a>
+      <a href="stack.html?vibe=gallery">作品優先</a><a href="stack.html?vibe=grand">大氣</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>左右分屏 <code>split.html</code></h2>
+    <p>首屏左字右動效，內容區左邊是黏著的區塊標題、右邊捲動。雜誌感最強。</p>
+    <p class="who">給誰：內容量中等、想要一點設計感的人。區塊超過六個就改用堆疊。</p>
+    <div class="links">
+      <a href="split.html?vibe=calm">克制</a><a href="split.html?vibe=bold">明確</a>
+      <a href="split.html?vibe=gallery">作品優先</a><a href="split.html?vibe=grand">大氣</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>編號索引 <code>editorial.html</code></h2>
+    <p>每個區塊掛一個大編號，服務用條列不用卡片。字級對比拉到最大，像一本年鑑的目錄。</p>
+    <p class="who">給誰：<strong>內容少的人用這個最划算</strong>，因為它靠結構撐場面，不靠字數。</p>
+    <div class="links">
+      <a href="editorial.html?vibe=calm">克制</a><a href="editorial.html?vibe=bold">明確</a>
+      <a href="editorial.html?vibe=gallery">作品優先</a><a href="editorial.html?vibe=grand">大氣</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <h2>滿版出血 <code>bleed.html</code></h2>
+    <p>首屏滿版、作品一張一列鋪滿寬度，文字疊在圖上。</p>
+    <p class="who">給誰：<strong>手上有好圖的人</strong>，攝影、設計、影像。沒有圖不要選，
+      空的滿版區塊比小圖更難看。這個版面的示範圖刻意留空，所以連結開起來會是破圖，
+      那是提醒你先準備圖。</p>
+    <div class="links">
+      <a href="bleed.html?vibe=gallery">作品優先</a><a href="bleed.html?vibe=grand">大氣</a>
+      <a href="bleed.html?vibe=bold">明確</a>
+    </div>
+  </div>
+
+  <p class="note">挑好之後：把那一份複製成 <code>site/index.html</code>，
+  連同 <code>tokens.css</code>、<code>base.css</code> 一起，
+  再把 <code>hero/</code> 裡選的動效複製成 <code>site/hero.js</code>。
+  首屏動效另外有一頁可以比較，在 <a href="../hero/preview.html" style="color:#ffd23f">hero/preview.html</a>。</p>
+</main>
+</body>
+</html>

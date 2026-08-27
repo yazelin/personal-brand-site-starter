@@ -5,23 +5,39 @@ description: 依照 spec 生出一頁式網站，包含會流動的首屏
 
 # 階段三：建站
 
-## 先做這件事
+## 先挑版面
+
+`templates/` 裡有四種版面，**結構不一樣，不只是換顏色**。
+開 `templates/preview.html` 可以一次看到四種，每一種都寫了適合誰。
+
+| 版面 | 檔案 | 給誰 |
+|---|---|---|
+| 堆疊 | `stack.html` | 內容量中等到大。判斷不出來就用這個 |
+| 左右分屏 | `split.html` | 內容量中等、想要一點設計感。區塊超過六個就改用堆疊 |
+| 編號索引 | `editorial.html` | **內容少的人用這個最划算**，它靠結構撐場面不靠字數 |
+| 滿版出血 | `bleed.html` | **手上有好圖的人**。沒有圖不要選 |
+
+版面決定於**內容有多少**與**有沒有圖**，不是決定於好不好看。
+訪談的時候他能講出來的東西有多少，這裡就會知道。
+
+挑好之後開工：
 
 ```bash
 mkdir -p site
-cp templates/index.html templates/tokens.css site/
-cp hero/<你選的那一支>.js site/hero.js
+cp templates/<挑的版面>.html site/index.html
+cp templates/tokens.css templates/base.css site/
+cp hero/<挑的動效>.js site/hero.js
 ```
 
 不要直接改 `templates/`。使用者之後想重來一次，模板要是乾淨的。
 
 ## 模板是骨架，不是成品
 
-`templates/index.html` 裡面填的是示範內容，有一個叫李默的虛構人物。
+每一份版面裡填的都是示範內容，有一個叫李默的虛構人物。
 那些字全部都要換掉。頁首那一行 `<meta name="x-demo-content" content="yes">`
 換完之後刪掉，`tools/check.mjs` 看到那一行就直接判不通過。
 
-**區塊可以刪。** 模板有七個區塊：首屏、我是誰、可以找我做什麼、做過的事、
+**區塊可以刪。** 模板大致有這些區塊：首屏、我是誰、可以找我做什麼、做過的事、
 常見問題、行動呼籲、頁尾。使用者沒東西可以填的區塊就整塊刪掉，
 不要留一個只有兩行字的區塊在那裡。求職的人通常不需要「可以找我做什麼」，
 名片型的人只需要首屏加頁尾。
@@ -42,7 +58,8 @@ cp hero/<你選的那一支>.js site/hero.js
 
 **四組都只是起點。** 使用者有自己的品牌色就覆蓋 `--accent`；
 字太大就調 `--step-4`；留白不夠就加 `--space-6`。
-所有調整都在 `tokens.css` 做，不要跑去改 `index.html` 裡的樣式。
+顏色、字級、間距這些都在 `tokens.css` 改。版面本身的樣式在各份 `.html` 自己的
+`<style>` 裡，共用的元件在 `base.css`。**不要為了改一個顏色去動 `base.css`。**
 
 ## 首屏動效
 

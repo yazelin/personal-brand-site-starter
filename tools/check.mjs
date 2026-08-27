@@ -13,8 +13,24 @@ if (!existsSync(file)) {
   console.error('用法：node tools/check.mjs site/index.html');
   process.exit(1);
 }
-const html = readFileSync(file, 'utf8');
+const raw = readFileSync(file, 'utf8');
+// 註解裡常常放「要換成這樣」的範例，那些不是真的標籤，掃描前先拿掉
+const html = raw.replace(/<!--[\s\S]*?-->/g, '');
 const dir = dirname(file);
+
+// 連進來的本機 CSS 也要一起看，共用樣式放在 base.css 而不是行內 <style>
+const linkedCss = [...html.matchAll(/<link[^>]+rel=["']stylesheet["'][^>]+href=["']([^"']+)["']/gi)]
+  .map(m => m[1])
+  .filter(h => !/^(https?:|\/\/)/i.test(h))
+  .map(h => join(dir, h.split('?')[0]))
+  .filter(existsSync)
+  .map(p => readFileSync(p, 'utf8'))
+  .join('\n');
+const allCss = html + '\n' + linkedCss;
+
+// 標籤層級的檢查要看的是版面本身，不是 <script> 與 <style> 的內容。
+// 沒有拿掉的話，JS 註解裡提到的 <img> 會被當成真的圖片標籤
+const markup = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '');
 
 const errors = [];
 const warns = [];
@@ -49,29 +65,44 @@ if (!has(/property=["']og:image["']/i)) warn('少了 og:image，社群預覽卡�
 if (!has(/rel=["']canonical["']/i)) warn('少了 canonical');
 if (!has(/rel=["'][^"']*icon/i)) warn('少了 favicon，分頁上會是一張白紙');
 
-// 三、結構
-const h1 = html.match(/<h1[\s>]/gi) || [];
+// 三、簡體字混進正體中文的頁面
+// 用非 Claude 的模型跑這個流程時實測會發生：模型自己吐出「根据」「必须」這種字，
+// 使用者看不出來，網站就這樣上線了。字表只收「簡體才有」的字，
+// 台、准、后 這種正體也在用的不能放進來，會誤判
+var SIMPLIFIED = /[这么们个来对说时会没经过还种样发点当电脑网页图书专业务实验证据历确级别标资软条获艺国与东车长门问间马鸟鱼龙见贝风飞齐亚儿广义华备复够关观规汉号欢环极计记讲认让设谁数谈团万为无习应银优员圆远运张织众]/g;
+var lang = (attr(/<html[^>]*\slang=["']([^"']+)["']/i) || '').toLowerCase();
+if (/^zh(-hant|-tw|-hk|-mo)?$/.test(lang) && !/hans|cn/.test(lang)) {
+  var hits = [...new Set(markup.match(SIMPLIFIED) || [])];
+  if (hits.length) fail(`頁面標了 lang="${lang}" 卻出現簡體字：${hits.join(' ')}`);
+}
+
+// 四、結構
+const h1 = markup.match(/<h1[\s>]/gi) || [];
 if (h1.length === 0) fail('整頁沒有 <h1>');
 else if (h1.length > 1) fail(`有 ${h1.length} 個 <h1>，一頁只能有一個`);
 
-// 四、圖片
-for (const tag of html.match(/<img\b[^>]*>/gi) || []) {
+// 五、圖片
+for (const tag of markup.match(/<img\b[^>]*>/gi) || []) {
   if (!/\salt=/i.test(tag)) fail(`有 <img> 沒寫 alt：${tag.slice(0, 70)}`);
   if (!/\swidth=/i.test(tag) || !/\sheight=/i.test(tag))
     warn(`有 <img> 沒寫 width/height，載入時版面會跳：${tag.slice(0, 70)}`);
+  // 選了要圖的版面卻沒放圖，是這條線最常見的翻車方式。本機路徑就直接檢查檔案在不在
+  var src = (tag.match(/\ssrc=["']([^"']+)["']/i) || [])[1];
+  if (src && !/^(https?:|data:|\/\/)/i.test(src) && !existsSync(join(dir, src.split('?')[0])))
+    fail(`<img> 指到 ${src}，但那個檔案不存在`);
 }
 
-// 五、外連安全
-for (const tag of html.match(/<a\b[^>]*target=["']_blank["'][^>]*>/gi) || [])
+// 六、外連安全
+for (const tag of markup.match(/<a\b[^>]*target=["']_blank["'][^>]*>/gi) || [])
   if (!/rel=["'][^"']*noopener/i.test(tag)) fail(`target="_blank" 少了 rel="noopener"：${tag.slice(0, 70)}`);
 
-// 六、有沒有叫人做事
-const ctas = html.match(/href=["'](mailto:|tel:|https?:)[^"']*["']/gi) || [];
+// 七、有沒有叫人做事
+const ctas = markup.match(/href=["'](mailto:|tel:|https?:)[^"']*["']/gi) || [];
 if (ctas.length === 0) fail('整頁沒有任何一個可以聯絡或購買的連結，這個網站沒有出口');
 
-// 七、首屏動效
+// 八、首屏動效
 const heroSrc = attr(/<script[^>]+src=["']([^"']*hero[^"']*\.js)["']/i);
-if (!has(/<canvas/i)) warn('首屏沒有 <canvas>，如果本來就不打算做動效可以忽略');
+if (!/<canvas/i.test(markup)) warn('首屏沒有 <canvas>，如果本來就不打算做動效可以忽略');
 else if (!heroSrc) fail('有 <canvas> 但沒有載入 hero.js');
 else {
   const p = join(dir, heroSrc);
@@ -84,9 +115,9 @@ else {
       warn(`${heroSrc} 沒有在分頁切走時停掉迴圈，會在背景一直燒電`);
   }
 }
-if (!/prefers-reduced-motion/.test(html)) warn('CSS 裡沒有 prefers-reduced-motion 的處理');
+if (!/prefers-reduced-motion/.test(allCss)) warn('CSS 裡沒有 prefers-reduced-motion 的處理');
 
-// 八、預覽用的東西要刪掉
+// 九、預覽用的東西要刪掉
 if (has(/URLSearchParams\(location\.search\)\.get\(['"]vibe['"]\)/))
   fail('還留著預覽用的 ?vibe 切換程式，上線前要刪掉');
 
