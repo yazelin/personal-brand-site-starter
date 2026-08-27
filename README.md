@@ -35,6 +35,16 @@ cd personal-brand-site-starter
 
 然後叫你的 AI 讀 `AGENTS.md`。
 
+### 用 Claude Code 的話可以裝成 skill
+
+```bash
+git clone https://github.com/yazelin/personal-brand-site-starter ~/personal-brand-site-starter
+ln -s ~/personal-brand-site-starter ~/.claude/skills/brand-site
+```
+
+之後在任何專案裡打 `/brand-site` 就會叫出來，不用每次貼網址。
+兩種用法讀的是同一份 `AGENTS.md`，不會分岔。
+
 ## 四個階段
 
 | 階段 | 做什麼 | 產出 |
@@ -102,6 +112,7 @@ node tools/check.mjs site/index.html
 ## repo 長什麼樣
 
 ```
+SKILL.md               裝成 Claude Code skill 用的入口
 AGENTS.md              總控，AI 從這裡開始讀
 skills/                四個階段各一份作業指引
 templates/             四種版面骨架，preview.html 可以一次比較
