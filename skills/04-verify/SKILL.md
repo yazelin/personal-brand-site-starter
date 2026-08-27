@@ -34,7 +34,10 @@ node tools/check.mjs site/index.html
 
 ## 想要更嚴的檢查
 
-這幾支可以另外裝，都不是這個 repo 的一部分：
+完整清單在 `docs/external-skills.md`。**都是選配，使用者自己裝好了你才用得到，
+不要替他安裝。** 他沒裝就照上面的做完，在交付那段提一句「想要更嚴的檢查可以另外裝」。
+
+最常派上用場的三個：
 
 - [marketing-page-checker](https://github.com/yazelin/marketing-page-checker) 行銷頁健檢，看轉換路徑有沒有斷。
 - [landing-page-checker](https://github.com/jonathanposovatz/landing-page-checker) 十個類別的 CRO 稽核。

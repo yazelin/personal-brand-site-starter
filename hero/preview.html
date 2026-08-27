@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>首屏動效四選一</title>
+<title>首屏動效五選一</title>
 <style>
   body { margin: 0; background: #101215; color: #e8eaee; font-size: 15px;
     font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif; }
@@ -23,8 +23,8 @@
 </head>
 <body>
 <header>
-  <h1>首屏動效四選一</h1>
-  <p>四種都是零依賴的單一檔案。挑一種，把那支複製成網站目錄底下的 hero.js。</p>
+  <h1>首屏動效五選一</h1>
+  <p>五種都是單一檔案。挑一種，把那支複製成網站目錄底下的 hero.js。前四種零依賴且改得動，第五種是移植過來的流體求解器，只調參數。</p>
 </header>
 
 <div class="grid">
@@ -43,18 +43,25 @@
   <figure><div class="stage"><canvas data-fx="geoDrift" aria-hidden="true"></canvas></div>
     <figcaption><b>幾何緩動 <code>geo-drift.js</code></b>
     <span>幾個大型線稿圖形極慢地漂移旋轉。像一張會呼吸的海報，適合作品優先的版面。</span></figcaption></figure>
+  <figure><div class="stage"><canvas data-fx="fluidInk" aria-hidden="true"></canvas></div>
+    <figcaption><b>流體墨彩 <code>fluid-ink.js</code></b>
+    <span>游標經過會攪動，點一下會潑灑，沒人動的時候自己流。最有存在感，也最重，
+    是唯一一支不建議去讀內容的。移植自 Pavel Dobryakov 的 WebGL-Fluid-Simulation，MIT。</span></figcaption></figure>
+
 </div>
 
 <script src="flow-gradient.js"></script>
 <script src="particle-field.js"></script>
 <script src="noise-lines.js"></script>
 <script src="geo-drift.js"></script>
+<script src="fluid-ink.js"></script>
 <script>
   var conf = {
     flowGradient: { colors: ['#4f46e5', '#0ea5e9', '#ec4899'], background: '#0b0d12', blur: 40, scale: 8 },
     particleField: { color: '#8b93a7' },
     noiseLines: { color: '#e6e8ee', lines: 22, amp: 34, spread: 0.8 },
-    geoDrift: { color: '#c9a227', shapes: 7 }
+    geoDrift: { color: '#c9a227', shapes: 7 },
+    fluidInk: { colors: ['#4f46e5', '#0ea5e9', '#ec4899'], intensity: 1 }
   };
   document.querySelectorAll('canvas[data-fx]').forEach(function (c) {
     var fx = c.dataset.fx;
