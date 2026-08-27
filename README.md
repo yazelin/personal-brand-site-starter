@@ -121,7 +121,7 @@ templates/base.css     四種版面共用的元件樣式
 hero/                  四種首屏動效，外加一頁可以一次比較的預覽
 tools/check.mjs        上線前的機器檢查，零依賴
 spec/site.example.yaml 訪談產出長什麼樣
-docs/                  部署、參考站、屬於你的概念、圖片、更兇的特效、第三方 skills
+docs/                  部署、參考站、概念、中文排版手法、圖片、特效、第三方 skills
 ```
 
 ## 參考哪些站

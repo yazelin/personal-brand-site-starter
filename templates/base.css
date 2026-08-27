@@ -9,11 +9,13 @@
   }
   body {
     margin: 0; background: var(--bg); color: var(--fg);
-    font-family: var(--font-sans); font-size: var(--step-0); line-height: 1.75;
+    font-family: var(--font-sans); font-size: var(--step-0); line-height: 1.85;
     -webkit-font-smoothing: antialiased; text-wrap: pretty;
   }
   h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; text-wrap: balance;
-    letter-spacing: -0.01em; margin: 0 0 var(--space-2); font-weight: 600; }
+    /* 中文標題不要用負字距。那是英文排版的習慣，全形字本來就沒有側邊空間，
+       再收就會相碰 */
+    letter-spacing: 0; margin: 0 0 var(--space-2); font-weight: 600; }
   p { margin: 0 0 var(--space-3); }
   a { color: inherit; text-underline-offset: 0.25em; text-decoration-thickness: 1px; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
@@ -39,7 +41,9 @@
     color: var(--fg-muted); margin: 0 0 var(--space-2); }
 
   /* 區塊 */
-  section { padding-block: var(--space-6); }
+  /* 上下不等距。等距的垂直節奏是「看起來像模板」的來源之一，
+     上大下小也讓視線往下走 */
+  section { padding-block: var(--space-6) var(--space-5); }
   .sec-head { margin-bottom: var(--space-4); }
   .sec-head h2 { font-size: var(--step-2); }
   .sec-head p { color: var(--fg-muted); max-width: var(--maxw-text); margin: 0; }
