@@ -57,7 +57,9 @@ cd personal-brand-site-starter
 
 ## 四種會流動的首屏
 
-`hero/` 底下四支，各自獨立一個檔案，零依賴。開 `hero/preview.html` 一次看到四種在動。
+`hero/` 底下四支，各自獨立一個檔案，零依賴。
+[線上一次看到四種在動](https://yazelin.github.io/personal-brand-site-starter/hero/preview.html)，
+或是在本機開 `hero/preview.html`。
 
 - **流體漸層** 色塊疊加後模糊，緩慢流動。最省效能，也最搶眼。
 - **粒子場** 點漂移並連線，滑鼠經過會推開。技術感重。

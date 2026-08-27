@@ -65,6 +65,9 @@
   .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
   .hero .wrap { position: relative; padding-block: var(--space-6); }
   .hero h1 { font-size: var(--step-4); max-width: 18ch; margin-bottom: var(--space-3); }
+  /* 中文標題預設會從任何一個字中間斷開。把標題依語意切成幾段各包一個 span，
+     斷行就只會發生在段與段之間。窄螢幕上這一招最有效 */
+  h1 span, h2 span { display: inline-block; }
   .hero .lede { font-size: var(--step-1); color: var(--fg-muted); max-width: 34ch; }
   .eyebrow { font-size: var(--step-s); letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--fg-muted); margin: 0 0 var(--space-2); }
@@ -140,7 +143,7 @@
     <canvas aria-hidden="true"></canvas>
     <div class="wrap">
       <p class="eyebrow">產品設計 · 接案中</p>
-      <h1>把複雜的流程做成人看得懂的介面</h1>
+      <h1><span>把複雜的流程</span><span>做成人看得懂的介面</span></h1>
       <p class="lede">十年做內部系統與工具類產品。專接一種案子：現有系統很難用，但是不能停下來重做。</p>
       <div class="actions">
         <a class="btn btn-primary" href="#contact">談談你的案子</a>
