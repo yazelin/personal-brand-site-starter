@@ -56,7 +56,7 @@ ln -s ~/personal-brand-site-starter ~/.claude/skills/brand-site
 
 每個階段結束會停下來給你看，不會一路做到底再一次丟給你。
 
-## 四種版面
+## 五種版面
 
 **結構不一樣，不只是換顏色。** [線上一次比較](https://yazelin.github.io/personal-brand-site-starter/templates/preview.html)。
 
@@ -65,7 +65,11 @@ ln -s ~/personal-brand-site-starter ~/.claude/skills/brand-site
 - **編號索引** 每個區塊掛一個大編號，字級對比拉到最大。內容少的人用這個最划算。
 - **滿版出血** 圖片鋪滿寬度，文字疊在上面。手上有好圖的人才選。
 
-版面決定於內容有多少、有沒有圖，不是決定於好不好看。四種版面各自可以再套四種風格。
+還有第五種**工控面板**，是「概念驅動」的示範：黑黃警示斜紋、粗框、直排側標、工單編號。
+它跟同樣內容的中性版對打，三個視覺模型投它五比零。它不是給所有人用的版面，
+是拿來看「一個概念怎麼變成版面」。
+
+版面決定於內容有多少、有沒有圖，不是決定於好不好看。前四種各自可以再套四種風格。
 
 ## 四種風格
 
@@ -115,7 +119,7 @@ node tools/check.mjs site/index.html
 SKILL.md               裝成 Claude Code skill 用的入口
 AGENTS.md              總控，AI 從這裡開始讀
 skills/                四個階段各一份作業指引
-templates/             四種版面骨架，preview.html 可以一次比較
+templates/             五種版面骨架，preview.html 可以一次比較
 templates/tokens.css   顏色、字級、間距的變數，改這裡就換掉整站氣質
 templates/base.css     四種版面共用的元件樣式
 hero/                  四種首屏動效，外加一頁可以一次比較的預覽

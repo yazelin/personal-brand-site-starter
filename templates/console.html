@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="bold">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- 這一行代表整份檔案還是示範內容。內容換成使用者自己的之後，把這一行刪掉。
+     tools/check.mjs 看到這一行就會直接判定不通過。 -->
+<meta name="x-demo-content" content="yes">
+
+<title>李默 — 把複雜的流程做成人看得懂的介面</title>
+<meta name="description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<link rel="canonical" href="https://example.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="李默 — 把複雜的流程做成人看得懂的介面">
+<meta property="og:description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▲</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* ── 版面：工控面板 ──
+     概念是工廠的控制台與警示標籤：黑黃斜紋、粗框、不模糊的位移陰影、
+     直排的側標、工單編號。給製造業、自動化、工業軟體那一行的人。
+     這是「概念驅動」的示範版面，換一個行業就要換一個概念，不要照抄。
+     做法在 docs/concept.md。 */
+  :root { --ink: #0b0d12; --signal: #ffd23f; --plate: #14171f; }
+
+  body { background: var(--ink); }
+
+  /* 警示斜紋。角度與間距固定，不要做成漸層動畫，那會變成裝飾 */
+  .hazard { height: 14px; background: repeating-linear-gradient(
+      45deg, var(--signal) 0 14px, var(--ink) 14px 28px); }
+
+  .topbar { display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-2) var(--space-3); border-bottom: 2px solid var(--signal);
+    font-size: var(--step-s); letter-spacing: 0.06em; }
+  .topbar strong { color: var(--signal); }
+  .topbar .id { margin-left: auto; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums; }
+
+  .hero { position: relative; overflow: hidden; min-height: min(84svh, 44rem);
+    display: grid; grid-template-columns: 3.2rem 1fr; align-items: stretch; }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%;
+    display: block; opacity: 0.5; }
+
+  /* 直排側標。中文限定的手法，英文模板做不出來 */
+  .rail { position: relative; border-right: 2px solid var(--signal);
+    display: grid; place-items: center; }
+  .rail span { writing-mode: vertical-rl; letter-spacing: 0.42em;
+    font-size: var(--step-s); color: var(--signal); }
+
+  .panel { position: relative; display: grid; align-content: center;
+    gap: var(--space-3); padding: var(--space-5) var(--space-4); }
+  .tag { justify-self: start; background: var(--signal); color: var(--ink);
+    font-size: var(--step-s); font-weight: 600; letter-spacing: 0.08em;
+    padding: 0.35em 0.8em; transform: rotate(-1.4deg); }
+  .hero h1 { font-size: var(--step-4); font-weight: 700; max-width: 16ch; margin: 0; }
+  h1 span, h2 span { display: inline-block; }
+  .hero .lede { font-size: var(--step-1); color: var(--fg-muted); max-width: 32ch; margin: 0; }
+
+  /* 檔期做成儀表上的一格讀數 */
+  .readout { border: 2px solid var(--signal); border-left-width: 10px;
+    padding: var(--space-2) var(--space-3); justify-self: start;
+    box-shadow: 8px 8px 0 rgba(255,210,63,.18); background: var(--plate); }
+  .readout b { display: block; font-size: 0.76em; letter-spacing: 0.14em;
+    color: var(--fg-muted); font-weight: 500; }
+  .readout span { font-size: var(--step-1); color: var(--signal); }
+
+  /* 實體按鈕：粗框加不模糊的位移陰影，按下去會位移 */
+  .btn { border: 2px solid var(--signal); border-radius: 0; font-weight: 600;
+    box-shadow: 6px 6px 0 var(--signal); transition: transform .1s, box-shadow .1s; }
+  .btn:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--signal); }
+  .btn:active { transform: translate(6px, 6px); box-shadow: none; }
+  .btn-primary { background: var(--signal); color: var(--ink); }
+  .btn-ghost { background: transparent; color: var(--signal); }
+
+  section { padding-block: var(--space-6) var(--space-5); }
+  section + section { border-top: 2px solid var(--line); }
+  .sec-head h2 { display: inline-block; border-bottom: 4px solid var(--signal);
+    padding-bottom: 4px; }
+  .card { border: 2px solid var(--line); border-radius: 0; }
+  .close { background: var(--plate); text-align: center; }
+  .close h2 { font-size: var(--step-3); }
+  .close p { color: var(--fg-muted); margin-inline: auto; max-width: 34ch; }
+  .close .actions { justify-content: center; }
+
+  @media (max-width: 46rem) {
+    .hero { grid-template-columns: 2.4rem 1fr; }
+    .rail span { letter-spacing: 0.3em; }
+    .panel { padding: var(--space-4) var(--space-3); }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+<div class="hazard" aria-hidden="true"></div>
+
+<header class="topbar">
+  <strong>李默</strong>
+  <span>產品設計</span>
+  <span class="id">NO. 2026-0147</span>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="rail"><span>接案中</span></div>
+    <canvas aria-hidden="true"></canvas>
+    <div class="panel">
+      <p class="tag">十年 · 內部系統與工具</p>
+      <h1><span>把複雜的流程</span><span>做成人看得懂的介面</span></h1>
+      <p class="lede">專接一種案子：現有系統很難用，但是不能停下來重做。</p>
+      <div class="readout">
+        <b>檔期</b><span>接十一月之後的案子</span>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="#contact">談談你的案子</a>
+        <a class="btn btn-ghost" href="#work">先看作品</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><h2>我是誰</h2></div>
+      <div class="prose">
+        <p>我在製造業與物流業待過十年，多數時間在處理同一個問題：一套系統當初是照流程圖做的，
+        用久了流程變了，介面沒變，於是每個部門都長出自己的一張表格繞過它。</p>
+        <p>我的做法是先去看那些表格。表格會誠實地告訴你系統少了什麼。</p>
+      </div>
+      <ul class="facts">
+        <li><b>擅長</b><span>內部系統改版、後台介面、報表與流程工具</span></li>
+        <li><b>不接</b><span>純視覺稿、活動網頁、需要我掛名但不參與決策的案子</span></li>
+        <li><b>合作方式</b><span>遠端為主，每兩週一次現場，一次只接一件</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head"><h2>做過的事</h2></div>
+      <ul class="work">
+        <li>
+          <h3>物流排車系統改版</h3>
+          <p class="meta">2025 · 負責流程設計與介面 · 工程由客戶團隊執行</p>
+          <p>排車員的判斷靠經驗，講不出規則。我跟著跑了六趟車，把他們口中的
+          「這條線不能給新人」翻譯成三個可以寫進系統的條件。新人上手時間從六週縮到十天。</p>
+        </li>
+        <li>
+          <h3>工廠報工介面</h3>
+          <p class="meta">2024 · 負責全部設計 · 與兩位工程師協作</p>
+          <p>原本要點七次才能報完一筆，現場戴手套。改成一個畫面兩顆大按鈕，
+          代價是後台要多存一份原始資料。這個取捨是我提的，也是我去跟財務解釋的。</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="close" id="contact">
+    <div class="wrap">
+      <h2><span>先講你的狀況</span><span>就好</span></h2>
+      <p>不用先想好要做什麼。寫一段現在哪裡卡住，我看得懂的話會回你，看不懂會問你。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:hello@example.com">寄信給我</a>
+        <a class="btn btn-ghost" href="https://example.com" rel="noopener">看我的其他文章</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="hazard" aria-hidden="true"></div>
+<footer>
+  <div class="wrap">
+    <span>© 2026 李默</span>
+    <ul>
+      <li><a href="mailto:hello@example.com">Email</a></li>
+      <li><a href="https://example.com" rel="me noopener">LinkedIn</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  var v = new URLSearchParams(location.search).get('vibe');
+  if (v) document.documentElement.dataset.vibe = v;
+</script>
+<script src="hero.js"></script>
+<script>
+  // 這個版面的動效要退到很後面，斜紋與粗框已經很吵了
+  var HERO = { fx: 'noiseLines', opts: { lines: 18, amp: 30, spread: 0.9 } };
+  (function () {
+    var canvas = document.querySelector('.hero canvas');
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
+    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
+    fx(canvas, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
+  })();
+</script>
+</body>
+</html>
