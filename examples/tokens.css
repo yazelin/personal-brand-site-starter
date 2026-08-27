@@ -1,0 +1,86 @@
+/* 設計變數。整站的氣質由這個檔案決定，改這裡不要去改 index.html 裡的樣式。
+   三種風格用 <html data-vibe="calm|bold|gallery"> 切換，對應訪談的三個方向。 */
+
+:root {
+  --font-sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", -apple-system,
+               BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-display: var(--font-sans);
+
+  /* 字級用 clamp 做流動縮放，手機到桌機不需要另外寫斷點 */
+  --step-s:  clamp(0.82rem, 0.79rem + 0.15vw, 0.9rem);
+  --step-0:  clamp(1rem,    0.96rem + 0.2vw,  1.09rem);
+  --step-1:  clamp(1.2rem,  1.12rem + 0.4vw,  1.45rem);
+  --step-2:  clamp(1.5rem,  1.33rem + 0.85vw, 2.05rem);
+  --step-3:  clamp(1.95rem, 1.6rem  + 1.7vw,  3rem);
+  --step-4:  clamp(2.5rem,  1.85rem + 3.2vw,  4.6rem);
+
+  --space-1: 0.5rem;  --space-2: 0.85rem; --space-3: 1.4rem;
+  --space-4: 2.2rem;  --space-5: 3.4rem;  --space-6: 5.5rem;
+  --space-7: 8rem;
+
+  --maxw: 68rem;
+  --maxw-text: 38rem;     /* 內文欄寬，超過這個寬度眼睛會抓不到下一行 */
+  --radius: 10px;
+  --border: 1px solid var(--line);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* 克制：淺底、細字、大量留白、幾乎不用顏色。求職、顧問、專業服務 */
+:root, [data-vibe="calm"] {
+  --bg: #fbfbfa;        --bg-soft: #f2f2f0;
+  --fg: #17181b;        --fg-muted: #6b6d75;
+  --line: #e2e2df;
+  --accent: #1f4a3f;    --accent-fg: #ffffff;
+  --hero-ink: #9aa0ac;  /* 首屏動效的顏色 */
+  --hero-bg: #f5f5f3;
+}
+
+/* 明確：深底、大字、一個強調色。賣東西、接案 */
+[data-vibe="bold"] {
+  --bg: #0b0d12;        --bg-soft: #14171f;
+  --fg: #f2f4f8;        --fg-muted: #9aa0ad;
+  --line: #262b36;
+  --accent: #ffd23f;    --accent-fg: #0b0d12;
+  --hero-ink: #4f46e5;
+  --hero-bg: #0b0d12;
+  --font-display: var(--font-sans);
+}
+
+/* 作品優先：介面退到最淡，圖片自己說話。設計、攝影、影像 */
+[data-vibe="gallery"] {
+  --bg: #0f0f0f;        --bg-soft: #171717;
+  --fg: #ededed;        --fg-muted: #8c8c8c;
+  --line: #262626;
+  --accent: #ededed;    --accent-fg: #0f0f0f;
+  --hero-ink: #6f6f6f;
+  --hero-bg: #0f0f0f;
+}
+
+/* 使用者的系統設定是淺色時，克制風格保持淺色，另外兩種本來就是深色版面 */
+@media (prefers-color-scheme: light) {
+  [data-vibe="gallery"] { --bg: #fafafa; --bg-soft: #f0f0f0; --fg: #141414;
+    --fg-muted: #6e6e6e; --line: #e3e3e3; --accent: #141414; --accent-fg: #fafafa;
+    --hero-ink: #b5b5b5; --hero-bg: #fafafa; }
+}
+
+/* 大氣：墨底、襯線大標、金屬色、超大留白，動效放到極慢。
+   適合顧問、講者、專業服務，或是想要沉穩恢弘那一路的人。
+   襯線標題在沒有 Noto Serif TC 的機器上會退回系統襯線體。想要穩定的話，
+   在 index.html 的 <head> 加這一行（會多一個外部請求）：
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&display=swap"> */
+[data-vibe="grand"] {
+  --bg: #0a0a0c;        --bg-soft: #101014;
+  --fg: #f5f3ee;        --fg-muted: #96918a;
+  --line: #23231f;
+  --accent: #c9a227;    --accent-fg: #0a0a0c;
+  --hero-ink: #c9a227;
+  --hero-bg: #0a0a0c;
+  --font-display: "Noto Serif TC", "Source Han Serif TC", "Songti TC",
+                  Georgia, "Times New Roman", serif;
+  --step-4: clamp(2.7rem, 1.9rem + 4vw, 5.4rem);
+  --step-3: clamp(2.1rem, 1.7rem + 2vw, 3.4rem);
+  --space-6: 7rem;
+  --space-7: 10rem;
+  --maxw: 74rem;
+  --radius: 2px;        /* 大氣的版面不用圓角 */
+}

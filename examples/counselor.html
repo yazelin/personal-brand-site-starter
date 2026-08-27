@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="calm">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>許亦晴 — 先把事情講出來，再決定要不要處理</title>
+<meta name="description" content="執業九年。多數人來的時候並不知道自己要什麼，那很正常，我們可以從那裡開始。">
+<link rel="canonical" href="https://counselor.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="許亦晴 — 先把事情講出來，再決定要不要處理">
+<meta property="og:description" content="執業九年。多數人來的時候並不知道自己要什麼，那很正常，我們可以從那裡開始。">
+<meta property="og:url" content="https://counselor.example.tw/">
+<meta property="og:image" content="https://counselor.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▤</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 概念：會談紀錄單。整頁是一張放大的紀錄單，「處理」那一欄永遠留白，
+     只給一條虛線與一個游標——那個空欄就是她說的「從那裡開始」。 */
+  :root { --paper: #faf8f3; --rule: #d9d4c7; --ink2: #1c1b18; --stamp: #7a6a52; }
+  body { background: var(--paper); color: var(--ink2); }
+  .hero { position: relative; min-height: min(90svh, 46rem); display: grid; align-content: center;
+    padding: var(--space-6) var(--space-3);
+    background-image: linear-gradient(var(--rule) 1px, transparent 1px);
+    background-size: 100% 2.4rem; }
+  .form { max-width: var(--maxw); margin-inline: auto; width: 100%;
+    border: 2px solid var(--ink2); background: var(--paper); }
+  .form__head { display: flex; gap: var(--space-3); align-items: baseline;
+    border-bottom: 2px solid var(--ink2); padding: var(--space-2) var(--space-3);
+    font-size: var(--step-s); letter-spacing: 0.1em; }
+  .form__head .no { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--fg-muted); }
+  .row { display: grid; grid-template-columns: 6.5rem 1fr; border-bottom: 1px solid var(--rule); }
+  .row > b { font-weight: 500; font-size: var(--step-s); letter-spacing: 0.14em;
+    color: var(--fg-muted); padding: var(--space-3) var(--space-2);
+    border-right: 1px solid var(--rule); }
+  .row > div { padding: var(--space-3); }
+  .row h1 { font-size: var(--step-3); margin: 0; }
+  h1 span, h2 span { display: inline-block; }
+  .row .lede { margin: 0; color: var(--fg-muted); max-width: 40ch; }
+  /* 「處理」欄刻意留白 */
+  .blank { min-height: 5.5rem; border-bottom: 1px dashed var(--rule); position: relative; }
+  .blank::after { content: ''; position: absolute; left: 0; bottom: 8px; width: 2px; height: 1.1em;
+    background: var(--ink2); animation: blink 1.15s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .blank::after { animation: none; } }
+  /* 旋轉的圓框印章 */
+  .stamp { position: absolute; right: var(--space-4); bottom: var(--space-5);
+    width: 6.6rem; height: 6.6rem; border: 2px solid var(--stamp); border-radius: 50%;
+    display: grid; place-items: center; text-align: center; color: var(--stamp);
+    font-size: 0.72rem; letter-spacing: 0.12em; transform: rotate(-9deg); opacity: .75; }
+
+  section { padding-block: var(--space-6) var(--space-5); }
+  section + section { border-top: 1px solid var(--rule); }
+  .work li { border-bottom: 1px solid var(--rule); }
+  .work { counter-reset: sess; }
+  .work h3::before { counter-increment: sess; content: '第 ' counter(sess) ' 次會談 · ';
+    color: var(--fg-muted); font-size: 0.8em; letter-spacing: 0.06em; }
+  .close { text-align: center; }
+</style>
+</head>
+<body class="record">
+<a class="skip" href="#main">跳到主要內容</a>
+<main id="main">
+  <section class="hero">
+    <div class="form">
+      <div class="form__head"><b>會談紀錄</b><span>許亦晴 諮商心理師</span>
+        <span class="no">NO. 0001</span></div>
+      <div class="row"><b>主訴</b><div><h1><span>先把事情講出來，</span><span>再決定要不要處理</span></h1></div></div>
+      <div class="row"><b>說明</b><div><p class="lede">執業九年。多數人來的時候並不知道自己要什麼，那很正常，我們可以從那裡開始。</p></div></div>
+      <div class="row"><b>處理</b><div><div class="blank"></div></div></div>
+      <div class="row"><b>候補</b><div><p class="lede">目前候補約三週</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="mailto:hsu@example.tw">預約初談</a>
+          <a class="btn btn-ghost" href="#work">先了解流程</a>
+        </div></div></div>
+    </div>
+    <div class="stamp">尚未<br>填寫</div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><h2>我是誰</h2></div>
+      <div class="prose"><p>執業九年。多數人來的時候並不知道自己要什麼，那很正常，我們可以從那裡開始。</p></div>
+      <ul class="facts">
+        <li><b>主要議題</b><span>職場壓力、關係、情緒調節</span></li>
+        <li><b>形式</b><span>個別諮商五十分鐘，可線上</span></li>
+        <li><b>費用</b><span>初談與後續同價，公開在下方</span></li>
+        <li><b>地點</b><span>台北，捷運站步行五分鐘</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head"><h2>做過的事</h2></div>
+      <ul class="work">
+        <li>
+          <h3>初次晤談會發生什麼</h3>
+          <p class="meta">五十分鐘 · 不需要事先準備</p>
+          <p>我會問你現在最想處理的是什麼。答不出來也可以，那本身就是資訊</p>
+        </li>
+        <li>
+          <h3>大概要談多久</h3>
+          <p class="meta">沒有標準答案</p>
+          <p>有人四次就夠，有人談兩年。第四次我們會一起回顧一次，決定要不要繼續</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="close" id="contact">
+    <div class="wrap">
+      <h2><span>預約初談</span></h2>
+      <p>執業九年。多數人來的時候並不知道自己要什麼，那很正常，我們可以從那裡開始。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:hsu@example.tw">預約初談</a>
+        <a class="btn btn-ghost" href="https://counselor.example.tw" rel="noopener">先了解流程</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 許亦晴</span>
+    <ul>
+      <li><a href="mailto:hsu@example.tw">Email</a></li>
+      <li><a href="https://counselor.example.tw" rel="me noopener">更多</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="hero.js"></script>
+<script>
+  var HERO = { fx: 'noiseLines', opts: { lines: 10, amp: 14 } };
+  (function () {
+    var c = document.querySelector('.hero canvas');
+    if (!c) return;
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
+    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
+    fx(c, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
+  })();
+</script>
+</body>
+</html>

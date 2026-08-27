@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="calm">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>周允中 — 讓工程師講的話，業務聽得懂</title>
+<meta name="description" content="八年在製造業與科技業做內訓。只教一件事：把你腦裡本來就有的東西，講到對方願意動。">
+<link rel="canonical" href="https://lecturer.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="周允中 — 讓工程師講的話，業務聽得懂">
+<meta property="og:description" content="八年在製造業與科技業做內訓。只教一件事：把你腦裡本來就有的東西，講到對方願意動。">
+<meta property="og:url" content="https://lecturer.example.tw/">
+<meta property="og:image" content="https://lecturer.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>◲</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 概念：工程圖說。每個區塊是一張圖紙，右下角是標題欄，
+     重點用引線接到直排的標註。他做的事就是替人補上那一層標註。 */
+  :root { --sheet2: #f4f6f8; --line2: #b9c4cf; --ink3: #14202b; --note: #1f6f8b; }
+  body { background: var(--sheet2); color: var(--ink3); }
+  main { max-width: 76rem; margin-inline: auto; padding: var(--space-3); }
+  .sheet { position: relative; border: 2px solid var(--ink3); background: var(--sheet2);
+    background-image:
+      linear-gradient(rgba(31,111,139,.10) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(31,111,139,.10) 1px, transparent 1px);
+    background-size: 22px 22px;
+    margin-bottom: var(--space-4); box-shadow: 10px 10px 0 rgba(20,32,43,.10); }
+  .sheet > .wrap { padding: var(--space-5) var(--space-4) 4.6rem; max-width: none; }
+  /* 右下角標題欄 */
+  .titleblock { position: absolute; right: 0; bottom: 0; display: grid;
+    grid-template-columns: repeat(3, minmax(6rem, auto)); border-top: 2px solid var(--ink3);
+    border-left: 2px solid var(--ink3); background: var(--sheet2); font-size: 0.72rem; }
+  .titleblock div { padding: 0.5em 0.9em; border-right: 1px solid var(--line2); }
+  .titleblock div:last-child { border-right: 0; }
+  .titleblock b { display: block; color: var(--fg-muted); font-weight: 500;
+    letter-spacing: 0.1em; font-size: 0.9em; }
+
+  .hero { min-height: min(78svh, 42rem); display: grid; align-content: center; }
+  .hero h1 { font-size: var(--step-3); margin-bottom: var(--space-3); }
+  h1 span, h2 span { display: inline-block; }
+  .hero .lede { color: var(--fg-muted); max-width: 34ch; }
+  /* 引線接到直排標註 */
+  .callout { position: absolute; right: 3.4rem; top: 3rem; padding-left: 1.2rem;
+    writing-mode: vertical-rl; letter-spacing: 0.24em; font-size: 0.74rem; color: var(--note);
+    border-left: 1px dashed var(--note); }
+  .dim { display: inline-block; border: 1px dashed var(--note); color: var(--note);
+    font-size: var(--step-s); padding: 0.25em 0.7em; margin-top: var(--space-3); }
+
+  section { padding-block: 0; }
+  section + section { border-top: none; }
+  .close { text-align: center; }
+  @media (max-width: 46rem) { .callout { display: none; }
+    .titleblock { position: static; grid-template-columns: 1fr 1fr; border-left: 0; } }
+</style>
+</head>
+<body class="drawing">
+<a class="skip" href="#main">跳到主要內容</a>
+<main id="main">
+  <section class="hero sheet">
+    <span class="callout">DWG · 周允中 · REV 08</span>
+    <div class="wrap">
+      <p class="eyebrow">簡報與溝通講師</p>
+      <h1><span>讓工程師講的</span><span>話，業務聽得懂</span></h1>
+      <p class="lede">八年在製造業與科技業做內訓。只教一件事：把你腦裡本來就有的東西，講到對方願意動。</p>
+      <p class="dim">第四季剩兩個檔期</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:chou@example.tw">談內訓需求</a>
+        <a class="btn btn-ghost" href="#work">看課程大綱</a>
+      </div>
+    </div>
+    <div class="titleblock">
+      <div><b>繪製</b>周允中</div><div><b>版本</b>REV 08</div><div><b>比例</b>1 : 1</div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><h2>我是誰</h2></div>
+      <div class="prose"><p>八年在製造業與科技業做內訓。只教一件事：把你腦裡本來就有的東西，講到對方願意動。</p></div>
+      <ul class="facts">
+        <li><b>主題</b><span>簡報表達、跨部門溝通、技術簡報</span></li>
+        <li><b>形式</b><span>半天到兩天，最多二十四人</span></li>
+        <li><b>不接</b><span>線上大堂課、超過五十人的演講</span></li>
+        <li><b>所在地</b><span>新竹，全台可跑</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head"><h2>做過的事</h2></div>
+      <ul class="work">
+        <li>
+          <h3>技術主管簡報班</h3>
+          <p class="meta">2025 · 半導體設備商 · 六梯次</p>
+          <p>學員平均簡報時間從二十二分鐘壓到八分鐘，主管同意的比例翻倍</p>
+        </li>
+        <li>
+          <h3>跨部門說明會重做</h3>
+          <p class="meta">2024 · 工具機廠 · 顧問加陪跑</p>
+          <p>原本每月一次的檢討會沒人講話。改成先寫再講之後，第一次就出現三個反對意見</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="close" id="contact">
+    <div class="wrap">
+      <h2><span>談內訓需求</span></h2>
+      <p>八年在製造業與科技業做內訓。只教一件事：把你腦裡本來就有的東西，講到對方願意動。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:chou@example.tw">談內訓需求</a>
+        <a class="btn btn-ghost" href="https://lecturer.example.tw" rel="noopener">看課程大綱</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 周允中</span>
+    <ul>
+      <li><a href="mailto:chou@example.tw">Email</a></li>
+      <li><a href="https://lecturer.example.tw" rel="me noopener">更多</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="hero.js"></script>
+<script>
+  var HERO = { fx: 'noiseLines', opts: { lines: 12, amp: 16 } };
+  (function () {
+    var c = document.querySelector('.hero canvas');
+    if (!c) return;
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
+    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
+    fx(c, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="bold">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>何柏瑋 — 半夜不會被叫起來的系統</title>
+<meta name="description" content="十一年後端。專門接手已經在跑、但是沒人敢動的服務：先讓它可觀測，再讓它可改。">
+<link rel="canonical" href="https://backend.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="何柏瑋 — 半夜不會被叫起來的系統">
+<meta property="og:description" content="十一年後端。專門接手已經在跑、但是沒人敢動的服務：先讓它可觀測，再讓它可改。">
+<meta property="og:url" content="https://backend.example.tw/">
+<meta property="og:image" content="https://backend.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▣</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 概念：機櫃。左右軌道的螺絲孔、每個區塊是一片面板、右上一顆慢慢呼吸的綠燈。
+     全站不出現紅燈——那就是「半夜不會被叫起來」的實體形狀。 */
+  :root { --rack: #0e1113; --panel: #161a1d; --rail: #2a3033; --led: #3fd07a;
+          --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
+  body { background: var(--rack); }
+  main { max-width: 74rem; margin-inline: auto; padding-inline: 3.2rem; position: relative; }
+  /* 左右軌道與螺絲孔 */
+  main::before, main::after { content: ''; position: absolute; top: 0; bottom: 0; width: 3.2rem;
+    background: var(--panel);
+    background-image: repeating-linear-gradient(180deg,
+      transparent 0 22px, rgba(255,255,255,.13) 22px 26px, transparent 26px 48px);
+    border-inline: 1px solid var(--rail); }
+  main::before { left: 0; } main::after { right: 0; }
+
+  .u { position: relative; background: var(--panel); border: 1px solid var(--rail);
+    box-shadow: 0 6px 0 rgba(0,0,0,.45); margin-block: var(--space-2); }
+  .u > .wrap { padding: var(--space-4) var(--space-4); max-width: none; }
+  .led { position: absolute; top: 12px; right: 14px; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--led); box-shadow: 0 0 10px var(--led); animation: breathe 3.6s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .led { animation: none; opacity: .85; } }
+  .u__label { position: absolute; left: 14px; top: 10px; font-family: var(--mono);
+    font-size: 0.7rem; letter-spacing: 0.12em; color: var(--fg-muted); }
+
+  .hero { min-height: min(74svh, 40rem); display: grid; align-content: center; }
+  .hero h1 { font-size: var(--step-3); margin-bottom: var(--space-3); }
+  h1 span, h2 span { display: inline-block; }
+  .hero .lede { color: var(--fg-muted); max-width: 34ch; }
+  .uptime { font-family: var(--mono); font-size: var(--step-s); color: var(--led);
+    border: 1px solid var(--rail); padding: 0.4em 0.8em; display: inline-block;
+    margin-top: var(--space-3); letter-spacing: 0.08em; }
+  .facts b, .work .meta, .card .price { font-family: var(--mono); }
+  section { padding-block: 0; }
+  section + section { border-top: none; }
+  .close { text-align: center; }
+  @media (max-width: 46rem) { main { padding-inline: 1.6rem; }
+    main::before, main::after { width: 1.6rem; } }
+</style>
+</head>
+<body class="rack">
+<a class="skip" href="#main">跳到主要內容</a>
+<main id="main">
+  <section class="hero u">
+    <span class="u__label">U01 · 何柏瑋</span><span class="led" aria-hidden="true"></span>
+    <div class="wrap">
+      <p class="eyebrow">後端與系統可靠性</p>
+      <h1><span>半夜不會</span><span>被叫起來的系統</span></h1>
+      <p class="lede">十一年後端。專門接手已經在跑、但是沒人敢動的服務：先讓它可觀測，再讓它可改。</p>
+      <p class="uptime">STATUS · 目前有空，可接短期</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:ho@example.tw">談你的系統</a>
+        <a class="btn btn-ghost" href="#work">看做過的事</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><h2>我是誰</h2></div>
+      <div class="prose"><p>十一年後端。專門接手已經在跑、但是沒人敢動的服務：先讓它可觀測，再讓它可改。</p></div>
+      <ul class="facts">
+        <li><b>擅長</b><span>Go、PostgreSQL、可觀測性、事故復盤</span></li>
+        <li><b>不接</b><span>從零開始的新專案、純前端</span></li>
+        <li><b>合作方式</b><span>遠端，每週固定同步一次</span></li>
+        <li><b>所在地</b><span>台北</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head"><h2>做過的事</h2></div>
+      <ul class="work">
+        <li>
+          <h3>訂單服務的資料庫換血</h3>
+          <p class="meta">2025 · 電商 · 我負責遷移計畫與回滾機制</p>
+          <p>單表七億筆，不能停機。分五批切，每批都準備好退路。實際用到退路一次</p>
+        </li>
+        <li>
+          <h3>把每月三次的半夜告警降到零</h3>
+          <p class="meta">2024 · SaaS · 我負責可觀測性與值班制度</p>
+          <p>先花三週只做量測不改 code。找出來的根因跟大家猜的不一樣</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="close" id="contact">
+    <div class="wrap">
+      <h2><span>談你的系統</span></h2>
+      <p>十一年後端。專門接手已經在跑、但是沒人敢動的服務：先讓它可觀測，再讓它可改。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:ho@example.tw">談你的系統</a>
+        <a class="btn btn-ghost" href="https://backend.example.tw" rel="noopener">看做過的事</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 何柏瑋</span>
+    <ul>
+      <li><a href="mailto:ho@example.tw">Email</a></li>
+      <li><a href="https://backend.example.tw" rel="me noopener">更多</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="hero.js"></script>
+<script>
+  var HERO = { fx: 'noiseLines', opts: { lines: 12, amp: 18 } };
+  (function () {
+    var c = document.querySelector('.hero canvas');
+    if (!c) return;
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
+    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
+    fx(c, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
+  })();
+</script>
+</body>
+</html>

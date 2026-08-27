@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="gallery">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>林昀真 — 你們自己也會記得的那幾秒</title>
+<meta name="description" content="拍了兩百三十場婚禮。不擺拍，不喊口號，站在會發生事情的那個位置等。">
+<link rel="canonical" href="https://photographer.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="林昀真 — 你們自己也會記得的那幾秒">
+<meta property="og:description" content="拍了兩百三十場婚禮。不擺拍，不喊口號，站在會發生事情的那個位置等。">
+<meta property="og:url" content="https://photographer.example.tw/">
+<meta property="og:image" content="https://photographer.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>◎</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 概念：接觸印樣。整站是一張印樣頁，首屏那格是被紅筆圈起來的那一格。
+     來源：兩百多場裡真正留下來的只有幾格，圈選這個動作就是她的工作。 */
+  :root { --sheet: #17171a; --frame: #3a3a40; --mark: #e0483c; --emul: #d8d5cc; }
+  body { background: var(--sheet); }
+  .hero { position: relative; min-height: min(92svh, 48rem); display: grid;
+    place-items: center; padding: var(--space-5) var(--space-3);
+    background-image:
+      linear-gradient(var(--frame) 1px, transparent 1px),
+      linear-gradient(90deg, var(--frame) 1px, transparent 1px);
+    background-size: 25% 33.33%; }
+  /* 底片的齒孔，上下各一排 */
+  .hero::before, .hero::after { content: ''; position: absolute; left: 0; right: 0; height: 18px;
+    background: repeating-linear-gradient(90deg,
+      transparent 0 14px, rgba(216,213,204,.22) 14px 24px); }
+  .hero::before { top: 0; } .hero::after { bottom: 0; }
+
+  .cell { position: relative; background: var(--sheet); border: 1px solid var(--frame);
+    padding: var(--space-5) var(--space-4); max-width: 46rem;
+    transform: rotate(-1.1deg) scale(1.02);
+    box-shadow: 0 0 0 1px var(--frame), 14px 14px 0 rgba(0,0,0,.5); }
+  /* 紅筆圈選 */
+  .cell::after { content: ''; position: absolute; inset: -22px -30px;
+    border: 3px solid var(--mark); border-radius: 50%;
+    transform: rotate(2.6deg); opacity: .9; pointer-events: none; }
+  .edge { position: absolute; top: 0; bottom: 0; right: -2.2rem; writing-mode: vertical-rl;
+    font-size: 0.72rem; letter-spacing: 0.3em; color: var(--mark);
+    font-variant-numeric: tabular-nums; }
+  .hero h1 { font-size: var(--step-3); color: var(--emul); margin-bottom: var(--space-3); }
+  h1 span, h2 span { display: inline-block; }
+  .hero .lede { color: var(--fg-muted); max-width: 30ch; }
+  .frame-no { font-size: var(--step-s); letter-spacing: 0.24em; color: var(--mark);
+    margin: 0 0 var(--space-2); }
+  .status { display: inline-block; border: 1px solid var(--mark); color: var(--mark);
+    font-size: var(--step-s); padding: 0.2em 0.6em; margin-top: var(--space-3); }
+
+  section { padding-block: var(--space-6) var(--space-5); }
+  section + section { border-top: 1px solid var(--frame); }
+  .work li { position: relative; padding-left: 4.2rem; }
+  /* 每一件作品掛一個場次編號，像印樣的邊碼 */
+  .work li::before { counter-increment: shot; content: '0' counter(shot);
+    position: absolute; left: 0; top: var(--space-3);
+    font-size: var(--step-1); color: var(--mark); font-variant-numeric: tabular-nums; }
+  .work { counter-reset: shot; }
+  .close { text-align: center; }
+</style>
+</head>
+<body class="shot-sheet">
+<a class="skip" href="#main">跳到主要內容</a>
+<main id="main">
+  <section class="hero">
+    <article class="cell">
+      <p class="frame-no">FRAME 036A</p>
+      <h1><span>你們自己也會</span><span>記得的那幾秒</span></h1>
+      <p class="lede">拍了兩百三十場婚禮。不擺拍，不喊口號，站在會發生事情的那個位置等。</p>
+      <p class="status">2026 上半年剩四場</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:lin@example.tw">問檔期</a>
+        <a class="btn btn-ghost" href="#work">看作品</a>
+      </div>
+      <span class="edge">ROLL 230 · 林昀真</span>
+    </article>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><h2>我是誰</h2></div>
+      <div class="prose"><p>拍了兩百三十場婚禮。不擺拍，不喊口號，站在會發生事情的那個位置等。</p></div>
+      <ul class="facts">
+        <li><b>拍攝</b><span>婚禮全日、儀式、單人形象照</span></li>
+        <li><b>風格</b><span>現場光為主，不打閃燈</span></li>
+        <li><b>不接</b><span>商業產品、活動紀錄</span></li>
+        <li><b>所在地</b><span>台中，可跑全台與海外</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head"><h2>做過的事</h2></div>
+      <ul class="work">
+        <li>
+          <h3>台中 · 家族婚禮</h3>
+          <p class="meta">2025 · 全日 · 兩機</p>
+          <p>新娘的阿嬤在敬茶時說了一句話，全場只有三個人聽到。那張照片是這場的封面</p>
+        </li>
+        <li>
+          <h3>台南 · 老宅儀式</h3>
+          <p class="meta">2025 · 半日</p>
+          <p>場地只有一扇窗。整場靠那道光走位</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="close" id="contact">
+    <div class="wrap">
+      <h2><span>問檔期</span></h2>
+      <p>拍了兩百三十場婚禮。不擺拍，不喊口號，站在會發生事情的那個位置等。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:lin@example.tw">問檔期</a>
+        <a class="btn btn-ghost" href="https://photographer.example.tw" rel="noopener">看作品</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 林昀真</span>
+    <ul>
+      <li><a href="mailto:lin@example.tw">Email</a></li>
+      <li><a href="https://photographer.example.tw" rel="me noopener">更多</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="hero.js"></script>
+<script>
+  var HERO = { fx: 'noiseLines', opts: { lines: 14, amp: 20 } };
+  (function () {
+    var c = document.querySelector('.hero canvas');
+    if (!c) return;
+    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
+    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
+    fx(c, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
+  })();
+</script>
+</body>
+</html>

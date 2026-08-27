@@ -24,6 +24,7 @@
 | 階段一問到風格 | `templates/preview.html` | **先給他看做得出來的東西**，讓他從十六種組合裡挑 |
 | 挑完版面之後 | `docs/inspiration.md` | 去 personalsit.es 篩他那一行，找同行的站補充討論 |
 | 階段一問概念 | `docs/concept.md` | 問出一個屬於他這一行的東西。**這一題最決定成品像不像他** |
+| 想知道成品長怎樣 | `examples/` | 四個行業的完整範例，每一個都附對打的票數 |
 | 階段三挑版面 | `templates/preview.html` | 五種版面各自適合誰，都寫在那一頁 |
 | 階段三排版前 | `docs/images.md` | 使用者手上沒有能用的圖的時候怎麼辦，還有一條不能踩的紅線 |
 | 階段三排版時 | `docs/concept.md` | 把概念變成三個具體決定，只在首屏做足 |
@@ -54,6 +55,7 @@
 AGENTS.md              你正在讀的這份，總控
 skills/                四個階段各一份作業指引
 templates/             五種版面骨架，開 templates/preview.html 一次比較
+examples/              四個行業的完整範例，用這條流程做出來就會長那樣
 templates/tokens.css   顏色、字級、間距的變數，改這裡就換掉整站氣質
 templates/base.css     四種版面共用的元件樣式
 hero/                  四種首屏動效，零依賴，各自獨立一支
