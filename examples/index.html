@@ -43,7 +43,7 @@
 <body>
 <main>
   <h1>用這個 repo 做出來會長什麼樣</h1>
-  <p class="sub"><strong>九個虛構的人，七種美學族，每一族至少一個範例。</strong>族是性格，概念是骨架，兩件事分開。
+  <p class="sub"><strong>十三個虛構的人，十三種行業，七種美學族。</strong>族是性格，概念是骨架，兩件事分開。
   每一個都跑完整條流程：訪談問出定位、問模型要一個屬於他這一行的概念、把概念寫成純 CSS。
   五份都是零依賴的單一 HTML，沒有框架、沒有 build step、沒有圖片。</p>
 
@@ -102,6 +102,25 @@
   </section>
 
   <section class="fam">
+    <div class="fam__head"><h2>實體店與在地服務</h2>
+      <span>受眾要的是幾點開、在哪、多少錢、來不來得及。這四份的第一屏都先答完這些</span></div>
+    <div class="grid">
+      <a class="card" href="florist.html" style="text-decoration:none">
+        <img src="thumbs/florist.jpg" alt="暖紙感底色上的花材牌，每張牌有洞與學名排版" width="560" height="324" loading="lazy">
+        <div><h3>青田花室 · 花店</h3><p>一天只做二十束<br>概念是<b>花材牌</b>。電話、營業時間、地址、今天還剩幾束全在第一屏，「來得及嗎」單獨一區。</p></div></a>
+      <a class="card" href="breakfast.html" style="text-decoration:none">
+        <img src="thumbs/breakfast.jpg" alt="紅黃對撞色的蒸籠層層堆疊" width="560" height="324" loading="lazy">
+        <div><h3>福安早點 · 早餐店</h3><p>五點半第一籠，賣完就收<br>概念是<b>蒸籠</b>。一疊籠共用同一道粗框，一籠到五籠往下疊。內容少，靠結構撐。</p></div></a>
+      <a class="card" href="musicteacher.html" style="text-decoration:none">
+        <img src="thumbs/musicteacher.jpg" alt="米白紙上的五線譜與鉛筆圈記" width="560" height="324" loading="lazy">
+        <div><h3>蘇怡文 · 鋼琴老師</h3><p>不用先練到某個程度，才敢來上第一堂<br>概念是<b>練習譜</b>。小節號用 counter 從第一屏連到頁尾，第一屏四小節依序是程度、價格、地點、時段。</p></div></a>
+      <a class="card" href="realtor.html" style="text-decoration:none">
+        <img src="thumbs/realtor.jpg" alt="實價登錄查詢表，十二個行政區只有兩個亮著" width="560" height="324" loading="lazy">
+        <div><h3>賴宗翰 · 房仲</h3><p>我只熟這兩區，所以敢說哪幾條街別買<br>概念是<b>實價登錄明細</b>。行政區選單十個灰掉，用重複讓「只熟兩區」自己講出來。</p></div></a>
+    </div>
+  </section>
+
+  <section class="fam">
     <div class="fam__head"><h2>克制</h2><span>動的性格是<b>幾乎不動</b>。單色、文件隱喻、方格。內容要被仔細讀的人用</span></div>
     <div class="grid">
       <a class="card" href="lecturer.html" style="text-decoration:none">
@@ -119,7 +138,7 @@
     </div>
   </section>
 
-  <p class="note">這九個人是虛構的，內容是為了示範寫的，信箱都是 <code>example.tw</code>。
+  <p class="note">這十三個人是虛構的，內容是為了示範寫的，信箱都是 <code>example.tw</code>。
   概念是問三個不同模型家族之後收斂出來的，每一個都拿去跟<strong>同樣文案、只有版面不同</strong>
   的中性版做整頁左右比對，克制那四個合計概念版 18 票、中性版 3 票。其餘五族還沒做對打測試。<br>
   做法寫在 <code>docs/concept.md</code>，量測方法與已知的限制寫在 <code>docs/craft.md</code>，
