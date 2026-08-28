@@ -40,7 +40,7 @@ description: 依照 spec 生出一頁式網站，包含會流動的首屏
 
 ## 沒有概念的時候才挑版面
 
-`templates/` 裡有五種版面，**結構不一樣，不只是換顏色**。
+`templates/` 裡有六種版面，**結構不一樣，不只是換顏色**。
 開 `templates/preview.html` 可以一次看到，每一種都寫了適合誰。
 
 | 版面 | 檔案 | 給誰 |
@@ -50,6 +50,7 @@ description: 依照 spec 生出一頁式網站，包含會流動的首屏
 | 編號索引 | `editorial.html` | **內容少的人用這個最划算**，它靠結構撐場面不靠字數 |
 | 滿版出血 | `bleed.html` | **手上有好圖的人**。沒有圖不要選 |
 | 工控面板 | `console.html` | 製造業、自動化、工業軟體。**這是概念驅動的示範，不是通用版面** |
+| 訊號 | `signal.html` | **動效當主角那一路。** 作品是視覺的人、想被記住勝過被讀完的人 |
 
 版面決定於**內容有多少**與**有沒有圖**，不是決定於好不好看。
 訪談的時候他能講出來的東西有多少，這裡就會知道。
@@ -124,9 +125,69 @@ cp hero/<挑的動效>.js site/hero.js
 - 首屏字多的人，把動效的對比與密度往下壓，不要跟標題搶。
 - 首屏只有一句話的人，可以放大幅度與速度，讓畫面自己有事情在發生。
 - 品牌色只有一個的人，用單色版本，不要硬湊三色漸層。
-- 內容偏嚴肅的人，速度一律減半。**看得出來在動的背景會一直搶注意力。**
+- 內容偏嚴肅的人，速度一律減半。
 
-五種都不對的時候，先打開 `docs/effects.md`。那份會先要你確認真的需要，
+**上面這幾條是「動效當背景」那一路的分寸，不是全部的路。**
+原本這裡只寫了這一路，結果做出來的東西全部是同一種美學：
+單色、克制、文件感。那是一種品味，不是唯一一種。
+
+**還有另一路：動效當主角。** 這一路的做法在下一節。
+
+## 另一路：動效當主角
+
+`templates/signal.html` 是這一路的示範。它把上面那幾條倒過來：
+動效鋪滿整個首屏、名字用 `background-clip: text` 剪成看動效的窗、
+顆粒與暗角疊上去、捲離首屏才淡出。
+
+**適合誰：** 作品本身就是視覺的人、想被記住勝過想被讀完的人、
+名字比職稱更重要的人。
+**不適合誰：** 內容量大、要被仔細讀的人。那種人用前面五種。
+
+這一路可以重複使用的幾招，全部是純 CSS：
+
+```css
+/* 一、名字＝看動效的窗。漸層剪進字裡，而且會流 */
+.mark {
+  background-image: linear-gradient(110deg, var(--glow) 0%, var(--glow2) 28%,
+    #fff 46%, var(--glow3) 68%, var(--glow) 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  filter: drop-shadow(0 0 34px rgba(79,70,229,.34));
+  animation: flow 14s linear infinite;
+}
+@keyframes flow { to { background-position: 260% 0; } }
+```
+
+**淺底不能用白色當中間色點**，會直接消失。淺色主題要換成最深的那一個顏色。
+
+```css
+/* 二、顆粒。一張 SVG 噪點，不用圖檔也不用外部資源 */
+.grain { position: absolute; inset: 0; pointer-events: none; opacity: .32;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); }
+
+/* 三、暗角。把視線收到中間 */
+.vignette { position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 42%, var(--ink) 96%); }
+
+/* 四、淺色主題共用同一支動效，把它反相就好 */
+html[data-theme="light"] canvas { filter: invert(1); mix-blend-mode: multiply; }
+```
+
+```js
+// 五、捲離首屏就淡掉，不要在下面一直吃效能也一直吵
+new IntersectionObserver(function (es) {
+  document.documentElement.style.setProperty('--heroOp', es[0].isIntersecting ? 1 : 0);
+}, { threshold: 0.12 }).observe(document.querySelector('.stage'));
+```
+
+**這一路仍然要守的三件事：** 文字讀得到（對比檢查照跑）、
+`prefers-reduced-motion` 要能靜止、捲走要停算。
+奔放不等於可以讓人讀不到字。
+
+## 六種都不對的時候
+
+先打開 `docs/effects.md`。那份會先要你確認真的需要，
 再帶你去 90 個開源特效的目錄裡挑，並且說明怎麼包成同一套介面。
 
 自己寫一支的話，照那五支的介面：

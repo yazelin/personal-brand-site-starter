@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="bold">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-demo-content" content="yes">
+<title>李默 — 把複雜的流程做成人看得懂的介面</title>
+<meta name="description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<link rel="canonical" href="https://example.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="李默 — 把複雜的流程做成人看得懂的介面">
+<meta property="og:description" content="十年產品設計，專做內部系統與工具類介面。接案中，一次接一件。">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>◆</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* ── 版面：訊號 ──
+     表現型的那一路。動效是主角，名字本身就是看動效的窗。
+     另外四種版面把動效壓在後面當背景，這一種反過來。
+     適合：作品就是視覺本身的人、想被記住勝過想被讀完的人。
+     不適合：內容量大、要被仔細讀的人。 */
+  :root { --ink: #07080b; --glow: #4f46e5; --glow2: #22d3ee; --glow3: #f472b6;
+          --bg: #07080b; --fg: #eef1f6; --fg-muted: #98a0b0;
+          --accent: #eef1f6; --accent-fg: #07080b; --line: rgba(255,255,255,.14); }
+  body { background: var(--bg); color: var(--fg); overflow-x: hidden; }
+
+  /* 三層疊加：動效、顆粒、暗角。全部不吃滑鼠事件 */
+  .stage { position: relative; min-height: 100svh; display: grid; align-items: center;
+    overflow: hidden; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+    z-index: 1; pointer-events: none; opacity: var(--heroOp, 1); transition: opacity .2s linear; }
+  /* 顆粒：一張 SVG 噪點，不用圖檔 */
+  .grain { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: .32;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); }
+  /* 暗角：把視線收到中間 */
+  .vignette { position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    background: radial-gradient(120% 90% at 50% 45%, transparent 42%, var(--ink) 96%); }
+  .stage > .wrap { position: relative; z-index: 4; }
+
+  /* 名字＝看動效的窗。漸層剪進字裡，而且會流 */
+  .mark { font-size: clamp(3.2rem, 13vw, 9rem); line-height: 1; letter-spacing: 0.14em;
+    font-weight: 700; margin: 0 0 var(--space-3); text-indent: 0.14em;
+    background-image: linear-gradient(110deg,
+      var(--glow) 0%, var(--glow2) 28%, #ffffff 46%, var(--glow3) 68%, var(--glow) 100%);
+    background-size: 260% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    filter: drop-shadow(0 0 34px rgba(79,70,229,.34));
+    animation: flow 14s linear infinite; }
+  @keyframes flow { to { background-position: 260% 0; } }
+  @media (prefers-reduced-motion: reduce) { .mark { animation: none; } }
+
+  .kicker { font-size: var(--step-s); letter-spacing: 0.34em; text-transform: uppercase;
+    color: var(--fg-muted); margin: 0 0 var(--space-3); }
+  .tag { font-size: var(--step-1); color: var(--fg-muted); max-width: 34ch; margin: 0; }
+  h1 span, h2 span { display: inline-block; }
+
+  /* 角落標籤，把畫面框住 */
+  .corner { position: fixed; z-index: 20; font-size: 0.7rem; letter-spacing: 0.22em;
+    color: var(--fg-muted); mix-blend-mode: difference; }
+  .corner.tl { top: var(--space-3); left: var(--space-3); }
+  .corner.br { bottom: var(--space-3); right: var(--space-3); }
+
+  /* 內文區不做框，靠極大字級與留白分段 */
+  .band { padding-block: var(--space-7); border-top: 1px solid rgba(255,255,255,.08); }
+  .band h2 { font-size: var(--step-3); max-width: 16ch; margin: 0 0 var(--space-4);
+    background-image: linear-gradient(100deg, var(--fg) 30%, var(--glow2) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent; }
+  .band p { max-width: var(--maxw-text); color: var(--fg-muted); font-size: var(--step-1); }
+  .lines { list-style: none; margin: var(--space-4) 0 0; padding: 0; display: grid; gap: 0; }
+  .lines li { display: grid; grid-template-columns: 4rem 1fr; gap: var(--space-3);
+    padding-block: var(--space-3); border-top: 1px solid rgba(255,255,255,.08);
+    align-items: baseline; }
+  .lines b { color: var(--glow2); font-variant-numeric: tabular-nums; font-weight: 500;
+    font-size: var(--step-1); }
+  .lines h3 { font-size: var(--step-1); margin: 0 0 var(--space-1); }
+  .lines p { margin: 0; font-size: var(--step-0); }
+
+  .theme { position: fixed; right: var(--space-3); top: var(--space-3); z-index: 21;
+    background: none; border: 1px solid rgba(255,255,255,.22); color: inherit;
+    font: inherit; font-size: var(--step-s); padding: 0.35em 0.8em; cursor: pointer;
+    border-radius: 999px; }
+
+  /* 淺色主題：同一套動效，換一種血液 */
+  html[data-theme="light"] { --ink: #f6f5f2; --bg: #f6f5f2; --fg: #12131a; --fg-muted: #5c6270;
+    --glow: #3b30c9; --glow2: #0e7490; --glow3: #be185d;
+    --accent: #12131a; --accent-fg: #f6f5f2; --line: rgba(0,0,0,.14); }
+  /* 淺底上的漸層字不能用白色當中間色點，會直接消失。換成最深的那一個 */
+  html[data-theme="light"] .mark { background-image: linear-gradient(110deg,
+      var(--glow) 0%, var(--glow2) 28%, #12131a 46%, var(--glow3) 68%, var(--glow) 100%);
+    filter: drop-shadow(0 0 22px rgba(59,48,201,.18)); }
+  html[data-theme="light"] .stage canvas { filter: invert(1); mix-blend-mode: multiply; }
+  html[data-theme="light"] .grain { opacity: .18; }
+  html[data-theme="light"] .band, html[data-theme="light"] .lines li { border-color: rgba(0,0,0,.10); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+<span class="corner tl">李默 · 產品設計</span>
+<span class="corner br">台中 · 接案中</span>
+<button class="theme" id="thm" type="button">切換淺色</button>
+
+<main id="main">
+
+  <section class="stage">
+    <canvas aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="wrap">
+      <p class="kicker">Product Design · 2016—</p>
+      <h1 class="mark">李默</h1>
+      <p class="tag">把複雜的流程，做成人看得懂的介面。專接一種案子：現有系統很難用，但是不能停下來重做。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#contact">談談你的案子</a>
+        <a class="btn btn-ghost" href="#work">先看作品</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <h2><span>我先去看</span><span>他們的表格</span></h2>
+      <p>一套系統當初是照流程圖做的，用久了流程變了，介面沒變，
+      於是每個部門都長出自己的一張表格繞過它。表格會誠實地告訴你系統少了什麼。</p>
+    </div>
+  </section>
+
+  <section class="band" id="work">
+    <div class="wrap">
+      <h2>做過的事</h2>
+      <ul class="lines">
+        <li><b>01</b><div><h3>物流排車系統改版</h3>
+          <p>排車員的判斷靠經驗，講不出規則。跟車六趟之後，翻譯成三個可以寫進系統的條件。</p></div></li>
+        <li><b>02</b><div><h3>工廠報工介面</h3>
+          <p>原本要點七次，現場戴手套。改成一個畫面兩顆大按鈕，代價寫在後台。</p></div></li>
+        <li><b>03</b><div><h3>維修派工的報表重做</h3>
+          <p>四十二頁刪到兩頁，然後花三個月說服所有人這樣可以。</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" id="contact">
+    <div class="wrap">
+      <h2>先講你的狀況就好</h2>
+      <p>不用先想好要做什麼。寫一段現在哪裡卡住，我看得懂的話會回你，看不懂會問你。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:hello@example.com">寄信給我</a>
+        <a class="btn btn-ghost" href="https://example.com" rel="noopener">看其他文章</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 李默</span>
+    <ul><li><a href="mailto:hello@example.com">Email</a></li></ul>
+  </div>
+</footer>
+
+<script src="hero.js"></script>
+<script>
+  // 首屏動效是主角，所以參數放得比其他版面兇
+  var HERO = { fx: 'fluidInk', opts: { intensity: 1.1, dissipation: 1.1 } };
+  (function () {
+    var c = document.querySelector('.stage canvas');
+    var css = getComputedStyle(document.documentElement);
+    var pal = ['--glow','--glow2','--glow3'].map(function (n) { return css.getPropertyValue(n).trim(); });
+    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
+    fx(c, Object.assign({ colors: pal, color: pal[0] }, HERO.opts));
+
+    // 捲離首屏就把動效淡掉，不要在下面一直吃效能也不要一直吵
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        document.documentElement.style.setProperty('--heroOp', es[0].isIntersecting ? 1 : 0);
+      }, { threshold: 0.12 }).observe(document.querySelector('.stage'));
+    }
+
+    // 主題切換，記住選擇
+    var b = document.getElementById('thm');
+    function set(t, save) {
+      document.documentElement.dataset.theme = t;
+      b.textContent = t === 'light' ? '切換深色' : '切換淺色';
+      if (save) { try { localStorage.setItem('theme', t); } catch (e) {} }
+    }
+    var saved = null; try { saved = localStorage.getItem('theme'); } catch (e) {}
+    set(saved || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'), false);
+    b.addEventListener('click', function () {
+      set(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light', true);
+    });
+  })();
+</script>
+</body>
+</html>
