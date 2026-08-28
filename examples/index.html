@@ -5,89 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>用這個 repo 做出來會長什麼樣</title>
 <style>
-  body { margin: 0; background: #101215; color: #e8eaee; font-size: 15px; line-height: 1.85;
-    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif; }
-  main { max-width: 64rem; margin-inline: auto; padding: 2.4rem 1.4rem 5rem; }
-  h1 { font-size: 1.5rem; margin: 0 0 .5rem; }
-  .sub { color: #9aa0ad; margin: 0 0 2.4rem; max-width: 46rem; }
-  .row { border: 1px solid #262b36; border-radius: 10px; padding: 1.2rem 1.3rem; margin-bottom: 1rem; }
-  .row h2 { font-size: 1.15rem; margin: 0 0 .2rem; }
-  .row .who { color: #9aa0ad; font-size: .9rem; margin: 0 0 .7rem; }
-  .row p { margin: 0 0 .7rem; color: #b7bcc6; }
-  .row .concept { color: #ffd23f; }
-  .score { font-variant-numeric: tabular-nums; color: #3fd07a; font-size: .9rem; }
-  .links a { font-size: .88rem; text-decoration: none; color: #e8eaee;
-    border: 1px solid #303643; border-radius: 6px; padding: .35rem .75rem; margin-right: .4rem; }
-  .links a:hover { border-color: #5a6373; }
-  .note { color: #9aa0ad; font-size: .92rem; border-top: 1px solid #262b36;
-    margin-top: 2.4rem; padding-top: 1.2rem; }
-  code { color: #ffd23f; }
+  *,*::before,*::after { box-sizing: border-box; }
+  :root { --bg:#0b0c10; --fg:#eef1f6; --mut:#98a0b0; --line:#23262f;
+          --hot:#ff2d78; --cool:#00e5ff; }
+  body { margin:0; background:var(--bg); color:var(--fg); line-height:1.85;
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif; }
+  a { color:inherit; }
+  main { max-width:72rem; margin-inline:auto; padding:3rem 1.4rem 5rem; }
+  h1 { font-size:clamp(1.7rem,4.2vw,2.6rem); margin:0 0 .6rem; letter-spacing:0; }
+  .sub { color:var(--mut); margin:0 0 2.6rem; max-width:50rem; }
+  .fam { margin-block:3.2rem; }
+  .fam__head { display:flex; align-items:baseline; gap:1rem; flex-wrap:wrap;
+    border-bottom:1px solid var(--line); padding-bottom:.6rem; margin-bottom:1.4rem; }
+  .fam__head h2 { font-size:1.25rem; margin:0; }
+  .fam__head span { color:var(--mut); font-size:.92rem; }
+
+  /* 表現族：一張大的，站本身就是作品 */
+  .lead { display:grid; gap:1.4rem; }
+  .lead img { width:100%; height:auto; display:block; border:1px solid var(--line); }
+  .lead h3 { font-size:1.3rem; margin:0 0 .2rem; }
+  .lead .who { color:var(--mut); margin:0 0 .8rem; }
+  .lead p { margin:0 0 .8rem; color:#c2c8d4; max-width:48rem; }
+  .tagx { color:var(--hot); }
+
+  /* 克制族：收成一排小的，不要佔滿版面 */
+  .grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); }
+  .card { border:1px solid var(--line); }
+  .card img { width:100%; height:auto; display:block; border-bottom:1px solid var(--line); }
+  .card div { padding:.8rem .9rem 1rem; }
+  .card h3 { font-size:1rem; margin:0 0 .15rem; }
+  .card p { margin:0; color:var(--mut); font-size:.88rem; line-height:1.6; }
+  .card b { color:var(--cool); font-weight:500; }
+
+  .links a { display:inline-block; font-size:.9rem; text-decoration:none;
+    border:1px solid #303643; border-radius:6px; padding:.4rem .85rem; margin:.2rem .4rem .2rem 0; }
+  .links a:hover { border-color:#5a6373; }
+  .note { color:var(--mut); font-size:.92rem; border-top:1px solid var(--line);
+    margin-top:3rem; padding-top:1.2rem; }
+  code { color:#ffd23f; }
+  @media (max-width:40rem){ main{padding-top:2rem} }
 </style>
 </head>
 <body>
 <main>
   <h1>用這個 repo 做出來會長什麼樣</h1>
-  <p class="sub">五個虛構的人，五種行業，<strong>兩種完全不同的美學</strong>。每一個都跑完整條流程：訪談問出定位、
-  問模型要一個屬於他這一行的概念、把概念寫成純 CSS、再跟同樣文案的中性版對打。
-  <strong>四個版面都不屬於這個 repo 的五種模板，是照概念生出來的。</strong>
-  概念決定整頁的容器、重複單元與分節，從第一屏用到頁尾——
-  <strong>把首屏遮起來，還是看得出這是哪一個站。</strong>
-  四份都是零依賴的單一 HTML，沒有框架、沒有 build step、沒有圖片。</p>
+  <p class="sub">五個虛構的人，五種行業，<strong>兩種完全不同的美學</strong>。
+  每一個都跑完整條流程：訪談問出定位、問模型要一個屬於他這一行的概念、把概念寫成純 CSS。
+  五份都是零依賴的單一 HTML，沒有框架、沒有 build step、沒有圖片。</p>
 
-  <div class="row">
-    <h2>周允中 · 企業內訓講師</h2>
-    <p class="who">讓工程師講的話，業務聽得懂</p>
-    <p>概念是<span class="concept">工程圖說</span>，而且<strong>整頁都是</strong>：五張圖紙，課程模組排成件號表 M-01 到 M-04，規格是編號標註，每一張右下角都有自己的標題欄 DWG-01 到 05。</p>
-        <p class="score">整頁跟同樣文案的中性版對打：概念版 5 : 1 中性版</p>
-    <p class="links"><a href="lecturer.html">看這個站</a></p>
-  </div>
+  <section class="fam">
+    <div class="fam__head"><h2>表現那一族</h2>
+      <span>動效是主角，站本身就是作品</span></div>
+    <div class="lead">
+      <a href="vj.html"><img src="thumbs/vj.jpg" alt="鄭亦帆的網站首屏：彩色流體在深色畫面上流動，名字用漸層剪成看畫面的窗" width="900" height="521" loading="lazy"></a>
+      <div>
+        <h3>鄭亦帆 · 現場視覺設計師</h3>
+        <p class="who">音樂進來，畫面自己會動</p>
+        <p>流體鋪滿<strong>整個視窗</strong>，不只首屏。名字用漸層剪成看畫面的窗，而且漸層會流。
+        概念是 <span class="tagx">CUE 表</span>：左邊一條貫穿全頁的時間軸，區塊編號 00 到 04，
+        演出排成 setlist，設備排成推桿。她的作品本身就是那個畫面，所以站本身要是作品。</p>
+        <p class="links"><a href="vj.html">看這個站</a>
+          <a href="../templates/signal.html">這一族的空白版面</a></p>
+      </div>
+    </div>
+  </section>
 
-  <div class="row">
-    <h2>何柏瑋 · 後端與系統可靠性</h2>
-    <p class="who">半夜不會被叫起來的系統</p>
-    <p>概念是<span class="concept">機櫃</span>，而且<strong>整頁都是</strong>：U01 到 U05 五片面板，SPEC、INCIDENT LOG、RUNBOOK 各佔一片，每片右上一顆會呼吸的綠燈，頁尾是電源列。全站不出現紅燈。</p>
-        <p class="score">整頁對打：概念版 5 : 0 中性版（一票逾時）</p>
-    <p class="links"><a href="backend.html">看這個站</a></p>
-  </div>
+  <section class="fam">
+    <div class="fam__head"><h2>克制那一族</h2>
+      <span>單色、文件隱喻、方格。適合要被仔細讀的內容</span></div>
+    <div class="grid">
+      <a class="card" href="lecturer.html" style="text-decoration:none">
+        <img src="thumbs/lecturer.jpg" alt="周允中的網站：藍圖格線、工程圖框與標題欄" width="560" height="324" loading="lazy">
+        <div><h3>周允中 · 內訓講師</h3>
+        <p>概念是<b>工程圖說</b>。整頁是一張圖：一個圖框、格線連續、課程排成件號表、
+        標題欄只在最下面出現一次。</p></div></a>
+      <a class="card" href="backend.html" style="text-decoration:none">
+        <img src="thumbs/backend.jpg" alt="何柏瑋的網站：深色機櫃面板、左右軌道螺絲孔、綠燈" width="560" height="324" loading="lazy">
+        <div><h3>何柏瑋 · 後端工程師</h3>
+        <p>概念是<b>機櫃</b>。U01 到 U05 五片面板，SPEC、事故紀錄、RUNBOOK 各佔一片，
+        全站不出現紅燈。</p></div></a>
+      <a class="card" href="photographer.html" style="text-decoration:none">
+        <img src="thumbs/photographer.jpg" alt="林昀真的網站：底片齒孔、印樣格線、紅筆圈選的那一格" width="560" height="324" loading="lazy">
+        <div><h3>林昀真 · 婚禮攝影</h3>
+        <p>概念是<b>接觸印樣</b>。FRAME 036A 到 060，作品排成印樣網格帶邊碼，
+        首屏那格被紅筆圈起來。</p></div></a>
+      <a class="card" href="counselor.html" style="text-decoration:none">
+        <img src="thumbs/counselor.jpg" alt="許亦晴的網站：米色紙底的會談紀錄單，處理欄留白" width="560" height="324" loading="lazy">
+        <div><h3>許亦晴 · 諮商心理師</h3>
+        <p>概念是<b>會談紀錄單</b>。單號 0001 到 0005，
+        <strong>「處理」欄永遠留白</strong>，只給一條虛線與一個閃爍的游標。</p></div></a>
+    </div>
+  </section>
 
-  <div class="row">
-    <h2>林昀真 · 婚禮與人像攝影</h2>
-    <p class="who">你們自己也會記得的那幾秒</p>
-    <p>概念是<span class="concept">接觸印樣</span>，而且<strong>整頁都是</strong>：FRAME 036A 到 060 五格片格，作品排成印樣網格帶邊碼 230-014，方案是沖印價目，首屏那格被紅筆圈起來。</p>
-        <p class="score">另外跑過三輪受眾審查（角色：預算有限、同時比五六家的準新娘），
-    改出價格方案、相簿連結與可讀性。過程寫在 README。</p>
-    <p class="score">整頁對打：概念版 4 : 1 中性版</p>
-    <p class="links"><a href="photographer.html">看這個站</a></p>
-  </div>
-
-  <div class="row">
-    <h2>許亦晴 · 諮商心理師</h2>
-    <p class="who">先把事情講出來，再決定要不要處理</p>
-    <p>概念是<span class="concept">會談紀錄單</span>，而且<strong>整頁都是</strong>：單號 0001 到 0005 五張表單，費用是點虛線欄位，流程是編號列，最後有簽名欄。<strong>「處理」欄永遠留白</strong>，只給一條虛線與一個閃爍的游標——那個空欄就是她說的「從那裡開始」。</p>
-        <p class="score">整頁對打：概念版 4 : 1 中性版</p>
-    <p class="links"><a href="counselor.html">看這個站</a></p>
-  </div>
-
-
-  <div class="row" style="border-color:#3a2a4a">
-    <h2>鄭亦帆 · 現場視覺設計師</h2>
-    <p class="who">音樂進來，畫面自己會動</p>
-    <p><strong>這一份跟上面四個不同族。</strong>上面四個克制、單色、文件感；
-    這一份把<span class="concept">動效變成主角</span>：流體鋪滿整個視窗（不只首屏），
-    名字用漸層剪成看畫面的窗而且會流，配顆粒與暗角。概念是
-    <span class="concept">CUE 表</span>：左邊一條時間軸，區塊編號 00 到 04，
-    演出清單排成 setlist，設備排成推桿。</p>
-    <p class="score">她的作品本身就是那個畫面，所以站本身要是作品。</p>
-    <p class="links"><a href="vj.html">看這個站</a></p>
-  </div>
-
-  <p class="note">這五個人是虛構的，內容是為了示範寫的。
-  概念是問三個不同模型家族之後收斂出來的，每一個都拿去跟<strong>同樣文案、
-  只有版面不同</strong>的中性版做左右比對，三個視覺模型各投一次、左右順序各跑一次。
-  重建之後改成比<strong>整頁</strong>縮圖（先前只比首屏，那正是漏掉問題的原因），
-  <strong>合計概念版 18 票、中性版 3 票</strong>，二十四票裡二十二票回來，其餘逾時。<br>
-  做法寫在 <code>docs/concept.md</code>，量測方法與已知的限制寫在
-  <code>docs/craft.md</code>。</p>
+  <p class="note">這五個人是虛構的，內容是為了示範寫的，信箱都是 <code>example.tw</code>。
+  概念是問三個不同模型家族之後收斂出來的，每一個都拿去跟<strong>同樣文案、只有版面不同</strong>
+  的中性版做整頁左右比對，克制那四個合計概念版 18 票、中性版 3 票。<br>
+  做法寫在 <code>docs/concept.md</code>，量測方法與已知的限制寫在 <code>docs/craft.md</code>，
+  表現那一族的手法寫在 <code>skills/03-build/SKILL.md</code>。</p>
 </main>
 </body>
 </html>
