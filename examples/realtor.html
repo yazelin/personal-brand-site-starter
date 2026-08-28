@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>賴宗翰 — 我只熟士林、北投兩區，所以敢說哪幾條街別買</title>
+<meta name="description" content="台北市士林、北投兩區的房仲，第九年。近三年成交 41 件，全部在這兩區。服務費、不承接的案子與流程都寫在這一頁。">
+<link rel="canonical" href="https://realtor.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="賴宗翰 — 我只熟士林、北投兩區，所以敢說哪幾條街別買">
+<meta property="og:description" content="台北市士林、北投兩區的房仲，第九年。近三年成交 41 件，全部在這兩區。服務費與不承接的案子都寫在這一頁。">
+<meta property="og:url" content="https://realtor.example.tw/">
+<meta property="og:image" content="https://realtor.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▩</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 族：克制（幾乎不動）。房仲要的是可靠，不是熱鬧。
+     概念：實價登錄明細。台灣人買房之前一定會去查的那張表。
+
+     容器＝一張「登錄表」：深色表頭條、欄名列、等寬數字的資料列、底部的筆數。
+     重複單元＝一筆登錄，每一筆都有代號、行政區、內容與右側的數值。
+     分節＝表 01 到表 06，每一張表都是一次查詢。
+
+     只熟兩區怎麼在版面上看出來：整頁的「區」欄從頭到尾只有士林與北投兩個值，
+     首屏的查詢條件把台北市十二個行政區全部列出來，十個是灰的。 */
+  :root {
+    --bg: #f3f4f1; --fg: #1a1d1a; --fg-muted: #5a5f5a;
+    --accent: #2f4f4b; --accent-fg: #f8faf7;
+    --line: #d5d9d3; --rule: #c2c8bf; --tint: #e9ece6;
+    --paper: #fbfcf9; --mark: #8c3b32;
+  }
+  html { background: var(--bg); }
+  .doc { max-width: 64rem; margin-inline: auto; padding-inline: var(--space-3); }
+  section { padding: 0; }
+  h1 span, h2 span { display: inline-block; }
+
+  /* 報表頁首。整頁只出現這一次 */
+  .slug { display: flex; flex-wrap: wrap; gap: 0.3rem var(--space-3);
+    border-bottom: 2px solid var(--fg); padding: var(--space-3) 0 0.5rem;
+    font-size: 0.72rem; letter-spacing: 0.1em; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums; }
+  .slug b { color: var(--fg); font-weight: 600; letter-spacing: 0.16em; }
+  .slug .src { margin-left: auto; }
+
+  .mast { padding-block: var(--space-5) var(--space-4); }
+  .mast .eyebrow { margin-bottom: var(--space-3); }
+  .mast h1 { font-size: var(--step-3); margin: 0 0 var(--space-3); }
+  .mast .lede { font-size: var(--step-1); color: var(--fg-muted);
+    max-width: 36ch; margin: 0; }
+
+  /* 查詢條件：台北市十二個行政區，兩個亮著，十個灰的 */
+  .scope { border: 1px solid var(--rule); background: var(--paper);
+    padding: var(--space-3); margin-top: var(--space-4); }
+  .scope__t { font-size: 0.72rem; letter-spacing: 0.16em; color: var(--fg-muted);
+    margin: 0 0 var(--space-2); }
+  .zones { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem;
+    margin: 0 0 var(--space-2); padding: 0; }
+  .zones li { border: 1px dashed var(--line); color: var(--fg-muted);
+    padding: 0.22em 0.7em; font-size: var(--step-s);
+    text-decoration: line-through; text-decoration-color: currentColor;
+    text-decoration-thickness: 1px; }
+  .zones li.on { border: 1.5px solid var(--accent); color: var(--accent);
+    font-weight: 600; letter-spacing: 0.08em; text-decoration: none;
+    background: var(--bg); }
+  .scope__n { margin: 0; font-size: var(--step-s); color: var(--fg-muted);
+    max-width: 52ch; }
+
+  /* 容器：一張登錄表。從第一屏用到頁尾 */
+  .reg { border: 1px solid var(--rule); background: var(--paper);
+    margin-top: var(--space-5); }
+  .reg__bar { display: flex; flex-wrap: wrap; gap: 0.3rem var(--space-3);
+    align-items: baseline; background: var(--accent); color: var(--accent-fg);
+    padding: 0.55rem var(--space-3); font-size: var(--step-s); }
+  .reg__bar h2 { font-size: var(--step-s); font-weight: 600; letter-spacing: 0.16em;
+    margin: 0; color: inherit; line-height: 1.6; }
+  .reg__bar .q { letter-spacing: 0.1em; opacity: 0.82; }
+  .reg__bar .no { margin-left: auto; font-variant-numeric: tabular-nums;
+    letter-spacing: 0.1em; opacity: 0.82; }
+
+  .cols { display: none; padding: 0.4rem var(--space-3); gap: 0 var(--space-2);
+    border-bottom: 1px solid var(--fg); font-size: 0.7rem; letter-spacing: 0.14em;
+    color: var(--fg-muted); }
+  .cols span:last-child { text-align: right; }
+  .rows { list-style: none; margin: 0; padding: 0; }
+  /* 窄螢幕：一筆登錄折成三行，代號與行政區並排在第一行 */
+  .rows > li { display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0.1rem var(--space-2); padding: 0.75rem var(--space-3);
+    border-bottom: 1px solid var(--line);
+    transition: box-shadow 0.18s var(--ease); }
+  .rows > li:last-child { border-bottom: 0; }
+  .rows > li:nth-child(even) { background: var(--tint); }
+  .rows > li:hover { box-shadow: inset 3px 0 0 var(--accent); }
+
+  .k1, .k2, .v { font-size: var(--step-s); font-variant-numeric: tabular-nums;
+    line-height: 1.7; }
+  .k1 { color: var(--fg-muted); letter-spacing: 0.06em; }
+  .k2 { color: var(--accent); font-weight: 600; letter-spacing: 0.08em; }
+  .m { flex: 1 1 100%; }
+  .m b { display: block; font-weight: 600; }
+  .m i { font-style: normal; color: var(--fg-muted); }
+  .v { flex: 1 1 100%; color: var(--fg-muted); }
+  .v.no { color: var(--mark); }
+  .v.big { color: var(--fg); font-size: var(--step-0); font-weight: 600; }
+
+  .reg__foot { border-top: 1px solid var(--fg); padding: 0.5rem var(--space-3);
+    font-size: 0.72rem; letter-spacing: 0.06em; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums; }
+  .reg__cta { border-top: 1px solid var(--fg); padding: var(--space-3); }
+  .reg__cta .actions { margin-top: 0; }
+  .reg__cta p { margin: 0 0 var(--space-2); font-size: var(--step-s);
+    color: var(--fg-muted); max-width: 46ch; }
+
+  /* 首屏那張表列印出來的節奏。除了這裡，整頁不動 */
+  @keyframes printin { from { opacity: 0; transform: translateY(-5px); }
+                       to   { opacity: 1; transform: none; } }
+  .reg--a .rows > li { animation: printin 0.5s var(--ease) both; }
+  .reg--a .rows > li:nth-child(2) { animation-delay: 0.09s; }
+  .reg--a .rows > li:nth-child(3) { animation-delay: 0.18s; }
+  .reg--a .rows > li:nth-child(4) { animation-delay: 0.27s; }
+  .reg--a .rows > li:nth-child(5) { animation-delay: 0.36s; }
+  @media (prefers-reduced-motion: reduce) {
+    .reg--a .rows > li { animation: none; opacity: 1; transform: none; }
+  }
+
+  @media (min-width: 48rem) {
+    .cols { display: grid; }
+    .rows > li { display: grid; }
+    .v { text-align: right; }
+    .reg--a .cols, .reg--a .rows > li { grid-template-columns: 3.2rem 6.5rem 1fr 6rem; }
+    .reg--b .cols, .reg--b .rows > li { grid-template-columns: 5.2rem 4rem 1fr 7rem; }
+    .reg--c .cols, .reg--c .rows > li { grid-template-columns: 5rem 1fr 8.5rem; }
+  }
+
+  footer { max-width: 64rem; margin-inline: auto; margin-top: var(--space-5); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main" class="doc">
+
+  <div class="slug">
+    <b>台北市成交明細</b><span>士林區　北投區</span><span>製表 2026.08</span>
+    <span class="src">資料來源：我自己一戶一戶走過的門牌</span>
+  </div>
+
+  <header class="mast">
+    <p class="eyebrow">不動產經紀人 · 台北市</p>
+    <h1><span>我只熟這兩區，</span><span>所以敢說哪幾條街別買</span></h1>
+    <p class="lede">九年，兩個行政區。士林、北投以外的委託我不接，因為我講不出那邊的實話。</p>
+
+    <div class="scope">
+      <p class="scope__t">查詢條件　行政區</p>
+      <ul class="zones">
+        <li class="on">士林</li><li class="on">北投</li>
+        <li>中正</li><li>大同</li><li>中山</li><li>松山</li><li>大安</li><li>萬華</li>
+        <li>信義</li><li>內湖</li><li>南港</li><li>文山</li>
+      </ul>
+      <p class="scope__n">灰掉的十個區我不熟。你問我那邊哪一棟好，我只能上網查了回你，那你自己查就好。那幾區我有認識的人，可以介紹給你。</p>
+    </div>
+  </header>
+
+  <section class="reg reg--a">
+    <div class="reg__bar"><h2><span>基本資料</span></h2>
+      <span class="q">查詢：賴宗翰</span><span class="no">表 01 · 5 筆</span></div>
+    <div class="cols"><span>編號</span><span>項目</span><span>內容</span><span>數值</span></div>
+    <ol class="rows">
+      <li><span class="k1">01</span><span class="k2">服務區域</span>
+        <span class="m">台北市士林區、北投區。這兩區以外的案子我不接。</span>
+        <span class="v big">2 區</span></li>
+      <li><span class="k1">02</span><span class="k2">執業年資</span>
+        <span class="m">第九年，同一間公司，同樣這兩區。</span>
+        <span class="v big">9 年</span></li>
+      <li><span class="k1">03</span><span class="k2">成交紀錄</span>
+        <span class="m">近三年 41 件，其中 34 件的買方是要自己住進去的。</span>
+        <span class="v big">41 件</span></li>
+      <li><span class="k1">04</span><span class="k2">服務費</span>
+        <span class="m">賣方 2%、買方 1%。不收斡旋金，出價寫要約書。</span>
+        <span class="v big">3%</span></li>
+      <li><span class="k1">05</span><span class="k2">第一次見面</span>
+        <span class="m">不帶看房子。先坐下來把預算與條件講清楚，大約一小時。</span>
+        <span class="v big">不收費</span></li>
+    </ol>
+    <div class="reg__cta">
+      <p>寫信或打電話都可以。講預算、家裡幾個人、上班在哪，這三件就夠我判斷要不要往下談。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="tel:0912345678">0912-345-678</a>
+        <a class="btn btn-ghost" href="#deals">先看成交紀錄</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="reg reg--b" id="deals">
+    <div class="reg__bar"><h2><span>近三年成交明細</span></h2>
+      <span class="q">查詢：2024.01 至今</span><span class="no">表 02 · 6 筆</span></div>
+    <div class="cols"><span>年月</span><span>區</span><span>位置與型態</span><span>總價</span></div>
+    <ol class="rows">
+      <li><span class="k1">2026.03</span><span class="k2">北投</span>
+        <span class="m"><b>石牌 明德路 200 號一帶　電梯三房 32 坪</b>
+          <i>買方是要接父母同住的一家四口。看了七間，第六間才決定，前面五間我都先講哪裡不行。</i></span>
+        <span class="v big">2,180 萬</span></li>
+      <li><span class="k1">2025.11</span><span class="k2">士林</span>
+        <span class="m"><b>天母 忠誠路二段　老公寓四樓 28 坪</b>
+          <i>屋主原本開 1,880 萬。我把這個樓層近半年的成交帶列給他看，落在 1,650 到 1,720，多掛三個月也是這個數字。</i></span>
+        <span class="v big">1,680 萬</span></li>
+      <li><span class="k1">2025.08</span><span class="k2">北投</span>
+        <span class="m"><b>大業路　電梯兩房 22 坪</b>
+          <i>面路那側整晚有車聲。買方是輪班的護理師，白天要睡，我另外約晚上九點再看一次，他確認可以才出價。</i></span>
+        <span class="v big">1,320 萬</span></li>
+      <li><span class="k1">2025.05</span><span class="k2">士林</span>
+        <span class="m"><b>社子 延平北路七段　老公寓三樓 26 坪</b>
+          <i>買方本來以為重劃兩年內會動。我把歷次公告的時間列給他看，他把出價往下修才簽。</i></span>
+        <span class="v big">1,180 萬</span></li>
+      <li><span class="k1">2024.12</span><span class="k2">北投</span>
+        <span class="m"><b>稻香路　公寓二樓 24 坪</b>
+          <i>單價低，代價是公車班距二十分鐘起跳。我請買方在上班時段自己實走一次，走完他還是買了。</i></span>
+        <span class="v big">1,050 萬</span></li>
+      <li><span class="k1">2024.09</span><span class="k2">士林</span>
+        <span class="m"><b>芝山 福華路一帶　電梯兩房 20 坪</b>
+          <i>賣方急著換屋想快賣。我建議先花兩萬修掉浴室漏水的角落，多等三週，成交價高了三十幾萬。</i></span>
+        <span class="v big">1,560 萬</span></li>
+    </ol>
+    <div class="reg__foot">合計 6 筆 · 近三年 41 件，這裡列 6 件。把地址與月份輸進內政部實價登錄就查得到，數字對不上就不用找我。</div>
+  </section>
+
+  <section class="reg reg--c" id="streets">
+    <div class="reg__bar"><h2><span>這兩區，</span><span>我知道的</span></h2>
+      <span class="q">查詢：路段</span><span class="no">表 03 · 8 筆</span></div>
+    <div class="cols"><span>區</span><span>路段與實話</span><span>註記</span></div>
+    <ol class="rows">
+      <li><span class="k2">北投</span>
+        <span class="m"><b>石牌 明德路的巷子</b>
+          <i>多數是四、五層無電梯公寓，屋齡四十年上下。家裡有長輩的先想清楚每天上下四樓這件事。</i></span>
+        <span class="v">無電梯為主</span></li>
+      <li><span class="k2">士林</span>
+        <span class="m"><b>天母 忠誠路二段</b>
+          <i>生活機能好，坪數大，總價跟著高。預算兩千萬以內我不會帶你來這裡看，會浪費你一個下午。</i></span>
+        <span class="v">總價帶高</span></li>
+      <li><span class="k2">北投</span>
+        <span class="m"><b>溫泉區 幽雅路一帶</b>
+          <i>水氣重，管線與鐵件老得快。看屋要問熱水管與窗框換過沒有，屋主答不出來就是沒換。</i></span>
+        <span class="v">屋況要細看</span></li>
+      <li><span class="k2">士林</span>
+        <span class="m"><b>社子 延平北路七、八段</b>
+          <i>重劃講了二十幾年。你出價的時候把重劃當作不會發生，才不會買貴。</i></span>
+        <span class="v">別算進出價</span></li>
+      <li><span class="k2">北投</span>
+        <span class="m"><b>大業路</b>
+          <i>捷運方便，主幹道的車聲整晚都有。面路那側的房間要關窗才睡得著，看屋盡量約晚上。</i></span>
+        <span class="v">面路側偏吵</span></li>
+      <li><span class="k2">士林</span>
+        <span class="m"><b>文林路夜市那一段</b>
+          <i>十一點前都有人聲，油煙也會上樓。喜歡熱鬧的很划算，怕吵的直接跳過這一段。</i></span>
+        <span class="v">夜間偏吵</span></li>
+      <li><span class="k2">北投</span>
+        <span class="m"><b>稻香路、泉源路</b>
+          <i>單價是這兩區裡最低的一帶。沒有車的話，通勤時間要自己在上班時段實走一次再決定。</i></span>
+        <span class="v">交通要實走</span></li>
+      <li><span class="k2">士林</span>
+        <span class="m"><b>芝山 福華路一帶</b>
+          <i>安靜，學區穩。缺點是店家少，晚上八點以後外食選擇不多。</i></span>
+        <span class="v">機能普通</span></li>
+    </ol>
+    <div class="reg__foot">合計 8 筆 · 這張表的「區」欄從頭到尾只有兩個值。什麼區都做的人，寫不出上面這幾行。</div>
+  </section>
+
+  <section class="reg reg--c" id="fee">
+    <div class="reg__bar"><h2><span>服務費</span></h2>
+      <span class="q">查詢：報酬與費用</span><span class="no">表 04 · 6 筆</span></div>
+    <div class="cols"><span>代號</span><span>項目</span><span>金額</span></div>
+    <ol class="rows">
+      <li><span class="k1">F-01</span>
+        <span class="m"><b>賣方服務費</b><i>成交價的百分之二。簽委託那天就寫進契約，不會到簽約當天才多出東西。</i></span>
+        <span class="v big">2%</span></li>
+      <li><span class="k1">F-02</span>
+        <span class="m"><b>買方服務費</b><i>成交價的百分之一。</i></span>
+        <span class="v big">1%</span></li>
+      <li><span class="k1">F-03</span>
+        <span class="m"><b>法定上限</b><i>仲介報酬的上限是成交價的百分之六，我收一半。這兩區的行情我本來就在追，不用再花時間查。</i></span>
+        <span class="v">上限 6%</span></li>
+      <li><span class="k1">F-04</span>
+        <span class="m"><b>斡旋金</b><i>不收。要出價就寫要約書，不用先押錢在我這裡。</i></span>
+        <span class="v big">0 元</span></li>
+      <li><span class="k1">F-05</span>
+        <span class="m"><b>看屋與諮詢</b><i>不收費。你最後跟別人買，也不收。</i></span>
+        <span class="v big">0 元</span></li>
+      <li><span class="k1">F-06</span>
+        <span class="m"><b>履約保證</b><i>常見是成交價的萬分之六，買賣雙方各付一半。這筆錢進建經公司的專戶，跟我的收入無關。</i></span>
+        <span class="v">萬分之六</span></li>
+    </ol>
+    <div class="reg__foot">合計 6 筆 · 費用寫在這裡，是為了讓你不用開口問。</div>
+  </section>
+
+  <section class="reg reg--c" id="no">
+    <div class="reg__bar"><h2><span>不承接的案子</span></h2>
+      <span class="q">查詢：邊界</span><span class="no">表 05 · 6 筆</span></div>
+    <div class="cols"><span>代號</span><span>項目</span><span>註記</span></div>
+    <ol class="rows">
+      <li><span class="k1">N-01</span>
+        <span class="m"><b>士林、北投以外的委託</b><i>我沒走過那邊的巷子，講不出實話。那幾區有認識的人，可以介紹給你。</i></span>
+        <span class="v no">不承接</span></li>
+      <li><span class="k1">N-02</span>
+        <span class="m"><b>整批進出的投資案</b><i>買了三個月要轉手的那種。我服務的是要住進去的人，兩邊要的東西差很多，我做不好。</i></span>
+        <span class="v no">不承接</span></li>
+      <li><span class="k1">N-03</span>
+        <span class="m"><b>預售屋</b><i>我沒有跑工地的經驗，看不出來哪些問題會在交屋以後才出現。</i></span>
+        <span class="v no">不承接</span></li>
+      <li><span class="k1">N-04</span>
+        <span class="m"><b>「保證會漲」這種話</b><i>五年後的價格我不知道，沒有人知道。想聽這句話的，我這裡沒有。</i></span>
+        <span class="v no">不說</span></li>
+      <li><span class="k1">N-05</span>
+        <span class="m"><b>一次排八間的帶看</b><i>看到第四間人就累了，後面都在憑印象。一次三間，看完當場把優缺點講完。</i></span>
+        <span class="v no">不做</span></li>
+      <li><span class="k1">N-06</span>
+        <span class="m"><b>看完屋一直打給你</b><i>有新的物件符合你講過的條件，我傳一次訊息。你沒回，我就不再傳。</i></span>
+        <span class="v no">不做</span></li>
+    </ol>
+    <div class="reg__foot">合計 6 筆 · 這幾件先講清楚，你就不用花時間試探我。</div>
+  </section>
+
+  <section class="reg reg--c" id="start">
+    <div class="reg__bar"><h2><span>怎麼開始</span></h2>
+      <span class="q">查詢：流程</span><span class="no">表 06 · 4 筆</span></div>
+    <div class="cols"><span>代號</span><span>步驟</span><span>時間</span></div>
+    <ol class="rows">
+      <li><span class="k1">P-01</span>
+        <span class="m"><b>先寫信或打電話</b><i>講三件事：預算、家裡幾個人、上班在哪。其他的我會問你。</i></span>
+        <span class="v">約 10 分鐘</span></li>
+      <li><span class="k1">P-02</span>
+        <span class="m"><b>坐下來談一次</b><i>不帶看。把條件排出來，順便告訴你這兩區裡哪幾種房子符合、哪幾種不符合。條件在這兩區配不出來，我當天就會說。</i></span>
+        <span class="v">約 1 小時</span></li>
+      <li><span class="k1">P-03</span>
+        <span class="m"><b>開始看屋</b><i>一次三間。每一間我先講缺點，你再自己看。</i></span>
+        <span class="v">每次約 2 小時</span></li>
+      <li><span class="k1">P-04</span>
+        <span class="m"><b>出價</b><i>寫要約書，不押錢。我把手上這一帶的成交帶給你，價格你自己決定。</i></span>
+        <span class="v">不收費</span></li>
+    </ol>
+    <div class="reg__cta">
+      <p>白天多半在外面帶看，看到訊息會回。經紀人證書、公司名稱與地址都寫在委託契約上，見面時我會一併給你看。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="tel:0912345678">打電話給我</a>
+        <a class="btn btn-ghost" href="mailto:lai@example.tw">寄信給我</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 賴宗翰 · 台北市士林區、北投區</span>
+    <ul>
+      <li><a href="tel:0912345678">0912-345-678</a></li>
+      <li><a href="mailto:lai@example.tw">Email</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

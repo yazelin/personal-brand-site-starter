@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>福安早點 — 五點半第一籠，賣完就收</title>
+<meta name="description" content="板橋民安街的中式早點，開了二十二年。手工饅頭一天蒸五籠，清晨五點半開門，賣完就收，多半九點半前收攤。">
+<link rel="canonical" href="https://breakfast.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="福安早點 — 五點半第一籠，賣完就收">
+<meta property="og:description" content="板橋民安街的中式早點。手工饅頭一天蒸五籠，五點半開門，賣完就收。">
+<meta property="og:url" content="https://breakfast.example.tw/">
+<meta property="og:image" content="https://breakfast.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▦</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 族：粗獷（Neobrutalism）。動的性格是「彈」，按鈕按下去會陷進去，沒有軟綿綿的緩動。
+     早餐店的內容本來就少，字級拉大、框拉粗，版面才靠結構撐得起來。
+
+     概念：蒸籠。整頁就是一疊蒸籠，從蓋子往下堆到爐火。
+       容器 —— 每一節是一層籠，頂緣一圈竹編，籠與籠共用同一道粗框往下疊。
+       重複單元 —— 籠裡一格一格的「一件事加一個數字」，中間用蒸籠紙的虛線隔開。
+       分節 —— 籠號：一籠到五籠，最後一籠標「最後一籠」。
+     裝飾只做一次：蓋子、提鈕、冒出來的蒸氣都只出現在最上面。 */
+
+  :root { --bg:#fdf1dc; --fg:#17120c; --fg-muted:#6b5a44;
+          --accent:#c8102e; --accent-fg:#fff8ec; --line:#17120c;
+          --paper:#fffaf0; --bamboo:#e6c58e; --weave:#c9a163;
+          --liner:#e6d5b4; --yolk:#ffc73c; }
+
+  body { background: var(--bg); color: var(--fg);
+    background-image: repeating-linear-gradient(45deg, #17120c0a 0 2px, transparent 2px 9px); }
+
+  .stack { max-width: 60rem; margin-inline: auto;
+    padding: var(--space-5) var(--space-3) var(--space-6); }
+  section { padding: 0; }
+
+  /* 蓋子與蒸氣，整頁只出現這一次 */
+  .lid { position: relative; height: 1.9rem; margin-inline: var(--space-3);
+    border: 3px solid var(--fg); border-bottom: 0; border-radius: 20px 20px 0 0;
+    background: repeating-linear-gradient(45deg, var(--weave) 0 3px, var(--bamboo) 3px 11px); }
+  .lid::before { content: ''; position: absolute; left: 50%; top: -0.95rem;
+    width: 3.6rem; height: 1rem; margin-left: -1.8rem;
+    border: 3px solid var(--fg); border-bottom: 0; border-radius: 16px 16px 0 0;
+    background: var(--bamboo); }
+  .steam { position: absolute; left: 0; right: 0; bottom: 100%; height: 3rem; pointer-events: none; }
+  .steam span { position: absolute; bottom: 0.5rem; width: 0.6rem; height: 0.95rem;
+    border-radius: 50%; background: var(--fg); opacity: 0;
+    animation: puff 3.6s ease-out infinite; }
+  .steam span:nth-child(1) { left: 38%; }
+  .steam span:nth-child(2) { left: 50%; animation-delay: 1.2s; }
+  .steam span:nth-child(3) { left: 61%; animation-delay: 2.4s; }
+  @keyframes puff {
+    0%   { transform: translate(0, 0) scale(0.35); opacity: 0; }
+    20%  { opacity: 0.26; }
+    60%  { transform: translate(0.35rem, -1.4rem) scale(1.5); opacity: 0.15; }
+    100% { transform: translate(-0.2rem, -2.5rem) scale(2.6); opacity: 0; }
+  }
+
+  /* 一疊籠。籠與籠共用同一道框，整疊只有一個位移陰影 */
+  .pile { border: 3px solid var(--fg); box-shadow: 12px 12px 0 var(--fg);
+    background: var(--paper); }
+  .basket + .basket { border-top: 3px solid var(--fg); }
+  .rim { display: flex; align-items: center; justify-content: space-between;
+    gap: var(--space-2); padding: 0.3rem 0.75rem;
+    border-bottom: 3px solid var(--fg);
+    background: repeating-linear-gradient(45deg, var(--weave) 0 3px, var(--bamboo) 3px 11px); }
+  .rim b { font-size: 0.72rem; letter-spacing: 0.18em; font-weight: 600; }
+  .rim .no { background: var(--fg); color: var(--bg); font-size: 0.7rem;
+    letter-spacing: 0.14em; padding: 0.16em 0.65em; white-space: nowrap; }
+  .in { padding: var(--space-4) clamp(1rem, 3.5vw, 2.2rem); }
+
+  /* 第一籠：幾點開、在哪、電話、還有沒有，四件事排在同一條 */
+  .kick { display: inline-block; background: var(--accent); color: var(--accent-fg);
+    font-size: var(--step-s); letter-spacing: 0.08em; padding: 0.22em 0.7em;
+    margin: 0 0 var(--space-3); }
+  h1 { font-size: clamp(2.1rem, 7vw, 4.2rem); line-height: 1.08; margin: 0 0 var(--space-3); }
+  h1 span { display: block; }
+  h2 span { display: inline-block; }
+  .lede { font-size: var(--step-1); max-width: 34ch; margin: 0 0 var(--space-4); }
+  .lede span { display: inline-block; }
+  .now { display: grid; gap: 3px; background: var(--fg); border: 3px solid var(--fg);
+    grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr)); }
+  .now div { background: var(--paper); padding: 0.55rem 0.85rem; }
+  .now b { display: block; font-size: 0.7rem; letter-spacing: 0.16em;
+    color: var(--fg-muted); margin-bottom: 0.1rem; font-weight: 600; }
+  .now strong { font-size: 1.05rem; font-weight: 700; line-height: 1.45;
+    font-variant-numeric: tabular-nums; }
+  .now a { color: inherit; }
+
+  /* 籠裡的一格。左邊一件事，右邊一個數字，蒸籠紙的虛線隔開 */
+  .tray { list-style: none; margin: var(--space-3) 0 0; padding: 0; }
+  .item { display: grid; grid-template-columns: 1fr auto; align-items: baseline;
+    gap: var(--space-1) var(--space-3); padding-block: var(--space-3);
+    border-bottom: 2px dashed var(--liner); }
+  .item:first-child { padding-top: 0; }
+  .item:last-child { border-bottom: 0; padding-bottom: 0; }
+  .item h3 { font-size: var(--step-2); margin: 0 0 0.15rem; }
+  .item p { margin: 0; color: var(--fg-muted); font-size: var(--step-s); max-width: 42ch; }
+  .hit { display: inline-block; background: var(--accent); color: var(--accent-fg);
+    font-size: 0.7rem; letter-spacing: 0.14em; padding: 0.14em 0.6em;
+    margin-bottom: 0.4rem; font-weight: 600; }
+  .num { font-variant-numeric: tabular-nums; font-size: var(--step-2); font-weight: 700;
+    white-space: nowrap; justify-self: end; }
+  .num small { font-size: 0.6em; font-weight: 600; }
+  .tag { background: var(--yolk); border: 2px solid var(--fg); font-size: var(--step-s);
+    font-weight: 600; padding: 0.1em 0.6em; white-space: nowrap; justify-self: end; }
+  .after { max-width: 42ch; color: var(--fg-muted); font-size: var(--step-s);
+    margin: var(--space-3) 0 0; }
+
+  h2 { font-size: var(--step-2); margin: 0 0 var(--space-1); }
+  .sub { color: var(--fg-muted); margin: 0 0 var(--space-3); max-width: 40ch;
+    font-size: var(--step-s); }
+
+  /* 按下去會陷進去 */
+  .btn { border: 3px solid var(--fg); border-radius: 0; box-shadow: 6px 6px 0 var(--fg);
+    font-weight: 700; }
+  .btn:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 var(--fg); }
+  .btn:active { transform: translate(6px, 6px); box-shadow: none; }
+  .btn-primary { background: var(--accent); color: var(--accent-fg); }
+  .btn-ghost { background: var(--yolk); color: var(--fg); }
+  .actions { margin-top: var(--space-3); }
+
+  /* 一疊籠底下的爐火 */
+  .stove { height: 1.4rem; border-top: 3px solid var(--fg); background: var(--fg);
+    box-shadow: inset 0 4px 0 var(--accent); }
+
+  footer .wrap { max-width: 60rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .steam span { animation: none; opacity: 0.18; transform: translateY(-0.9rem) scale(1.6); }
+    .btn:hover, .btn:active { transform: none; box-shadow: 6px 6px 0 var(--fg); }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main">
+<div class="stack">
+
+  <div class="lid">
+    <div class="steam" aria-hidden="true"><span></span><span></span><span></span></div>
+  </div>
+
+  <div class="pile">
+
+    <section class="basket">
+      <div class="rim"><b>今天</b><span class="no">一籠</span></div>
+      <div class="in">
+        <p class="kick">板橋 · 民安街 · 開了二十二年</p>
+        <h1><span>福安早點</span><span>五點半第一籠</span></h1>
+        <p class="lede"><span>手工饅頭，一天蒸五籠，賣完就收。</span><span>我爸媽做了二十二年，現在換我揉麵。</span></p>
+        <div class="now">
+          <div><b>開門</b><strong>每天 05:30</strong></div>
+          <div><b>收攤</b><strong>賣完就收，多半 09:30</strong></div>
+          <div><b>電話</b><strong><a href="tel:0229610530">02-2961-0530</a></strong></div>
+          <div><b>地址</b><strong><a href="https://maps.example.tw" rel="noopener">新北市板橋區民安街 28 號</a></strong></div>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="tel:0229610530">打電話問還有沒有</a>
+          <a class="btn btn-ghost" href="#menu">看賣什麼</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="basket" id="menu">
+      <div class="rim"><b>賣什麼</b><span class="no">二籠</span></div>
+      <div class="in">
+        <h2>就這六樣</h2>
+        <p class="sub">沒有蛋餅，沒有咖啡，沒有薯條。想吃那些，往前走一百公尺有一家。</p>
+        <ul class="tray">
+          <li class="item">
+            <div><span class="hit">招牌</span><h3>饅頭夾蛋</h3>
+            <p>凌晨三點揉的白饅頭，剖開夾一顆現煎的蛋，邊緣要煎到有點焦。八成的人買這個。</p></div>
+            <span class="num">45<small> 元</small></span>
+          </li>
+          <li class="item">
+            <div><h3>白饅頭</h3><p>單買。冷了回鍋蒸五分鐘還是軟的，很多人一次帶十個回去冰。</p></div>
+            <span class="num">25<small> 元</small></span>
+          </li>
+          <li class="item">
+            <div><h3>饅頭夾里肌</h3><p>里肌前一天晚上醃的，煎完再夾一片生菜。學生比較常買這個。</p></div>
+            <span class="num">65<small> 元</small></span>
+          </li>
+          <li class="item">
+            <div><h3>鮮肉包</h3><p>一天只包八十顆，七點半前通常就沒了。要留的話前一天打電話。</p></div>
+            <span class="num">35<small> 元</small></span>
+          </li>
+          <li class="item">
+            <div><h3>豆漿（冰、熱）</h3><p>早上四點磨的，不加奶精。自己帶杯子折三塊。</p></div>
+            <span class="num">25<small> 元</small></span>
+          </li>
+          <li class="item">
+            <div><h3>鹹豆漿</h3><p>油條是隔壁老張現炸的，我跟他拿。只有週六日做。</p></div>
+            <span class="num">40<small> 元</small></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="basket">
+      <div class="rim"><b>幾點來</b><span class="no">三籠</span></div>
+      <div class="in">
+        <h2>什麼時候還有</h2>
+        <p class="sub">這是電話裡最多人問的一題，所以寫在這裡。</p>
+        <ul class="tray">
+          <li class="item">
+            <div><h3>第一籠出爐</h3><p>剛開門，人最少，饅頭最燙。趕早班的都這個時間來。</p></div>
+            <span class="num">05:30</span>
+          </li>
+          <li class="item">
+            <div><h3>還買得到全部</h3><p>六種都還在。送小孩上學的順路買，通常不用等。</p></div>
+            <span class="num">06:30</span>
+          </li>
+          <li class="item">
+            <div><h3>最擠的一小時</h3><p>要等大概十分鐘。趕時間的話先打電話報數量，到了直接拿。</p></div>
+            <span class="num">07:30</span>
+          </li>
+          <li class="item">
+            <div><h3>肉包通常沒了</h3><p>饅頭跟豆漿還有。剩什麼賣什麼，打一通電話最準。</p></div>
+            <span class="num">08:30</span>
+          </li>
+          <li class="item">
+            <div><h3>收攤</h3><p>最後一籠賣完就拉鐵門，有時候九點就收了。</p></div>
+            <span class="num">09:30</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="basket">
+      <div class="rim"><b>先講清楚</b><span class="no">四籠</span></div>
+      <div class="in">
+        <h2>五件事</h2>
+        <p class="sub">先寫出來，省得你白跑一趟。</p>
+        <ul class="tray">
+          <li class="item">
+            <div><h3>外送</h3><p>沒有，也沒有上外送平台。我只有一雙手，顧不了外面。</p></div>
+            <span class="tag">沒有</span>
+          </li>
+          <li class="item">
+            <div><h3>大量訂購</h3><p>十份以上前一天打電話講，我會多揉一點麵。當天現點大量，後面排隊的人要等太久。</p></div>
+            <span class="tag">前一天講</span>
+          </li>
+          <li class="item">
+            <div><h3>內用</h3><p>店裡只有四張板凳，多數人是拿了就走。</p></div>
+            <span class="tag">四張板凳</span>
+          </li>
+          <li class="item">
+            <div><h3>付款</h3><p>轉角三十公尺有提款機，忘記帶現金的人都往那邊跑。</p></div>
+            <span class="tag">只收現金</span>
+          </li>
+          <li class="item">
+            <div><h3>公休</h3><p>週日休息。過年休到初五，門口會貼紅紙。</p></div>
+            <span class="tag">週日</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="basket">
+      <div class="rim"><b>二十二年</b><span class="no">最後一籠</span></div>
+      <div class="in">
+        <h2>這家店</h2>
+        <ul class="tray">
+          <li class="item">
+            <div><h3>我爸開的</h3><p>他在民安街租下這個店面，那時候一個饅頭賣十塊。</p></div>
+            <span class="num">2004</span>
+          </li>
+          <li class="item">
+            <div><h3>我搬回來</h3><p>他膝蓋開刀，我從桃園回來，跟著他學揉麵學了半年。</p></div>
+            <span class="num">2025</span>
+          </li>
+          <li class="item">
+            <div><h3>現在</h3><p>配方沒改，麵團還是手揉的，只有蒸籠換過三次。</p></div>
+            <span class="num">2026</span>
+          </li>
+        </ul>
+        <p class="after">要留東西、要問還有沒有、要訂十份以上，打電話最快。五點半到九點半我都在店裡，電話響三聲以內會接。</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="tel:0229610530">02-2961-0530</a>
+          <a class="btn btn-ghost" href="https://maps.example.tw" rel="noopener">看地圖怎麼走</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="stove" aria-hidden="true"></div>
+  </div>
+
+</div>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 福安早點　新北市板橋區民安街 28 號</span>
+  <ul><li><a href="tel:0229610530">02-2961-0530</a></li></ul>
+</div></footer>
+</body>
+</html>
