@@ -21,12 +21,6 @@
   .fam__head span { color:var(--mut); font-size:.92rem; }
 
   /* 表現族：一張大的，站本身就是作品 */
-  .lead { display:grid; gap:1.4rem; }
-  .lead img { width:100%; height:auto; display:block; border:1px solid var(--line); }
-  .lead h3 { font-size:1.3rem; margin:0 0 .2rem; }
-  .lead .who { color:var(--mut); margin:0 0 .8rem; }
-  .lead p { margin:0 0 .8rem; color:#c2c8d4; max-width:48rem; }
-  .tagx { color:var(--hot); }
 
   /* 克制族：收成一排小的，不要佔滿版面 */
   .grid { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); }
@@ -49,77 +43,85 @@
 <body>
 <main>
   <h1>用這個 repo 做出來會長什麼樣</h1>
-  <p class="sub">五個虛構的人，五種行業，兩種完全不同的美學。<strong>族譜裡還有五族</strong>，下面一併列出。
+  <p class="sub"><strong>九個虛構的人，七種美學族，每一族至少一個範例。</strong>族是性格，概念是骨架，兩件事分開。
   每一個都跑完整條流程：訪談問出定位、問模型要一個屬於他這一行的概念、把概念寫成純 CSS。
   五份都是零依賴的單一 HTML，沒有框架、沒有 build step、沒有圖片。</p>
 
   <section class="fam">
-    <div class="fam__head"><h2>表現那一族</h2>
-      <span>動效是主角，站本身就是作品</span></div>
-    <div class="lead">
-      <a href="vj.html"><img src="thumbs/vj.jpg" alt="鄭亦帆的網站首屏：彩色流體在深色畫面上流動，名字用漸層剪成看畫面的窗" width="900" height="521" loading="lazy"></a>
-      <div>
-        <h3>鄭亦帆 · 現場視覺設計師</h3>
-        <p class="who">音樂進來，畫面自己會動</p>
-        <p>流體鋪滿<strong>整個視窗</strong>，不只首屏。名字用漸層剪成看畫面的窗，而且漸層會流。
-        概念是 <span class="tagx">CUE 表</span>：左邊一條貫穿全頁的時間軸，區塊編號 00 到 04，
-        演出排成 setlist，設備排成推桿。她的作品本身就是那個畫面，所以站本身要是作品。</p>
-        <p class="links"><a href="vj.html">看這個站</a>
-          <a href="../templates/signal.html">這一族的空白版面</a></p>
-      </div>
+    <div class="fam__head"><h2>訊號</h2><span>動的性格是<b>流</b>。動效鋪滿畫面，名字用漸層剪成看動效的窗</span></div>
+    <div class="grid">
+      <a class="card" href="vj.html" style="text-decoration:none">
+        <img src="thumbs/vj.jpg" alt="彩色流體在深色畫面上流動" width="560" height="324" loading="lazy">
+        <div><h3>鄭亦帆 · 現場視覺</h3><p>音樂進來，畫面自己會動<br>概念是 <b>CUE 表</b>。流體鋪滿整個視窗，左邊一條貫穿全頁的時間軸。</p></div></a>
     </div>
   </section>
 
   <section class="fam">
-    <div class="fam__head"><h2>克制那一族</h2>
-      <span>單色、文件隱喻、方格。適合要被仔細讀的內容</span></div>
+    <div class="fam__head"><h2>圖鑑</h2><span>動的性格是<b>漂</b>。深藍夜海配奶白米黃，每張卡各自浮動</span></div>
+    <div class="grid">
+      <a class="card" href="illustrator.html" style="text-decoration:none">
+        <img src="thumbs/illustrator.jpg" alt="深藍夜色配奶白大標與琥珀色計數" width="560" height="324" loading="lazy">
+        <div><h3>阮巧宜 · 插畫家</h3><p>台灣早餐店圖鑑，畫到第七十三家<br>概念是 <b>圖鑑內頁</b>。每家店一張標本卡，編號 001 排下去。</p></div></a>
+    </div>
+  </section>
+
+  <section class="fam">
+    <div class="fam__head"><h2>霓虹街機</h2><span>動的性格是<b>閃</b>。洋紅配青配黃，霓虹燈管的壞掉感</span></div>
+    <div class="grid">
+      <a class="card" href="gamedev.html" style="text-decoration:none">
+        <img src="thumbs/gamedev.jpg" alt="粉紅霓虹輝光大標配 CRT 掃描線" width="560" height="324" loading="lazy">
+        <div><h3>阿光 · 獨立遊戲</h3><p>一個人做完的遊戲，第四款<br>概念是 <b>選關畫面</b>。作品排成 STAGE，狀態用 HUD 小字。</p></div></a>
+    </div>
+  </section>
+
+  <section class="fam">
+    <div class="fam__head"><h2>終端</h2><span>動的性格是<b>開機與待機</b>。深青配螢光青，面板堆疊，有小角色</span></div>
+    <div class="grid">
+      <a class="card" href="toolmaker.html" style="text-decoration:none">
+        <img src="thumbs/toolmaker.jpg" alt="深青底的開機序列與服務面板" width="560" height="324" loading="lazy">
+        <div><h3>邱世恆 · 獨立開發者</h3><p>做給自己用的工具，順便給你用<br>概念是 <b>開機序列</b>。區塊是啟動中的服務，右下角有待機的小角色。</p></div></a>
+    </div>
+  </section>
+
+  <section class="fam">
+    <div class="fam__head"><h2>粗獷</h2><span>動的性格是<b>彈</b>。粗黑框、不模糊的位移陰影、對撞色、超大字</span></div>
+    <div class="grid">
+      <a class="card" href="copywriter.html" style="text-decoration:none">
+        <img src="thumbs/copywriter.jpg" alt="鮮黃貼紙配粗黑框與硬陰影" width="560" height="324" loading="lazy">
+        <div><h3>柯宜蓁 · 品牌文案</h3><p>你的產品不難懂，是你講得太客氣<br>概念是 <b>貼紙牆</b>。每塊歪一點點，hover 會位移。</p></div></a>
+    </div>
+  </section>
+
+  <section class="fam">
+    <div class="fam__head"><h2>復古介面</h2><span>動的性格是<b>掃描與閃爍</b>。視窗邊框、鉻面、CRT 抖動</span></div>
+    <div class="grid">
+      <a class="card" href="chiptune.html" style="text-decoration:none">
+        <img src="thumbs/chiptune.jpg" alt="舊系統視窗介面配綠色跑馬燈" width="560" height="324" loading="lazy">
+        <div><h3>徐子懷 · chiptune 音樂人</h3><p>用壞掉的音源做完整的專輯<br>概念是 <b>舊系統的視窗</b>。每個區塊一個視窗，整片有掃描線。</p></div></a>
+    </div>
+  </section>
+
+  <section class="fam">
+    <div class="fam__head"><h2>克制</h2><span>動的性格是<b>幾乎不動</b>。單色、文件隱喻、方格。內容要被仔細讀的人用</span></div>
     <div class="grid">
       <a class="card" href="lecturer.html" style="text-decoration:none">
-        <img src="thumbs/lecturer.jpg" alt="周允中的網站：藍圖格線、工程圖框與標題欄" width="560" height="324" loading="lazy">
-        <div><h3>周允中 · 內訓講師</h3>
-        <p>概念是<b>工程圖說</b>。整頁是一張圖：一個圖框、格線連續、課程排成件號表、
-        標題欄只在最下面出現一次。</p></div></a>
+        <img src="thumbs/lecturer.jpg" alt="藍圖格線與工程圖框" width="560" height="324" loading="lazy">
+        <div><h3>周允中 · 內訓講師</h3><p>讓工程師講的話，業務聽得懂<br>概念是 <b>工程圖說</b>。整頁是一張圖。</p></div></a>
       <a class="card" href="backend.html" style="text-decoration:none">
-        <img src="thumbs/backend.jpg" alt="何柏瑋的網站：深色機櫃面板、左右軌道螺絲孔、綠燈" width="560" height="324" loading="lazy">
-        <div><h3>何柏瑋 · 後端工程師</h3>
-        <p>概念是<b>機櫃</b>。U01 到 U05 五片面板，SPEC、事故紀錄、RUNBOOK 各佔一片，
-        全站不出現紅燈。</p></div></a>
+        <img src="thumbs/backend.jpg" alt="深色機櫃面板與綠燈" width="560" height="324" loading="lazy">
+        <div><h3>何柏瑋 · 後端工程師</h3><p>半夜不會被叫起來的系統<br>概念是 <b>機櫃</b>。U01 到 U05 五片面板。</p></div></a>
       <a class="card" href="photographer.html" style="text-decoration:none">
-        <img src="thumbs/photographer.jpg" alt="林昀真的網站：底片齒孔、印樣格線、紅筆圈選的那一格" width="560" height="324" loading="lazy">
-        <div><h3>林昀真 · 婚禮攝影</h3>
-        <p>概念是<b>接觸印樣</b>。FRAME 036A 到 060，作品排成印樣網格帶邊碼，
-        首屏那格被紅筆圈起來。</p></div></a>
+        <img src="thumbs/photographer.jpg" alt="底片齒孔與印樣格線" width="560" height="324" loading="lazy">
+        <div><h3>林昀真 · 婚禮攝影</h3><p>你們自己也會記得的那幾秒<br>概念是 <b>接觸印樣</b>。作品排成印樣網格。</p></div></a>
       <a class="card" href="counselor.html" style="text-decoration:none">
-        <img src="thumbs/counselor.jpg" alt="許亦晴的網站：米色紙底的會談紀錄單，處理欄留白" width="560" height="324" loading="lazy">
-        <div><h3>許亦晴 · 諮商心理師</h3>
-        <p>概念是<b>會談紀錄單</b>。單號 0001 到 0005，
-        <strong>「處理」欄永遠留白</strong>，只給一條虛線與一個閃爍的游標。</p></div></a>
+        <img src="thumbs/counselor.jpg" alt="米色紙底的會談紀錄單" width="560" height="324" loading="lazy">
+        <div><h3>許亦晴 · 諮商心理師</h3><p>先把事情講出來，再決定要不要處理<br>概念是 <b>會談紀錄單</b>。「處理」欄永遠留白。</p></div></a>
     </div>
   </section>
 
-  <section class="fam">
-    <div class="fam__head"><h2>還有五族沒有做範例</h2>
-      <span>族譜寫在 <code>docs/families.md</code></span></div>
-    <div class="grid">
-      <div class="card"><div><h3>圖鑑</h3><p>動的性格是<b>漂</b>。深藍夜海配奶白，
-        每張卡各自浮動。給有系列作品的人。<br>參考
-        <a href="https://yazelin.github.io/taiwan-people/">台灣人代表</a></p></div></div>
-      <div class="card"><div><h3>霓虹街機</h3><p>動的性格是<b>閃</b>。洋紅配青配黃，
-        霓虹燈管的壞掉感。給遊戲、電音、夜生活。<br>參考
-        <a href="https://yazelin.github.io/roll-formosa/">Roll Formosa</a></p></div></div>
-      <div class="card"><div><h3>終端</h3><p>動的性格是<b>開機與待機</b>。深青配螢光青，
-        面板堆疊，可以有一個角色陪著。<br>參考
-        <a href="https://yazelin.github.io/ai-brain-site/">格莉奇 OS</a></p></div></div>
-      <div class="card"><div><h3>粗獷</h3><p>動的性格是<b>彈</b>。粗黑框、不模糊的位移陰影、
-        對撞色、超大字、故意的歪斜。給想顯得有主張的人。</p></div></div>
-      <div class="card"><div><h3>復古介面</h3><p>動的性格是<b>掃描與閃爍</b>。
-        鉻面漸層、視窗邊框、CRT 抖動。給懷舊主題與次文化。</p></div></div>
-    </div>
-  </section>
-
-  <p class="note">這五個人是虛構的，內容是為了示範寫的，信箱都是 <code>example.tw</code>。
+  <p class="note">這九個人是虛構的，內容是為了示範寫的，信箱都是 <code>example.tw</code>。
   概念是問三個不同模型家族之後收斂出來的，每一個都拿去跟<strong>同樣文案、只有版面不同</strong>
-  的中性版做整頁左右比對，克制那四個合計概念版 18 票、中性版 3 票。<br>
+  的中性版做整頁左右比對，克制那四個合計概念版 18 票、中性版 3 票。其餘五族還沒做對打測試。<br>
   做法寫在 <code>docs/concept.md</code>，量測方法與已知的限制寫在 <code>docs/craft.md</code>，
   表現那一族的手法寫在 <code>skills/03-build/SKILL.md</code>。</p>
 </main>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>徐子懷 — 用壞掉的音源做完整的專輯</title>
+<meta name="description" content="chiptune 音樂人。用 Game Boy 與二手音源做曲，出過三張專輯，接遊戲與廣告配樂。">
+<link rel="canonical" href="https://chiptune.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="徐子懷 — 用壞掉的音源做完整的專輯">
+<meta property="og:description" content="chiptune 音樂人。用 Game Boy 與二手音源做曲，出過三張專輯。">
+<meta property="og:url" content="https://chiptune.example.tw/">
+<meta property="og:image" content="https://chiptune.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▣</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 族：復古介面（Y2K / OS 懷舊）。動的性格是「掃描與閃爍」。
+     概念：舊系統的視窗。每個區塊是一個有標題列的視窗，
+     整片有掃描線與極輕微的 CRT 抖動。 */
+  :root { --desk:#2b2f5e; --win:#d6d3cc; --winh:#0a1e8c; --fg:#111; --fg-muted:#3f4350;
+          --chrome:#f2f0ec; --neon:#00ffa3;
+          --accent:#0a1e8c; --accent-fg:#fff; --line:#8b8880;
+          --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  body { color: var(--fg);
+    background:
+      linear-gradient(180deg, #3a3f7d 0%, #2b2f5e 45%, #171a3a 100%) fixed; }
+  /* 掃描線＋極輕微抖動 */
+  body::after { content:''; position:fixed; inset:-2px; z-index:60; pointer-events:none;
+    background: repeating-linear-gradient(180deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px);
+    animation: scan 7.5s steps(2) infinite; }
+  @keyframes scan { 0%,100%{transform:translateY(0)} 50%{transform:translateY(1px)} }
+  @media (prefers-reduced-motion: reduce) { body::after { animation:none } }
+
+  main { max-width: 62rem; margin-inline: auto; padding: var(--space-4) var(--space-3) var(--space-6); }
+
+  /* 視窗 */
+  .win { background: var(--win); border: 2px solid #000;
+    box-shadow: inset -2px -2px 0 #8b8880, inset 2px 2px 0 var(--chrome), 6px 6px 0 rgba(0,0,0,.45);
+    margin-bottom: var(--space-4); }
+  .win__bar { background: linear-gradient(90deg, var(--winh), #3b57d6);
+    color:#fff; font-family: var(--mono); font-size:.76rem; letter-spacing:.08em;
+    padding:.35rem .5rem; display:flex; align-items:center; gap:.5rem; }
+  .win__bar b { font-weight:600 }
+  .win__bar .btns { margin-left:auto; display:flex; gap:4px }
+  .win__bar .btns i { width:14px; height:13px; background:var(--chrome);
+    border:1px solid #000; box-shadow: inset -1px -1px 0 #8b8880; display:block }
+  .win__body { padding: var(--space-4); }
+
+  .title h1 { font-size: clamp(2rem,6.4vw,4rem); line-height:1.1; margin:0 0 var(--space-3);
+    text-shadow: 2px 2px 0 var(--chrome), 4px 4px 0 rgba(0,0,0,.28); }
+  h1 span, h2 span { display:inline-block }
+  .title .lede { max-width:36ch; color:var(--fg-muted); font-size:var(--step-1); margin:0 }
+  .marq { margin-top:var(--space-3); border:1px solid #000; background:#000; color:var(--neon);
+    font-family:var(--mono); font-size:.78rem; padding:.3rem .5rem; overflow:hidden; white-space:nowrap }
+  .marq span { display:inline-block; animation: slide 22s linear infinite }
+  @keyframes slide { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @media (prefers-reduced-motion: reduce) { .marq span { animation:none } }
+
+  h2 { font-size: var(--step-1); margin:0 0 var(--space-3) }
+  .list { list-style:none; margin:0; padding:0; font-family:var(--mono); font-size:.86rem }
+  .list li { display:grid; grid-template-columns:2.6rem 1fr auto; gap:.7rem;
+    padding:.5rem .4rem; border-bottom:1px dotted var(--line); align-items:baseline }
+  .list li:nth-child(odd){ background: rgba(255,255,255,.35) }
+  .list .n { color:var(--winh) }
+  .list b { font-family:var(--font-sans); font-size:var(--step-0); display:block }
+  .list p { margin:.1rem 0 0; font-family:var(--font-sans); color:var(--fg-muted); font-size:.84rem }
+  .list .yr { color:var(--fg-muted) }
+
+  .grid2 { display:grid; gap:var(--space-3); grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)) }
+  .grid2 div { border:1px solid #000; background:var(--chrome); padding:var(--space-3);
+    box-shadow: inset -1px -1px 0 #8b8880 }
+  .grid2 b { display:block; font-family:var(--mono); font-size:.7rem; letter-spacing:.14em;
+    color:var(--winh); margin-bottom:.25rem }
+  .btn { border:2px solid #000; border-radius:0; font-family:var(--mono);
+    box-shadow: inset -2px -2px 0 #8b8880, inset 2px 2px 0 var(--chrome) }
+  .btn:active { box-shadow: inset 2px 2px 0 #8b8880, inset -2px -2px 0 var(--chrome) }
+  .btn-primary { background:var(--winh); color:#fff }
+  .btn-ghost { background:var(--chrome); color:#111 }
+  section { padding:0 }
+  footer { max-width:62rem; margin-inline:auto; color:#c9cbe4 }
+  footer a { color:#fff }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main">
+
+  <section class="win title">
+    <div class="win__bar"><b>CHIPTUNE.EXE</b><span>— 徐子懷</span>
+      <span class="btns"><i></i><i></i><i></i></span></div>
+    <div class="win__body">
+      <h1><span>用壞掉的音源</span><span>做完整的專輯</span></h1>
+      <p class="lede">Game Boy 與一堆二手音源。三張專輯，接遊戲與廣告配樂。
+      不修音，壞掉的地方就是聲音的一部分。</p>
+      <div class="marq"><span>▸ NOW PLAYING — 第三張專輯《待機畫面》全曲上架中　▸　接案檔期 2026 Q3 開放　▸　
+        NOW PLAYING — 第三張專輯《待機畫面》全曲上架中　▸　接案檔期 2026 Q3 開放　▸　</span></div>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:hsu@example.tw">談配樂</a>
+        <a class="btn btn-ghost" href="#disc">看作品</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="win" id="disc">
+    <div class="win__bar"><b>DISCOGRAPHY</b><span>— 3 items</span>
+      <span class="btns"><i></i><i></i><i></i></span></div>
+    <div class="win__body">
+      <ul class="list">
+        <li><span class="n">01</span><div><b>《待機畫面》</b>
+          <p>整張用一台螢幕壞掉的 Game Boy 錄的，那台的雜訊變成節奏。</p></div><span class="yr">2025</span></li>
+        <li><span class="n">02</span><div><b>《訊號不良》</b>
+          <p>收音時窗外在施工，沒有重錄。第四首那段鑽牆聲是真的。</p></div><span class="yr">2023</span></li>
+        <li><span class="n">03</span><div><b>《第一次開機》</b>
+          <p>第一張。現在聽很生，但那個生就是那年的樣子。</p></div><span class="yr">2021</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="win">
+    <div class="win__bar"><b>SERVICES</b><span>— 可以找我做什麼</span>
+      <span class="btns"><i></i><i></i><i></i></span></div>
+    <div class="win__body">
+      <div class="grid2">
+        <div><b>GAME</b>獨立遊戲配樂。從還沒有畫面的時候一起做最好。</div>
+        <div><b>AD</b>廣告與短片。三十秒到兩分鐘。</div>
+        <div><b>NO</b>不接純混音、不接要我模仿別人的曲子。</div>
+        <div><b>SLOT</b>2026 Q3 開放兩檔。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="win">
+    <div class="win__bar"><b>CONTACT.TXT</b>
+      <span class="btns"><i></i><i></i><i></i></span></div>
+    <div class="win__body">
+      <h2>談配樂</h2>
+      <p style="color:var(--fg-muted);max-width:40ch">
+      把畫面或企劃丟給我就好，沒有畫面也可以，講一段你想要的感覺。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:hsu@example.tw">寄信給我</a>
+        <a class="btn btn-ghost" href="https://chiptune.example.tw" rel="noopener">聽全部</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 徐子懷</span>
+  <ul><li><a href="mailto:hsu@example.tw">Email</a></li></ul>
+</div></footer>
+</body>
+</html>

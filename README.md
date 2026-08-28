@@ -92,6 +92,9 @@ ln -s ~/personal-brand-site-starter ~/.claude/skills/brand-site
 **挑族的時候不要問顏色，問「你希望它是漂的、閃的、流的，還是不動的」。**
 那個問法比問風格準得多，因為每一族的動畫性格完全不同。
 
+**七族每一族都有完整範例**，在 `examples/`，
+[線上可以看](https://yazelin.github.io/personal-brand-site-starter/examples/)。
+
 ## 六種版面
 
 **結構不一樣，不只是換顏色。** [線上一次比較](https://yazelin.github.io/personal-brand-site-starter/templates/preview.html)。

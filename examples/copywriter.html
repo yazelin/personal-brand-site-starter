@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>柯宜蓁 — 你的產品不難懂，是你講得太客氣</title>
+<meta name="description" content="品牌文案。專門幫技術團隊把話講直。十年，做過八十幾個案子，退過六個。">
+<link rel="canonical" href="https://copywriter.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="柯宜蓁 — 你的產品不難懂，是你講得太客氣">
+<meta property="og:description" content="品牌文案。專門幫技術團隊把話講直。">
+<meta property="og:url" content="https://copywriter.example.tw/">
+<meta property="og:image" content="https://copywriter.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▩</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 族：粗獷（Neobrutalism）。動的性格是「彈」——hover 位移、按下去陷下去，沒有軟綿綿的緩動。
+     概念：貼紙牆。每一塊都是一張歪一點點的貼紙，粗黑框加不模糊的位移陰影。 */
+  :root { --bg:#f5f1e8; --fg:#111; --ink:#111;
+          --y:#ffd93d; --p:#ff5c8a; --b:#4d7cff; --g:#3ddc84;
+          --accent:#111; --accent-fg:#f5f1e8; --line:#111; --fg-muted:#4a4a4a; }
+  body { background: var(--bg); color: var(--fg);
+    background-image: radial-gradient(#0000000f 1px, transparent 1px);
+    background-size: 18px 18px; }
+  main { max-width: 74rem; margin-inline: auto; padding: var(--space-3); }
+
+  .sticker { border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--ink);
+    border-radius: 0; padding: var(--space-4); margin-bottom: var(--space-5);
+    background: #fff; transition: transform .12s, box-shadow .12s; }
+  .sticker:nth-child(2n) { transform: rotate(-.9deg) }
+  .sticker:nth-child(3n) { transform: rotate(.7deg) }
+  .sticker:hover { transform: translate(-3px,-3px); box-shadow: 14px 14px 0 var(--ink) }
+
+  .hero2 { background: var(--y); min-height: 78svh; display:grid; align-content:center; }
+  .hero2 h1 { font-size: clamp(2.4rem,8vw,5.6rem); line-height:1.04; margin:0 0 var(--space-3);
+    letter-spacing:-.01em; }
+  h1 span, h2 span { display:inline-block }
+  .hero2 .lede { font-size: var(--step-1); max-width:34ch; margin:0 }
+  .hero2 .kick { display:inline-block; background:var(--ink); color:var(--y);
+    padding:.25em .7em; font-size:var(--step-s); letter-spacing:.1em; margin:0 0 var(--space-3) }
+
+  .btn { border:3px solid var(--ink); border-radius:0; box-shadow:6px 6px 0 var(--ink);
+    font-weight:600; transition: transform .1s, box-shadow .1s }
+  .btn:hover { transform: translate(3px,3px); box-shadow:3px 3px 0 var(--ink) }
+  .btn:active { transform: translate(6px,6px); box-shadow:none }
+  .btn-primary { background: var(--ink); color:#fff }
+  .btn-ghost { background:#fff; color:var(--ink) }
+
+  h2 { font-size: var(--step-2); margin:0 0 var(--space-3) }
+  .sticker p { max-width: 46ch }
+  .swatch { display:grid; gap:var(--space-3); grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)) }
+  .swatch div { border:3px solid var(--ink); padding:var(--space-3); box-shadow:6px 6px 0 var(--ink) }
+  .swatch div:nth-child(1){background:var(--p)} .swatch div:nth-child(2){background:var(--b);color:#fff}
+  .swatch div:nth-child(3){background:var(--g)}
+  .swatch h3 { margin:0 0 .3rem; font-size:var(--step-1) }
+  .swatch p { margin:0; font-size:var(--step-s) }
+
+  .quote { font-size: var(--step-2); line-height:1.4; margin:0 0 var(--space-2); font-weight:600 }
+  .quote s { color:var(--fg-muted); text-decoration-thickness:3px }
+  .after { background:var(--y); padding:0 .2em }
+
+  .end2 { background: var(--ink); color:#fff; text-align:center }
+  .end2 h2 { color:#fff }
+  .end2 p { color:#ddd; max-width:32ch; margin-inline:auto }
+  .end2 .actions { justify-content:center }
+  .end2 .btn-ghost { background:transparent; color:#fff; border-color:#fff; box-shadow:6px 6px 0 var(--y) }
+  .end2 .btn-primary { background:var(--y); color:var(--ink); border-color:var(--y); box-shadow:6px 6px 0 #fff }
+  @media (prefers-reduced-motion: reduce) { .sticker,.btn { transition:none } }
+  section { padding:0 }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main">
+
+  <section class="sticker hero2">
+    <p class="kick">品牌文案 · 台北 · 2016—</p>
+    <h1><span>你的產品不難懂，</span><span>是你講得太客氣</span></h1>
+    <p class="lede">專門幫技術團隊把話講直。十年，做過八十幾個案子，退過六個。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="mailto:ko@example.tw">丟一段文案給我看</a>
+      <a class="btn btn-ghost" href="#work2">看改法</a>
+    </div>
+  </section>
+
+  <section class="sticker" id="work2">
+    <h2>改法長這樣</h2>
+    <p class="quote"><s>我們致力於提供企業級的智能化解決方案</s></p>
+    <p class="quote">→ <span class="after">你們的報表現在要跑四小時，我們讓它剩八分鐘。</span></p>
+    <p style="color:var(--fg-muted)">同一個產品，同一天寫的。差別在第二句敢講數字，
+    而且把「我們」換成「你們」。</p>
+  </section>
+
+  <section class="sticker">
+    <h2>三種合作</h2>
+    <div class="swatch">
+      <div><h3>健檢</h3><p>把你現在的官網與簡報從頭讀一遍，交一份「哪幾句在說廢話」。兩週。</p></div>
+      <div><h3>重寫</h3><p>首頁、產品頁、提案簡報。從訪談你們的工程師開始，不看行銷部門的舊稿。</p></div>
+      <div><h3>陪跑</h3><p>每月固定時段，你們寫我改。適合已經有人寫，缺的是有人敢說不行。</p></div>
+    </div>
+  </section>
+
+  <section class="sticker">
+    <h2>不接什麼</h2>
+    <p>要我把還沒做到的功能寫成已經有了的。這種我退過六次，
+    每一次對方都說「業界都這樣寫」。<br><br>
+    也不接純潤稿。潤稿改不掉的是結構，而結構壞掉的稿子潤完只會變成更順的廢話。</p>
+  </section>
+
+  <section class="sticker end2">
+    <h2>丟一段給我看</h2>
+    <p>你們官網最上面那一句就好。我會直接說它在講什麼，還有它應該講什麼。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="mailto:ko@example.tw">寄信給我</a>
+      <a class="btn btn-ghost" href="https://copywriter.example.tw" rel="noopener">看更多改法</a>
+    </div>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 柯宜蓁</span>
+  <ul><li><a href="mailto:ko@example.tw">Email</a></li></ul>
+</div></footer>
+</body>
+</html>

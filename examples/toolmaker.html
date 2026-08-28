@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>邱世恆 — 做給自己用的工具，順便給你用</title>
+<meta name="description" content="獨立開發者。做小工具解決自己的麻煩，做完就開源。目前七個上線中，三個有人在用。">
+<link rel="canonical" href="https://toolmaker.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="邱世恆 — 做給自己用的工具，順便給你用">
+<meta property="og:description" content="獨立開發者。做小工具解決自己的麻煩，做完就開源。">
+<meta property="og:url" content="https://toolmaker.example.tw/">
+<meta property="og:image" content="https://toolmaker.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>◉</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 族：終端。動的性格是「開機與待機」——進場一次性的 boot，之後小幅度 idle 循環。
+     概念：開機序列。整頁是一台機器開起來的過程，區塊是啟動的服務，
+     右下角有一個待機中的小角色。 */
+  :root { --bg:#071b25; --panel:#0d2b3a; --fg:#e6f6fb; --fg-muted:#8fa8b3;
+          --mint:#2dd4bf; --dim:#3b5a68;
+          --accent:#2dd4bf; --accent-fg:#071b25; --line:rgba(45,212,191,.22);
+          --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--mono); }
+  main { max-width: 66rem; margin-inline: auto; padding: var(--space-3); }
+
+  /* 開機：逐行浮現 */
+  .boot { min-height: 88svh; display: grid; align-content: center; }
+  .boot p, .boot h1, .boot .actions { opacity: 0; animation: line .5s ease-out forwards; }
+  .boot p:nth-child(1){animation-delay:.15s} .boot h1{animation-delay:.5s}
+  .boot p:nth-child(3){animation-delay:1.0s} .boot p:nth-child(4){animation-delay:1.3s}
+  .boot .actions{animation-delay:1.6s}
+  @keyframes line { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+  @media (prefers-reduced-motion: reduce) {
+    .boot p, .boot h1, .boot .actions { opacity:1; animation:none } }
+
+  .boot .pre { color: var(--mint); font-size:.78rem; letter-spacing:.14em; margin:0 0 var(--space-3); }
+  .boot h1 { font-size: clamp(1.9rem,5.2vw,3.4rem); line-height:1.25; margin:0 0 var(--space-3);
+    font-family: var(--font-sans); letter-spacing:0; }
+  h1 span, h2 span { display: inline-block; }
+  .boot .lede { color: var(--fg-muted); max-width: 40ch; font-family: var(--font-sans);
+    font-size: var(--step-0); margin:0; }
+  .ok { color: var(--mint); }
+
+  /* 服務面板堆疊 */
+  .svc { border:1px solid var(--line); background:var(--panel); margin-bottom:var(--space-2);
+    padding:var(--space-3); position:relative; }
+  .svc__h { display:flex; align-items:center; gap:.6rem; font-size:.74rem; letter-spacing:.14em;
+    color:var(--fg-muted); margin-bottom:var(--space-2); }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--mint);
+    box-shadow:0 0 10px var(--mint); animation: pulseDot 2.8s ease-in-out infinite; }
+  @keyframes pulseDot { 0%,100%{opacity:.35} 50%{opacity:1} }
+  @media (prefers-reduced-motion: reduce) { .dot { animation:none; opacity:.9 } }
+  .svc h2, .svc h3 { font-family: var(--font-sans); }
+  .svc h2 { font-size: var(--step-1); margin:0 0 var(--space-2); }
+  .svc p { font-family: var(--font-sans); color: var(--fg-muted); margin:0; }
+
+  .tools { display:grid; gap:0; }
+  .tools li { list-style:none; display:grid; grid-template-columns:1.4rem 1fr auto; gap:.8rem;
+    padding-block:.7rem; border-top:1px dashed var(--dim); align-items:baseline; }
+  .tools li:first-child { border-top:0 }
+  .tools .m { color:var(--mint) }
+  .tools h3 { font-size: var(--step-0); margin:0 0 .15rem }
+  .tools p { font-size:.86rem }
+  .tools .u { font-size:.72rem; letter-spacing:.1em; color:var(--fg-muted); white-space:nowrap }
+
+  /* 待機中的小角色：右下角，一直在原地小幅度動 */
+  .pet { position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 30; width: 54px; height: 54px;
+    animation: petbob 3.4s ease-in-out infinite; }
+  @keyframes petbob { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-7px) rotate(2deg)} }
+  @media (prefers-reduced-motion: reduce) { .pet { animation:none } }
+  .pet svg { display:block; filter: drop-shadow(0 0 12px rgba(45,212,191,.5)); }
+
+  section { padding: 0; margin-bottom: var(--space-5); }
+  footer { max-width:66rem; margin-inline:auto; font-family: var(--font-sans); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main">
+
+  <section class="boot">
+    <p class="pre">$ boot --user=shiheng<br>
+      [<span class="ok">ok</span>] 載入七個工具<br>
+      [<span class="ok">ok</span>] 三個有人在用<br>
+      [<span class="ok">ok</span>] 準備好了</p>
+    <h1><span>做給自己用的工具，</span><span>順便給你用</span></h1>
+    <p class="lede">獨立開發者。遇到麻煩就做一個小東西解決它，做完就開源。
+    不做產品，不募資，不寫路線圖。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="mailto:chiu@example.tw">找我聊</a>
+      <a class="btn btn-ghost" href="#svc">看工具</a>
+    </div>
+  </section>
+
+  <section class="svc" id="svc">
+    <div class="svc__h"><span class="dot" aria-hidden="true"></span>SERVICE · TOOLS · RUNNING</div>
+    <h2>七個上線中</h2>
+    <ul class="tools">
+      <li><span class="m">▸</span><div><h3>subs-fix</h3>
+        <p>字幕時間軸對不上的時候，吸附到最近的靜音點。自己剪片剪到受不了才寫的。</p></div>
+        <span class="u">1.2k users</span></li>
+      <li><span class="m">▸</span><div><h3>whoami</h3>
+        <p>把散在五個地方的帳號整理成一頁。原本是給自己記的。</p></div>
+        <span class="u">340 users</span></li>
+      <li><span class="m">▸</span><div><h3>cheap-ocr</h3>
+        <p>收據辨識，跑在自己的機器上，不上傳。報帳報到火大寫的。</p></div>
+        <span class="u">88 users</span></li>
+      <li><span class="m">▸</span><div><h3>其餘四個</h3>
+        <p>沒什麼人用，但我自己每天在用。全部在 GitHub。</p></div>
+        <span class="u">—</span></li>
+    </ul>
+  </section>
+
+  <section class="svc">
+    <div class="svc__h"><span class="dot" aria-hidden="true"></span>SERVICE · HIRE · IDLE</div>
+    <h2>可以找我做什麼</h2>
+    <p>接兩種：把你們內部那個「大家都在忍」的流程做成小工具；
+    或是把已經有的東西弄到能自己跑，不用人每天顧。<br><br>
+    不接：從零開始的產品、要我當全職的、需要每週開會超過一次的。</p>
+  </section>
+
+  <section class="svc">
+    <div class="svc__h"><span class="dot" aria-hidden="true"></span>SERVICE · CONTACT · LISTENING</div>
+    <h2>找我聊</h2>
+    <p>把你每天在忍的那件事寫給我，一句話就好。我會說做不做得出來、大概多久。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="mailto:chiu@example.tw">寄信給我</a>
+      <a class="btn btn-ghost" href="https://toolmaker.example.tw" rel="noopener">看 GitHub</a>
+    </div>
+  </section>
+
+</main>
+
+<div class="pet" aria-hidden="true">
+  <svg viewBox="0 0 54 54" width="54" height="54">
+    <rect x="7" y="12" width="40" height="30" rx="8" fill="#0d2b3a" stroke="#2dd4bf" stroke-width="2"/>
+    <circle cx="20" cy="26" r="3.4" fill="#2dd4bf"/><circle cx="34" cy="26" r="3.4" fill="#2dd4bf"/>
+    <path d="M20 34 q7 5 14 0" stroke="#2dd4bf" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M27 12 V5" stroke="#2dd4bf" stroke-width="2"/><circle cx="27" cy="4" r="2.6" fill="#2dd4bf"/>
+  </svg>
+</div>
+
+<footer><div class="wrap">
+  <span>© 2026 邱世恆</span>
+  <ul><li><a href="mailto:chiu@example.tw">Email</a></li></ul>
+</div></footer>
+</body>
+</html>
