@@ -226,7 +226,12 @@ hosting:
 ```
 
 完整的範例在 `spec/site.example.yaml`，**開起來對一次再交出去**。
-寫完可以跑 `node tools/spec-check.mjs spec/site.yaml` 驗必要欄位有沒有齊。
+寫完跑 `node tools/spec-check.mjs spec/site.yaml` 驗一次。
+
+**訪談被打斷的時候不要硬填。** 實測有一場對話中途斷掉，代理人就拿
+「一件一件做的」當 `tagline`、「公事包、皮夾這種」當 `lede`——
+兩句都是他講的沒錯，但那是半句，不是一句話。
+`spec-check` 會對太短的欄位提醒，看到就回去把那一題問完。
 寫完把 `goal`、`audience`、`sections` 三段唸給他聽，確認過再進階段二。
 
 寫進 spec 的每一句文案都要是他自己講過的話，只做刪修，不要替他發明。
