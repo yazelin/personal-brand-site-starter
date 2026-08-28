@@ -181,6 +181,18 @@ new IntersectionObserver(function (es) {
 }, { threshold: 0.12 }).observe(document.querySelector('.stage'));
 ```
 
+```css
+/* 六、動效當主角的時候，文字底下要墊一層化開的暗罩，不然動效一亮就讀不到 */
+.hero-text { position: relative; }
+.hero-text::before { content: ''; position: absolute; inset: -12% -18% -18% -12%;
+  background: radial-gradient(70% 70% at 32% 50%, rgba(5,6,10,.82) 0%, rgba(5,6,10,0) 72%);
+  z-index: -1; pointer-events: none; }
+```
+
+**一個一定會踩到的坑：`<canvas>` 是替換元素，只寫 `inset: 0` 不會被撐開**，
+它會維持 300×150 卡在左上角。滿版的 canvas 一定要寫 `width: 100%; height: 100%;`。
+這個我踩過，畫面只有左上角一小團，看起來像動效壞掉。
+
 **這一路仍然要守的三件事：** 文字讀得到（對比檢查照跑）、
 `prefers-reduced-motion` 要能靜止、捲走要停算。
 奔放不等於可以讓人讀不到字。

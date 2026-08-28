@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-Hant" data-vibe="bold">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>鄭亦帆 — 音樂進來，畫面自己會動</title>
+<meta name="description" content="做現場視覺八年。演唱會、展演、品牌活動的即時影像，不預錄，跟著台上走。">
+<link rel="canonical" href="https://vj.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="鄭亦帆 — 音樂進來，畫面自己會動">
+<meta property="og:description" content="做現場視覺八年。演唱會、展演、品牌活動的即時影像，不預錄，跟著台上走。">
+<meta property="og:url" content="https://vj.example.tw/">
+<meta property="og:image" content="https://vj.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>◐</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 概念：CUE 表。
+     現場視覺的工作就是一條 cue 一條 cue 走。整頁是一張 cue 表：
+     左邊固定一條時間軸與 cue 編號，右邊的畫面隨捲動換色，
+     動效鋪滿整頁背景（不只首屏）——因為她的作品就是那個畫面本身。
+     這一份跟另外四個範例不同族：那四個克制，這一份奔放。 */
+  :root { --ink: #05060a; --bg: #05060a; --fg: #f2f4fa; --fg-muted: #99a2b5;
+          --c1: #ff2d78; --c2: #00e5ff; --c3: #ffd166;
+          --accent: #f2f4fa; --accent-fg: #05060a; --line: rgba(255,255,255,.12);
+          --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  body { background: var(--bg); color: var(--fg); overflow-x: hidden; }
+
+  /* 動效鋪滿整頁，不是只有首屏。她的作品就是這個 */
+  /* canvas 是替換元素，只寫 inset:0 不會被撐開，會維持 300x150 卡在左上角。
+     寬高一定要寫出來 */
+  #field { position: fixed; inset: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none; opacity: 1; }
+  .grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .3;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); }
+  /* 暗角要收得住視線,但不能把畫面吃光——她的作品就是那個畫面 */
+  .vig { position: fixed; inset: 0; z-index: 2; pointer-events: none;
+    background: radial-gradient(150% 120% at 50% 45%, transparent 62%, rgba(5,6,10,.92) 100%); }
+  main { position: relative; z-index: 3; }
+
+  /* 左邊固定的時間軸，整頁貫穿 */
+  .cue { display: grid; grid-template-columns: 7.5rem 1fr; gap: var(--space-4);
+    max-width: 74rem; margin-inline: auto; padding: var(--space-6) var(--space-3);
+    position: relative; }
+  .cue + .cue::before { content: ''; position: absolute; left: calc(7.5rem / 2 + var(--space-3));
+    top: 0; bottom: 0; width: 1px; background: linear-gradient(var(--c2), transparent 70%);
+    opacity: .5; }
+  .cue__id { font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.2em;
+    color: var(--c2); padding-top: 0.5rem; }
+  .cue__id b { display: block; font-size: var(--step-2); color: var(--fg);
+    font-variant-numeric: tabular-nums; letter-spacing: 0; margin-bottom: 0.2rem; }
+
+  .cue--open { min-height: 100svh; align-content: center; }
+  /* 動效當主角的時候，文字底下要墊一層暗罩，不然動效一亮就讀不到。
+     用 radial 讓它化開，不要出現一塊方形 */
+  .cue > div { position: relative; }
+  .cue--open > div::before { content: ''; position: absolute; inset: -12% -18% -18% -12%;
+    background: radial-gradient(70% 70% at 32% 50%, rgba(5,6,10,.82) 0%, rgba(5,6,10,0) 72%);
+    z-index: -1; pointer-events: none; }
+  /* 名字＝看畫面的窗，而且漸層會流 */
+  .mark { font-size: clamp(3rem, 12vw, 8.4rem); line-height: 1; letter-spacing: 0.1em;
+    font-weight: 700; margin: 0 0 var(--space-3); text-indent: 0.1em;
+    background-image: linear-gradient(105deg, var(--c1) 0%, var(--c3) 26%, #fff 46%,
+      var(--c2) 68%, var(--c1) 100%);
+    background-size: 280% 100%;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+    filter: drop-shadow(0 0 40px rgba(255,45,120,.34));
+    animation: flow 16s linear infinite; }
+  @keyframes flow { to { background-position: 280% 0; } }
+  @media (prefers-reduced-motion: reduce) { .mark { animation: none; } }
+  .kicker { font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.3em;
+    color: var(--c3); margin: 0 0 var(--space-3); text-transform: uppercase; }
+  .tag { font-size: var(--step-1); color: var(--fg-muted); max-width: 32ch; margin: 0; }
+  h1 span, h2 span { display: inline-block; }
+  .cue h2 { font-size: var(--step-2); margin: 0 0 var(--space-3); }
+
+  /* 演出清單：一場一條，像 setlist */
+  .set { list-style: none; margin: 0; padding: 0; }
+  .set li { display: grid; grid-template-columns: 5.5rem 1fr auto; gap: var(--space-3);
+    align-items: baseline; padding-block: var(--space-3);
+    border-top: 1px solid var(--line); }
+  .set li:last-child { border-bottom: 1px solid var(--line); }
+  .set .yr { font-family: var(--mono); color: var(--c2); font-size: var(--step-s); }
+  .set h3 { font-size: var(--step-1); margin: 0 0 0.2rem; }
+  .set p { margin: 0; color: var(--fg-muted); font-size: var(--step-0); max-width: 46ch; }
+  .set .len { font-family: var(--mono); color: var(--fg-muted); font-size: var(--step-s);
+    white-space: nowrap; }
+
+  /* 設備與可接的檔期，用調音台推桿的感覺排 */
+  .fader { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: var(--space-3); }
+  .fader div { border-top: 2px solid var(--c1); padding-top: var(--space-2); }
+  .fader b { display: block; font-family: var(--mono); font-size: 0.72rem;
+    letter-spacing: 0.16em; color: var(--fg-muted); margin-bottom: 0.3rem; }
+
+  section { padding: 0; }
+  footer { position: relative; z-index: 3; max-width: 74rem; margin-inline: auto; }
+  @media (max-width: 46rem) {
+    .cue { grid-template-columns: 1fr; gap: var(--space-2); padding-block: var(--space-5); }
+    .cue + .cue::before { display: none; }
+    .cue__id b { display: inline; margin-right: 0.5rem; }
+    .set li { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<div class="vig" aria-hidden="true"></div>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main">
+
+  <section class="cue cue--open">
+    <div class="cue__id"><b>00</b>OPEN</div>
+    <div>
+      <p class="kicker">Live Visuals · 台北</p>
+      <h1 class="mark">鄭亦帆</h1>
+      <p class="tag">音樂進來，畫面自己會動。做現場視覺八年，不預錄，跟著台上走。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:cheng@example.tw">談你的場</a>
+        <a class="btn btn-ghost" href="#set">看跑過的場</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cue">
+    <div class="cue__id"><b>01</b>HOW</div>
+    <div>
+      <h2><span>不預錄的意思是</span><span>我在台下也在演出</span></h2>
+      <p style="color:var(--fg-muted);max-width:46ch">
+      預錄的畫面遇到安可、遇到樂手即興、遇到設備出狀況就只能硬播。
+      我把訊號接進來，畫面跟著聲音走，所以每一場都不一樣，也不會對不上。</p>
+    </div>
+  </section>
+
+  <section class="cue" id="set">
+    <div class="cue__id"><b>02</b>SET</div>
+    <div>
+      <h2>跑過的場</h2>
+      <ul class="set">
+        <li><span class="yr">2025</span>
+          <div><h3>小巨蛋 · 樂團巡演最終場</h3>
+          <p>三面屏＋地板，安可加了兩首沒排練過的，畫面現場跟著走。</p></div>
+          <span class="len">150 分</span></li>
+        <li><span class="yr">2025</span>
+          <div><h3>台中歌劇院 · 當代舞作</h3>
+          <p>編舞要求畫面不能搶舞者，整場只用單色與呼吸的節奏。</p></div>
+          <span class="len">70 分</span></li>
+        <li><span class="yr">2024</span>
+          <div><h3>戶外音樂祭 · 主舞台</h3>
+          <p>下午場有太陽，對比得整個重打。這種場我一定會去現場看過再報價。</p></div>
+          <span class="len">2 天</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="cue">
+    <div class="cue__id"><b>03</b>SPEC</div>
+    <div>
+      <h2>可以配合的</h2>
+      <div class="fader">
+        <div><b>訊號</b>NDI／SDI／HDMI，可吃 MIDI 與音訊觸發</div>
+        <div><b>編制</b>一人可跑，大場加一位技術</div>
+        <div><b>不接</b>純預錄影片剪輯、婚禮</div>
+        <div><b>檔期</b>2026 上半年剩三場</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cue" id="contact">
+    <div class="cue__id"><b>04</b>CALL</div>
+    <div>
+      <h2>談你的場</h2>
+      <p style="color:var(--fg-muted);max-width:44ch">
+      把日期、場地、幾首歌告訴我就好。我會問你需要的，也會直接說我接不接得下來。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:cheng@example.tw">寄信給我</a>
+        <a class="btn btn-ghost" href="https://vj.example.tw" rel="noopener">看片段</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 鄭亦帆</span>
+    <ul><li><a href="mailto:cheng@example.tw">Email</a></li></ul>
+  </div>
+</footer>
+
+<script src="hero-fluid.js"></script>
+<script>
+  (function () {
+    var css = getComputedStyle(document.documentElement);
+    var pal = ['--c1','--c2','--c3'].map(function (n) { return css.getPropertyValue(n).trim(); });
+    Hero.fluidInk(document.getElementById('field'),
+      { colors: pal, intensity: 1.35, dissipation: 0.62 });
+  })();
+</script>
+</body>
+</html>
