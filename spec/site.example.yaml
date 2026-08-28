@@ -1,7 +1,10 @@
 # 訪談的產出。這份檔案是後面所有步驟的唯一依據。
 # 每一句文案都要是使用者自己講過的話，只做刪修，不要替他發明。
 
-goal: contact        # buy | contact | remember | hire | card，對應訪談第一題的 A 到 E
+goal: contact        # buy | contact | remember | hire | card | follow | launch
+                     # 對應訪談第一題的 A 到 G。目的決定型態，型態決定骨架
+kind: 接案頁          # 產品頁 | 接案頁 | 作品集 | 履歷 | 名片 | 寫作站 | 樞紐 | 專案首頁
+                     # 由 goal 推出來，寫下來是為了後面每個階段都對得到
 one_line: 這個網站要讓看到的人寄信給我談案子。
 
 person:

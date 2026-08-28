@@ -14,7 +14,8 @@ const raw = readFileSync(file, 'utf8').replace(/```\w*\n?/g, '');
 
 // [key, 說明, 是不是硬性]
 const NEED = [
-  ['goal',      'buy / contact / remember / hire / card 五選一', true],
+  ['goal',      'buy / contact / remember / hire / card / follow / launch 七選一', true],
+  ['kind',      '由 goal 推出來的型態：名片 / 接案頁 / 作品集 / 履歷 / 產品頁 / 寫作站 / 樞紐 / 專案首頁', true],
   ['one_line',  '這個網站要讓來的人做哪一件事', true],
   ['name',      '他要別人怎麼稱呼他', true],
   ['tagline',   '首屏大標，他自己的話', true],
@@ -25,7 +26,7 @@ const NEED = [
   ['layout',    'stack / split / editorial / bleed / console', false],
   ['hosting',   '階段二填', false],
 ];
-const GOALS = ['buy','contact','remember','hire','card'];
+const GOALS = ['buy','contact','remember','hire','card','follow','launch'];
 
 const has = (k) => new RegExp(`^\\s*${k}\\s*:\\s*(.*)$`, 'm').exec(raw);
 
