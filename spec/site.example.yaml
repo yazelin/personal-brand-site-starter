@@ -15,7 +15,9 @@ person:
     - { label: LinkedIn, url: https://example.tw/in }
     - { label: GitHub,   url: https://example.tw/gh }
 
-audience: 製造業與物流業的資訊主管，或是被指派要改系統的專案窗口。懂流程，不一定懂設計。
+# audience 要寫成一個具體的人，有處境跟顧慮，階段五會拿它當審查的角色
+audience: 一位製造業的資訊主管，被指派要改一套沒人敢動的舊系統，
+  手上同時在比三家廠商，最怕找到只會做漂亮簡報的人。懂流程，不一定懂設計。
 
 style:
   vibe: grand           # calm | bold | gallery | grand

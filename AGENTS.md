@@ -25,6 +25,7 @@
 | 挑完版面之後 | `docs/inspiration.md` | 去 personalsit.es 篩他那一行，找同行的站補充討論 |
 | 階段一問概念 | `docs/concept.md` | 問出一個屬於他這一行的東西。**這一題最決定成品像不像他** |
 | 想知道成品長怎樣 | `examples/` | 四個行業的完整範例，每一個都附對打的票數 |
+| 階段五每一圈 | `skills/05-optimise/SKILL.md` | 受眾角度的審查提示詞、擷圖腳本、停止條件 |
 | 階段三挑版面 | `templates/preview.html` | 五種版面各自適合誰，都寫在那一頁 |
 | 階段三排版前 | `docs/images.md` | 使用者手上沒有能用的圖的時候怎麼辦，還有一條不能踩的紅線 |
 | 階段三排版時 | `docs/concept.md` | 把概念變成三個具體決定，只在首屏做足 |
@@ -38,7 +39,7 @@
 使用者自己裝好了你才用得到。他沒裝，你就照這個 repo 內建的做完，
 最多在交付的時候提一句「想要更嚴的檢查可以另外裝這個」。
 
-## 四個階段
+## 五個階段
 
 | 階段 | 做什麼 | 讀哪份 | 產出 |
 |---|---|---|---|
@@ -46,8 +47,12 @@
 | 2 選型 | 決定放在哪裡、要不要後端 | `skills/02-hosting-choice/SKILL.md` | spec 裡的 `hosting` 區塊 |
 | 3 建站 | 生出網站，包含會流動的首屏 | `skills/03-build/SKILL.md` | `site/index.html` 等 |
 | 4 驗收 | 機器檢查加人眼確認，然後上線 | `skills/04-verify/SKILL.md` | 檢查通過的線上網址 |
+| 5 優化 | **用受眾的角度審查，改完跟使用者對齊，需要就再跑一圈** | `skills/05-optimise/SKILL.md` | 一份發現清單與改動 |
 
 一個階段跑完，跟他確認過，再進下一個。
+
+**階段五是迴圈，不是一次性的。** 每跑完一圈就停下來把發現與改動講給使用者聽，
+由他決定要不要再跑。不要自己連跑五圈，那會把他的網站改成你的網站。
 
 ## 這個 repo 有什麼
 
@@ -75,4 +80,4 @@ cp templates/tokens.css templates/base.css site/
 cp hero/<挑的動效>.js site/hero.js
 ```
 
-從 `skills/01-interview/SKILL.md` 開始。
+從 `skills/01-interview/SKILL.md` 開始。網站上線之後不要就停，走完階段五。

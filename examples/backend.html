@@ -125,16 +125,5 @@
   </div>
 </footer>
 
-<script src="hero.js"></script>
-<script>
-  var HERO = { fx: 'noiseLines', opts: { lines: 12, amp: 18 } };
-  (function () {
-    var c = document.querySelector('.hero canvas');
-    if (!c) return;
-    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
-    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
-    fx(c, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
-  })();
-</script>
 </body>
 </html>

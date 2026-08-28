@@ -18,7 +18,11 @@
 <style>
   /* 概念：接觸印樣。整站是一張印樣頁，首屏那格是被紅筆圈起來的那一格。
      來源：兩百多場裡真正留下來的只有幾格，圈選這個動作就是她的工作。 */
-  :root { --sheet: #17171a; --frame: #3a3a40; --mark: #e0483c; --emul: #d8d5cc; }
+  :root { --sheet: #17171a; --frame: #3a3a40; --mark: #e0483c; --emul: #d8d5cc;
+    /* 受眾審查連續三屏抱怨「深灰字配深黑底看不清楚」。原本的 #8c8c8c 算出來是
+       5.16:1，過得了 WCAG，但配上小字與背後的格線，實際就是讀不下去。
+       機械檢查放行的東西，受眾還是會卡住 */
+    --fg-muted: #c2beb5; }
   body { background: var(--sheet); }
   .hero { position: relative; min-height: min(92svh, 48rem); display: grid;
     place-items: center; padding: var(--space-5) var(--space-3);
@@ -49,18 +53,32 @@
   .hero .lede { color: var(--fg-muted); max-width: 30ch; }
   .frame-no { font-size: var(--step-s); letter-spacing: 0.24em; color: var(--mark);
     margin: 0 0 var(--space-2); }
+  .direct { font-size: var(--step-s); color: var(--emul); margin: var(--space-3) 0 0; }
+  .direct b { color: var(--mark); font-weight: 600; letter-spacing: 0.04em; }
   .status { display: inline-block; border: 1px solid var(--mark); color: var(--mark);
     font-size: var(--step-s); padding: 0.2em 0.6em; margin-top: var(--space-3); }
 
   section { padding-block: var(--space-6) var(--space-5); }
   section + section { border-top: 1px solid var(--frame); }
   .work li { position: relative; padding-left: 4.2rem; }
+  /* 這兩個區塊是純文字，深底上的小字要再亮一點才讀得下去 */
+  .work .meta, .facts li, .sec-head p { font-size: var(--step-0); }
   /* 每一件作品掛一個場次編號，像印樣的邊碼 */
   .work li::before { counter-increment: shot; content: '0' counter(shot);
     position: absolute; left: 0; top: var(--space-3);
     font-size: var(--step-1); color: var(--mark); font-variant-numeric: tabular-nums; }
   .work { counter-reset: shot; }
   .close { text-align: center; }
+  /* 方案用條列不用卡片，價格靠右對齊，掃一眼就看得完 */
+  .rows { list-style: none; margin: 0; padding: 0; }
+  .rows li { display: grid; grid-template-columns: 1fr auto; gap: var(--space-3);
+    align-items: baseline; padding-block: var(--space-3); border-bottom: 1px solid var(--frame); }
+  .rows h3 { font-size: var(--step-1); margin: 0 0 var(--space-1); }
+  .rows p { margin: 0; color: var(--fg-muted); font-size: var(--step-0); max-width: 46ch; }
+  .rows .price { white-space: nowrap; color: var(--mark); font-size: var(--step-1);
+    font-variant-numeric: tabular-nums; }
+  .note-line { color: var(--fg-muted); font-size: var(--step-s); margin-top: var(--space-3); }
+  @media (max-width: 40rem) { .rows li { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body class="shot-sheet">
@@ -74,8 +92,9 @@
       <p class="status">2026 上半年剩四場</p>
       <div class="actions">
         <a class="btn btn-primary" href="mailto:lin@example.tw">問檔期</a>
-        <a class="btn btn-ghost" href="#work">看作品</a>
+        <a class="btn btn-ghost" href="#plans">看方案與價格</a>
       </div>
+      <p class="direct">或直接加 LINE：<b>yunzhen-photo</b>　·　傳你的日期給我就好，不用先想問題</p>
       <span class="edge">ROLL 230 · 林昀真</span>
     </article>
   </section>
@@ -93,6 +112,24 @@
     </div>
   </section>
 
+
+  <section id="plans">
+    <div class="wrap">
+      <div class="sec-head"><h2>方案與價格</h2>
+        <p>先講價格，你才知道要不要花時間問我。三個方案都含全部原檔，不另外收選片費。</p>
+      </div>
+      <ul class="rows">
+        <li><div><h3>儀式</h3><p>四小時 · 單機 · 交件 200 張以上 · 三週內給</p></div>
+          <span class="price">2.8 萬</span></li>
+        <li><div><h3>婚禮全日</h3><p>十小時 · 兩機 · 交件 600 張以上 · 四週內給 · 含訂婚</p></div>
+          <span class="price">4.8 萬</span></li>
+        <li><div><h3>海外或跨日</h3><p>依行程另計 · 含前一日場勘</p></div>
+          <span class="price">6.5 萬起</span></li>
+      </ul>
+      <p class="note-line">超出台中的交通與住宿實報實銷，談之前會先算給你看。</p>
+    </div>
+  </section>
+
   <section id="work">
     <div class="wrap">
       <div class="sec-head"><h2>做過的事</h2></div>
@@ -101,11 +138,13 @@
           <h3>台中 · 家族婚禮</h3>
           <p class="meta">2025 · 全日 · 兩機</p>
           <p>新娘的阿嬤在敬茶時說了一句話，全場只有三個人聽到。那張照片是這場的封面</p>
+          <p><a href="https://photographer.example.tw/albums/taichung" rel="noopener">看這場的完整相簿</a></p>
         </li>
         <li>
           <h3>台南 · 老宅儀式</h3>
           <p class="meta">2025 · 半日</p>
           <p>場地只有一扇窗。整場靠那道光走位</p>
+          <p><a href="https://photographer.example.tw/albums/tainan" rel="noopener">看這場的完整相簿</a></p>
         </li>
       </ul>
     </div>
@@ -117,7 +156,7 @@
       <p>拍了兩百三十場婚禮。不擺拍，不喊口號，站在會發生事情的那個位置等。</p>
       <div class="actions">
         <a class="btn btn-primary" href="mailto:lin@example.tw">問檔期</a>
-        <a class="btn btn-ghost" href="https://photographer.example.tw" rel="noopener">看作品</a>
+        <a class="btn btn-ghost" href="https://photographer.example.tw" rel="noopener">看作品與價格</a>
       </div>
     </div>
   </section>
@@ -133,16 +172,5 @@
   </div>
 </footer>
 
-<script src="hero.js"></script>
-<script>
-  var HERO = { fx: 'noiseLines', opts: { lines: 14, amp: 20 } };
-  (function () {
-    var c = document.querySelector('.hero canvas');
-    if (!c) return;
-    var ink = getComputedStyle(document.documentElement).getPropertyValue('--hero-ink').trim();
-    var fx = Hero[HERO.fx] || Hero[Object.keys(Hero)[0]];
-    fx(c, Object.assign({ color: ink, colors: [ink] }, HERO.opts));
-  })();
-</script>
 </body>
 </html>
