@@ -16,103 +16,141 @@
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="base.css">
 <style>
-  /* 概念：機櫃。左右軌道的螺絲孔、每個區塊是一片面板、右上一顆慢慢呼吸的綠燈。
-     全站不出現紅燈——那就是「半夜不會被叫起來」的實體形狀。 */
-  :root { --rack: #0e1113; --panel: #161a1d; --rail: #2a3033; --led: #3fd07a;
+  /* 概念：機櫃。
+     容器＝一片一片的 U 面板，每片有 U 編號與一顆綠燈。
+     重複單元＝一台設備（一件做過的事就是一台）。分節＝U 數。
+     全站不出現紅燈，那就是「半夜不會被叫起來」的實體形狀。 */
+  /* 要換底色就覆寫 tokens 的 --bg 與 --fg，不要自己發明一組。 */
+  :root { --bg: #0e1113; --fg: #eef2f5; --rack: #0e1113;
+          --panel: #161a1d; --rail: #2a3033; --led: #3fd07a; --fg-muted: #9aa3ab;
           --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace; }
-  body { background: var(--rack); }
-  main { max-width: 74rem; margin-inline: auto; padding-inline: 3.2rem; position: relative; }
-  /* 左右軌道與螺絲孔 */
-  main::before, main::after { content: ''; position: absolute; top: 0; bottom: 0; width: 3.2rem;
+  body { background: var(--bg); color: var(--fg); }
+  main { max-width: 74rem; margin-inline: auto; padding: var(--space-3) 3.4rem; position: relative; }
+  /* 左右軌道與螺絲孔，從頭到尾都在 */
+  main::before, main::after { content: ''; position: absolute; top: 0; bottom: 0; width: 3.4rem;
     background: var(--panel);
     background-image: repeating-linear-gradient(180deg,
-      transparent 0 22px, rgba(255,255,255,.13) 22px 26px, transparent 26px 48px);
+      transparent 0 24px, rgba(255,255,255,.13) 24px 28px, transparent 28px 52px);
     border-inline: 1px solid var(--rail); }
   main::before { left: 0; } main::after { right: 0; }
 
+  /* 每個區塊都是一片面板 */
   .u { position: relative; background: var(--panel); border: 1px solid var(--rail);
-    box-shadow: 0 6px 0 rgba(0,0,0,.45); margin-block: var(--space-2); }
-  .u > .wrap { padding: var(--space-4) var(--space-4); max-width: none; }
-  .led { position: absolute; top: 12px; right: 14px; width: 9px; height: 9px; border-radius: 50%;
-    background: var(--led); box-shadow: 0 0 10px var(--led); animation: breathe 3.6s ease-in-out infinite; }
-  @keyframes breathe { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
-  @media (prefers-reduced-motion: reduce) { .led { animation: none; opacity: .85; } }
+    box-shadow: 0 6px 0 rgba(0,0,0,.45); margin-bottom: var(--space-3);
+    padding: var(--space-4) var(--space-4) var(--space-3); }
   .u__label { position: absolute; left: 14px; top: 10px; font-family: var(--mono);
     font-size: 0.7rem; letter-spacing: 0.12em; color: var(--fg-muted); }
+  .led { position: absolute; top: 12px; right: 14px; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--led); box-shadow: 0 0 10px var(--led);
+    animation: breathe 3.6s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .led { animation: none; opacity: .85; } }
+  .u h2 { font-size: var(--step-1); margin: var(--space-2) 0 var(--space-3);
+    font-family: var(--mono); letter-spacing: 0.04em; }
 
-  .hero { min-height: min(74svh, 40rem); display: grid; align-content: center; }
-  .hero h1 { font-size: var(--step-3); margin-bottom: var(--space-3); }
+  .u--hero { min-height: min(72svh, 38rem); display: grid; align-content: center; }
+  .u--hero h1 { font-size: var(--step-3); margin-bottom: var(--space-3); }
   h1 span, h2 span { display: inline-block; }
-  .hero .lede { color: var(--fg-muted); max-width: 34ch; }
+  .u--hero .lede { color: var(--fg-muted); max-width: 34ch; }
   .uptime { font-family: var(--mono); font-size: var(--step-s); color: var(--led);
     border: 1px solid var(--rail); padding: 0.4em 0.8em; display: inline-block;
     margin-top: var(--space-3); letter-spacing: 0.08em; }
-  .facts b, .work .meta, .card .price { font-family: var(--mono); }
-  section { padding-block: 0; }
-  section + section { border-top: none; }
-  .close { text-align: center; }
-  @media (max-width: 46rem) { main { padding-inline: 1.6rem; }
-    main::before, main::after { width: 1.6rem; } }
+
+  /* 規格表：機器背後那張貼紙 */
+  .spec { display: grid; grid-template-columns: 8rem 1fr; gap: 0.4rem var(--space-3);
+    font-family: var(--mono); font-size: var(--step-s); }
+  .spec dt { color: var(--fg-muted); }
+  .spec dd { margin: 0; font-family: var(--font-sans); }
+
+  /* 一件事＝一台設備，掛在自己的面板上，有自己的燈 */
+  .dev { border-top: 1px solid var(--rail); padding: var(--space-3) 0; position: relative; }
+  .dev:first-of-type { border-top: 0; }
+  .dev h3 { font-size: var(--step-1); margin: 0 0 var(--space-1); }
+  .dev .meta { font-family: var(--mono); font-size: 0.76rem; color: var(--fg-muted);
+    letter-spacing: 0.06em; margin: 0 0 var(--space-2); }
+  .dev p { margin: 0; max-width: 62ch; }
+  .dev .out { display: inline-block; margin-top: var(--space-2); font-family: var(--mono);
+    font-size: var(--step-s); color: var(--led); }
+
+  /* 頁尾當成電源列 */
+  footer { max-width: 74rem; margin-inline: auto; padding-inline: 3.4rem; }
+  footer .wrap { background: var(--panel); border: 1px solid var(--rail);
+    padding: var(--space-2) var(--space-3); max-width: none;
+    background-image: repeating-linear-gradient(90deg,
+      transparent 0 18px, rgba(255,255,255,.07) 18px 21px, transparent 21px 44px); }
+  section { padding: 0; }
+  @media (max-width: 46rem) {
+    main, footer { padding-inline: 1.6rem; }
+    main::before, main::after { width: 1.6rem; }
+    .spec { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
-<body class="rack">
+<body>
 <a class="skip" href="#main">跳到主要內容</a>
+
 <main id="main">
-  <section class="hero u">
-    <span class="u__label">U01 · 何柏瑋</span><span class="led" aria-hidden="true"></span>
-    <div class="wrap">
-      <p class="eyebrow">後端與系統可靠性</p>
-      <h1><span>半夜不會</span><span>被叫起來的系統</span></h1>
-      <p class="lede">十一年後端。專門接手已經在跑、但是沒人敢動的服務：先讓它可觀測，再讓它可改。</p>
-      <p class="uptime">STATUS · 目前有空，可接短期</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="mailto:ho@example.tw">談你的系統</a>
-        <a class="btn btn-ghost" href="#work">看做過的事</a>
-      </div>
+
+  <section class="u u--hero">
+    <span class="u__label">U01 · 何柏瑋 · 後端與系統可靠性</span><span class="led" aria-hidden="true"></span>
+    <h1><span>半夜不會被</span><span>叫起來的系統</span></h1>
+    <p class="lede">十一年後端。專門接手已經在跑、但是沒人敢動的服務：先讓它可觀測，再讓它可改。</p>
+    <p class="uptime">STATUS · 目前有空，可接短期</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="mailto:ho@example.tw">談你的系統</a>
+      <a class="btn btn-ghost" href="#log">看事故紀錄</a>
     </div>
   </section>
 
-  <section id="about">
-    <div class="wrap">
-      <div class="sec-head"><h2>我是誰</h2></div>
-      <div class="prose"><p>十一年後端。專門接手已經在跑、但是沒人敢動的服務：先讓它可觀測，再讓它可改。</p></div>
-      <ul class="facts">
-        <li><b>擅長</b><span>Go、PostgreSQL、可觀測性、事故復盤</span></li>
-        <li><b>不接</b><span>從零開始的新專案、純前端</span></li>
-        <li><b>合作方式</b><span>遠端，每週固定同步一次</span></li>
-        <li><b>所在地</b><span>台北</span></li>
-      </ul>
+  <section class="u">
+    <span class="u__label">U02 · 規格</span><span class="led" aria-hidden="true"></span>
+    <h2>SPEC</h2>
+    <dl class="spec">
+      <dt>擅長</dt><dd>Go、PostgreSQL、可觀測性、事故復盤</dd>
+      <dt>不接</dt><dd>從零開始的新專案、純前端</dd>
+      <dt>合作方式</dt><dd>遠端，每週固定同步一次</dd>
+      <dt>所在地</dt><dd>台北</dd>
+      <dt>第一步</dt><dd>先花兩到三週只做量測，不改任何一行 code</dd>
+    </dl>
+  </section>
+
+  <section class="u" id="log">
+    <span class="u__label">U03 · 事故紀錄</span><span class="led" aria-hidden="true"></span>
+    <h2>INCIDENT LOG</h2>
+    <div class="dev">
+      <h3>訂單服務的資料庫換血</h3>
+      <p class="meta">2025 · 電商 · 我負責遷移計畫與回滾機制</p>
+      <p>單表七億筆，不能停機。分五批切，每批都準備好退路。實際用到退路一次。</p>
+      <p class="out">結果 · 零停機，一次回滾，資料無損</p>
+    </div>
+    <div class="dev">
+      <h3>把每月三次的半夜告警降到零</h3>
+      <p class="meta">2024 · SaaS · 我負責可觀測性與值班制度</p>
+      <p>先花三週只做量測不改 code。找出來的根因跟大家猜的不一樣。</p>
+      <p class="out">結果 · 半夜告警 3 次／月 → 0</p>
     </div>
   </section>
 
-  <section id="work">
-    <div class="wrap">
-      <div class="sec-head"><h2>做過的事</h2></div>
-      <ul class="work">
-        <li>
-          <h3>訂單服務的資料庫換血</h3>
-          <p class="meta">2025 · 電商 · 我負責遷移計畫與回滾機制</p>
-          <p>單表七億筆，不能停機。分五批切，每批都準備好退路。實際用到退路一次</p>
-        </li>
-        <li>
-          <h3>把每月三次的半夜告警降到零</h3>
-          <p class="meta">2024 · SaaS · 我負責可觀測性與值班制度</p>
-          <p>先花三週只做量測不改 code。找出來的根因跟大家猜的不一樣</p>
-        </li>
-      </ul>
+  <section class="u">
+    <span class="u__label">U04 · 怎麼開始</span><span class="led" aria-hidden="true"></span>
+    <h2>RUNBOOK</h2>
+    <dl class="spec">
+      <dt>W1–W3</dt><dd>只加量測，不動邏輯。你會先看到現在到底發生什麼事</dd>
+      <dt>W4</dt><dd>一起看數據，決定要動哪一塊。你可以在這裡喊停</dd>
+      <dt>W5+</dt><dd>一次改一件，每件都有退路</dd>
+      <dt>交付</dt><dd>你們的人接得下去，我走了系統還是你們的</dd>
+    </dl>
+  </section>
+
+  <section class="u" id="contact">
+    <span class="u__label">U05 · 聯絡</span><span class="led" aria-hidden="true"></span>
+    <h2>CONTACT</h2>
+    <p>把你半夜被叫起來的那件事寫給我就好，不用先整理成需求。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="mailto:ho@example.tw">寄信給我</a>
     </div>
   </section>
 
-  <section class="close" id="contact">
-    <div class="wrap">
-      <h2><span>談你的系統</span></h2>
-      <p>十一年後端。專門接手已經在跑、但是沒人敢動的服務：先讓它可觀測，再讓它可改。</p>
-      <div class="actions">
-        <a class="btn btn-primary" href="mailto:ho@example.tw">談你的系統</a>
-        <a class="btn btn-ghost" href="https://backend.example.tw" rel="noopener">看做過的事</a>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer>
@@ -124,6 +162,5 @@
     </ul>
   </div>
 </footer>
-
 </body>
 </html>

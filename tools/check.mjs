@@ -155,6 +155,13 @@ contrast(fg, bg, '內文與背景', 4.5, true);
 contrast(accFg, acc, '主要按鈕的字與底色', 4.5, true);
 contrast(muted, bg, '次要文字與背景', 4.5, false);
 
+// 概念版常常自己發明一組顏色變數當底色，卻沒有覆寫 --fg。
+// 那樣系統偏好淺色時文字會翻成深色，深字配深底，而上面那三條比的是 --bg 所以放行。
+var bodyBg = /body\s*\{[^}]*background(?:-color)?\s*:\s*([^;}]+)/.exec(allCss);
+if (bodyBg && !/var\(\s*--bg\s*\)/.test(bodyBg[1]))
+  warn(`body 的背景寫成 ${bodyBg[1].trim()}，不是 var(--bg)。`
+     + `要換底色請覆寫 --bg 與 --fg，不然淺色模式下文字會翻色，而且上面的對比檢查會比錯對象`);
+
 // 十、預覽用的東西要刪掉
 if (has(/URLSearchParams\(location\.search\)\.get\(['"]vibe['"]\)/))
   fail('還留著預覽用的 ?vibe 切換程式，上線前要刪掉');
