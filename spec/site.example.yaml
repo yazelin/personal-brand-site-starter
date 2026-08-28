@@ -19,6 +19,12 @@ person:
 audience: 一位製造業的資訊主管，被指派要改一套沒人敢動的舊系統，
   手上同時在比三家廠商，最怕找到只會做漂亮簡報的人。懂流程，不一定懂設計。
 
+# 使用者明講「絕對不要」的東西，抄他的原話。建站與每一輪優化都要對照這一段。
+# 模擬三個行業的使用者，三個都主動講了這種話，而且講得很具體。
+avoid:
+  - 不要像購物網站那樣一格一格標價錢放購物車
+  - 不要看起來很浮誇
+
 style:
   vibe: grand           # calm | bold | gallery | grand
   hero: geoDrift        # noiseLines | flowGradient | particleField | geoDrift
