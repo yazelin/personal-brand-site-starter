@@ -81,6 +81,7 @@ templates/base.css     四種版面共用的元件樣式
 hero/                  四種首屏動效，零依賴，各自獨立一支
 tools/check.mjs        上線前的機器檢查，零依賴，node 直接跑
 tools/voice.mjs        檢查使用者自己講過的話有沒有在優化過程中被改掉
+tools/spec-check.mjs   驗 spec 的必要欄位有沒有齊，擋自己發明結構
 spec/site.example.yaml 訪談產出長什麼樣的範例
 docs/                  部署步驟、參考站清單、更兇的特效、可以外掛的第三方 skills
 ```

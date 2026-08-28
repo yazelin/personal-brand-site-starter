@@ -14,6 +14,13 @@ description: 在動手做網站之前，問出使用者真正要促成的那一�
 **一次只問一題，等他回答再問下一題。** 一口氣丟十個問題，他會挑好回答的答、
 跳過真正重要的。這是整個階段最容易做壞的地方。
 
+**判準寫成可以自己檢查的形式：你送出的訊息裡只能有一個問號。**
+寫完數一次，超過一個就把多的刪掉，留最重要的那一個。
+
+這件事實測過會破功：模擬一場十四輪的訪談，有八輪違規，最嚴重的一輪問了五個問題。
+會破功是因為有些題目天生想一次問完（風格、顏色、概念常常被綁在一起問）。
+**數問號比記規則有效。**
+
 **用選項問，不要用開放題問。** 「你想要什麼風格」他答不出來。
 「安靜克制像一份履歷，還是強烈一點像一張海報」他答得出來。
 
@@ -98,8 +105,13 @@ description: 在動手做網站之前，問出使用者真正要促成的那一�
 
 問完內容再問風格，順序不要反過來。內容決定風格，反過來會做出一個裝不下內容的殼。
 
-**先開 `templates/preview.html` 給他看**，那裡是四種版面乘以四種風格，
-十六種都是他真的會拿到的東西。看得到的東西問得出意見，形容詞問不出來。
+**先把版面預覽給他看**，那裡是五種版面乘以四種風格，都是他真的會拿到的東西。
+
+**給他線上網址，不要叫他打開資料夾雙擊檔案。**
+https://yazelin.github.io/personal-brand-site-starter/templates/preview.html
+實測有代理人叫一個說「GitHub 我聽不懂那是什麼」的使用者去開本機檔案，
+那是不必要的門檻。範例站也一樣：
+https://yazelin.github.io/personal-brand-site-starter/examples/看得到的東西問得出意見，形容詞問不出來。
 
 **不要一開始就丟外面的得獎作品給他看。** 看到做不到的東西，
 會對做得到的東西失望，接下來整個流程都會歪掉。
@@ -143,7 +155,42 @@ personalsit.es 篩他那一行，找兩三個同行的站補充討論。
 
 ## 產出
 
-寫成 `spec/site.yaml`，格式照 `spec/site.example.yaml`。
+寫成 `spec/site.yaml`。**下面這些欄位一個都不能少**，
+不要自己發明結構——實測有代理人自創了一套 schema，
+把 `tagline`、`lede`、`facts`、`avoid` 全丟了，後面的階段就接不上。
+
+```yaml
+goal:        # buy | contact | remember | hire | card
+one_line:    # 這個網站要讓來的人做哪一件事，一句話
+person:
+  name:
+  title:
+  tagline:   # 首屏大標，他自己的話
+  lede:      # 副標，他自己的話
+  location:
+  email:
+  links: [{label:, url:}]
+audience:    # 一個具體的人，有處境跟顧慮，階段五要拿它當角色
+avoid:       # 他明講絕對不要的東西，抄原話，一行一條
+style:
+  vibe:      # calm | bold | gallery | grand
+  layout:    # stack | split | editorial | bleed
+  hero:      # noiseLines | flowGradient | particleField | geoDrift | fluidInk
+  brand_color:
+  concept:   # 問得出來才寫
+sections: []  # 用得到的才留
+offer: []     # 有賣東西才寫
+work: []      # 有作品才寫
+faq: []
+hosting:
+  platform: # 階段二填
+  domain:
+  backend:
+  payment:
+```
+
+完整的範例在 `spec/site.example.yaml`，**開起來對一次再交出去**。
+寫完可以跑 `node tools/spec-check.mjs spec/site.yaml` 驗必要欄位有沒有齊。
 寫完把 `goal`、`audience`、`sections` 三段唸給他聽，確認過再進階段二。
 
 寫進 spec 的每一句文案都要是他自己講過的話，只做刪修，不要替他發明。
@@ -154,5 +201,9 @@ personalsit.es 篩他那一行，找兩三個同行的站補充討論。
 `node tools/voice.mjs site/index.html site/voice.txt` 會抓出來。
 
 抄進去的判準是「這句話換成別人講就不成立」。
+
+**voice.txt 裡只能有他說過的話。** 實測有代理人把自己的流程標記
+（像 `[訪談完成]`）也抄進去了。另外，模型輸出常見的繁簡轉換錯字
+（「不是隻為了應付考試」的「隻」）要順手改掉，**但語氣一個字都不要動**。
 像「不擺拍，不喊口號，站在會發生事情的那個位置等」這種，
 換成「在最佳位置捕捉每個動人瞬間」就完全沒有他了。

@@ -27,7 +27,8 @@ avoid:
 
 style:
   vibe: grand           # calm | bold | gallery | grand
-  hero: geoDrift        # noiseLines | flowGradient | particleField | geoDrift
+  layout: editorial     # stack | split | editorial | bleed | console
+  hero: geoDrift        # noiseLines | flowGradient | particleField | geoDrift | fluidInk
   hero_opts:            # 照內容調過的參數，不要照抄預設值
     shapes: 6
     speed: 0.25
