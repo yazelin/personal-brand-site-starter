@@ -211,6 +211,7 @@ hero/                  四種首屏動效，外加一頁可以一次比較的預
 tools/check.mjs        上線前的機器檢查，零依賴
 tools/voice.mjs        他自己講過的話還在不在
 tools/spec-check.mjs   spec 必要欄位驗證
+tools/effort.mjs       算作品「做多久」，排除自動化 commit
 spec/site.example.yaml 訪談產出長什麼樣
 docs/                  各行各業、美學族譜、部署、參考站、概念、中文排版、圖片、特效
 ```
