@@ -41,7 +41,7 @@
 | 階段一開場 | `docs/trades.md` | 翻到他那一行，把「受眾會先問的三件事」念給他聽 |
 | 階段一問族 | `docs/families.md` | 七族的性格、色彩配方、動畫在動什麼。**用動的性格問，不要問顏色** |
 | 階段一問概念 | `docs/concept.md` | 問出一個屬於他這一行的東西。**這一題最決定成品像不像他** |
-| 想知道成品長怎樣 | `examples/` | 四個行業的完整範例，每一個都附對打的票數 |
+| 想知道成品長怎樣 | `examples/` | 二十四個範例，`docs/trades.md` 的二十個行業每一個都有 |
 | 階段五每一圈 | `skills/05-optimise/SKILL.md` | 受眾審查的提示詞、**打分數的量表**、擷圖腳本、停止條件 |
 | 階段三挑版面 | `templates/preview.html` | 六種版面各自適合誰，都寫在那一頁 |
 | 階段三排版前 | `docs/images.md` | 使用者手上沒有能用的圖的時候怎麼辦，還有一條不能踩的紅線 |
@@ -75,12 +75,12 @@
 
 ```
 AGENTS.md              你正在讀的這份，總控
-skills/                四個階段各一份作業指引
+skills/                五個階段各一份作業指引
 templates/             六種版面骨架，開 templates/preview.html 一次比較
-examples/              四個行業的完整範例，用這條流程做出來就會長那樣
+examples/              二十四個完整範例，二十個行業全部有，用這條流程做出來就會長那樣
 templates/tokens.css   顏色、字級、間距的變數，改這裡就換掉整站氣質
-templates/base.css     四種版面共用的元件樣式
-hero/                  四種首屏動效，零依賴，各自獨立一支
+templates/base.css     六種版面共用的元件樣式,內文欄寬的預設也在這裡
+hero/                  五支首屏動效，零依賴，各自獨立一支
 tools/check.mjs        上線前的機器檢查，零依賴，node 直接跑
 tools/voice.mjs        檢查使用者自己講過的話有沒有在優化過程中被改掉
 tools/spec-check.mjs   驗 spec 的必要欄位有沒有齊，擋自己發明結構
