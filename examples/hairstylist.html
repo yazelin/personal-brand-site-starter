@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://hair.example.tw/">
 <meta property="og:image" content="https://hair.example.tw/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http%3A//www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='25' font-size='24' fill='%23c98a5e'>%E5%BD%A1</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='25' font-size='24' fill='%23c98a5e'>%E5%BD%A1</text></svg>">
 <link rel="stylesheet" href="../templates/tokens.css">
 <link rel="stylesheet" href="../templates/base.css">
 <style>
@@ -144,12 +144,13 @@
     font-size: var(--step-s); margin: 0; }
   .spec dt { color: var(--fg-muted); }
   .spec dd { margin: 0; }
-  .spec dd b { display: inline; font-size: inherit; letter-spacing: 0; color: var(--accent); }
   .spec .fee-line { color: var(--fg); font-variant-numeric: tabular-nums; }
 
   /* 價目 */
+  /* 價目表拉太寬的話，品項跟金額會離到看不出是同一列 */
   .fee { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2);
-    padding-block: 0.45rem; border-bottom: 1px dotted var(--line); font-size: var(--step-s); }
+    max-width: 32rem; padding-block: 0.45rem; border-bottom: 1px dotted var(--line);
+    font-size: var(--step-s); }
   .fee span:last-child { font-variant-numeric: tabular-nums; }
   .fee:last-of-type { border-bottom: 0; }
 
@@ -157,7 +158,8 @@
     color: var(--fg-muted); display: grid; gap: var(--space-1); max-width: 34em; }
   .info b { color: var(--fg); font-weight: 500; margin-right: 0.5em; }
   .direct { font-size: var(--step-s); color: var(--fg-muted); margin: var(--space-3) 0 0; }
-  .direct b { color: var(--accent); letter-spacing: 0.04em; }
+  /* .strand b 是 block，這一行在撮裡面時會被斷行，所以拉回 inline */
+  .direct b { display: inline; color: var(--accent); letter-spacing: 0.04em; }
 
   /* .wrap 本來是 width:100%，配上左偏移的 margin 會超出畫面，所以這裡改成 auto */
   footer .wrap { width: auto; max-width: var(--maxw);
@@ -173,7 +175,8 @@
     .actions { margin-top: var(--space-2); }
     .rail__name { font-size: 0.68rem; letter-spacing: 0.2em; }
     .strand { padding-left: 2.9rem; }
-    .spec { grid-template-columns: 4.6rem minmax(0, 1fr); }
+    .spec { grid-template-columns: 3.6rem minmax(0, 1fr); gap: 0.3rem var(--space-1); }
+    .spec dt { font-size: 0.8rem; line-height: 1.7; }
     .clip { top: 4rem; }
   }
 </style>
@@ -202,7 +205,7 @@
 
       <div class="strand">
         <b>剪出來長怎樣</b>
-        <p>長度落點、層次高低、提拉角度，就這三個數字。往下第二區，五種剪法每一種都寫了，連不適合誰都寫了。</p>
+        <p>長度落點、層次高低、提拉角度，就這三個數字。<a href="#cuts">往下第二區</a>，五種剪法每一種都寫了，連不適合誰都寫了。</p>
         <span class="ruler" style="--to: 3" aria-hidden="true"></span>
         <div class="scale" aria-hidden="true">
           <span>耳上</span><span>耳下</span><span>下巴</span><span>鎖骨</span><span>肩</span><span>肩胛骨</span>
@@ -235,7 +238,7 @@
       <span class="rail__hair"></span>
     </div>
     <div class="zone__body">
-      <h2>五種剪法，每一種都寫成規格</h2>
+      <h2><span>五種剪法，</span><span>每一種都寫成規格</span></h2>
       <p class="sub">導引股是第一刀剪下去的那一撮，後面每一撮都跟它對齊。長度落點、層次、提拉角度這三個數字定下來，你頭上會發生的事就定了。</p>
 
       <article class="strand">
@@ -366,7 +369,7 @@
       <span class="rail__hair"></span>
     </div>
     <div class="zone__body">
-      <h2>我先摸髮質，再看你的頭骨</h2>
+      <h2><span>我先摸髮質，</span><span>再看你的頭骨</span></h2>
       <p class="sub">你不用先知道自己是什麼髮質。這一區寫的是我坐下來之後在看什麼，你也可以拿去問別的設計師。</p>
 
       <div class="strand">
