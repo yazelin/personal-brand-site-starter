@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>長桌咖啡 — 24 個位子，16 個有插座，不限時</title>
+<meta name="description" content="台中西區中興街的小咖啡店，一個人顧。24 個座位，16 個有插座，平日不限時。哪一區適合帶電腦、哪個時段還有位子、待多久算久，都寫在這一頁。">
+<link rel="canonical" href="https://cafe.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="長桌咖啡 — 24 個位子，16 個有插座，不限時">
+<meta property="og:description" content="台中西區中興街的小咖啡店。24 個座位，16 個有插座，平日不限時。哪一區適合帶電腦、哪個時段還有位子，都寫在這一頁。">
+<meta property="og:url" content="https://cafe.example.tw/">
+<meta property="og:image" content="https://cafe.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▤</text></svg>">
+<link rel="stylesheet" href="../templates/tokens.css">
+<link rel="stylesheet" href="../templates/base.css">
+<style>
+  /* 族：克制（文件感）。動的性格是幾乎不動，整頁只有第一張卡被立起來那一下。
+     來的人多半是想找地方坐下來工作的，版面亂動只會干擾他讀那三行數字。
+     色系走木桌與奶油紙，飽和度壓低，只留一個咖啡色當強調色。
+
+     概念：桌卡，就是咖啡店每張桌上立著的那張折卡。
+       容器＝一張立起來的折卡：頂端是折過去的背板（上窄下寬的梯形），
+               一道折線，底下是卡面，卡在木桌上留一道影子。
+       重複單元＝卡面上一列一列的「一件事加一個狀態」，
+               中間用點線隔開，右邊是數字或一句話的結論。
+       分節＝卡號加它立在哪一張桌上：卡 01 立在長桌、卡 02 立在吧台，
+               一路排到門口與櫃檯。店裡有幾個檯面，這一頁就有幾張卡。
+     為什麼是咖啡店：桌卡本來就是咖啡店拿來回答「這張桌子能不能久坐、
+     插座在哪、Wi-Fi 密碼多少」的東西，客人坐下第一眼看的就是它。
+     而客人在網路上找咖啡店的時候，想問的正好是同樣那幾件事。
+     裝飾只做一次：杯痕只在第一張卡上出現。 */
+
+  /* 換底色要覆寫 tokens 的 --bg 與 --fg，不要自己發明一組 */
+  :root {
+    --bg: #cdbba4;        --fg: #241a12;        --fg-muted: #5a4736;
+    --accent: #7a3f22;    --accent-fg: #fdf7ee; --line: #b7a58c;
+    --paper: #fbf6ec;     --fold: #e8dcc8;      --crease: #bda98d;
+    --edge: #b09b80;      --dot: #cbbba0;       --mark: #8a3a2b;
+    --radius: 3px;
+  }
+
+  /* 木桌面。卡片就立在這上面 */
+  body { background: var(--bg); color: var(--fg);
+    background-image:
+      repeating-linear-gradient(180deg, #2a190c07 0 1px, transparent 1px 13px),
+      repeating-linear-gradient(180deg, #ffffff0d 0 1px, transparent 1px 41px),
+      repeating-linear-gradient(180deg, #2a190c0f 0 2px, transparent 2px 232px); }
+
+  .table { max-width: 58rem; margin-inline: auto;
+    padding: var(--space-4) var(--space-3) var(--space-6); }
+  section { padding: 0; }
+  h1 span { display: block; }
+  h2 span, .lede span { display: inline-block; }
+
+  /* 容器：一張立起來的桌卡。從第一屏用到頁尾 */
+  .tent { position: relative; }
+  .tent + .tent { margin-top: var(--space-5); }
+  /* 折過去的背板。上窄下寬，看起來像從斜上方看一張立牌 */
+  .tent__fold { clip-path: polygon(1.6% 0, 98.4% 0, 100% 100%, 0 100%);
+    background: linear-gradient(#dfd0b6, var(--fold));
+    padding: 0.5rem clamp(1.4rem, 4vw, 2.8rem) 0.42rem;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem var(--space-3);
+    font-size: 0.7rem; letter-spacing: 0.14em; color: var(--fg-muted); }
+  .tent__fold b { color: var(--fg); font-weight: 600; letter-spacing: 0.18em; }
+  .tent__fold .no { margin-left: auto; letter-spacing: 0.12em;
+    font-variant-numeric: tabular-nums; }
+  /* 卡面。折線是上緣那一道 */
+  .tent__face { position: relative; background: var(--paper);
+    border: 1px solid var(--edge); border-top: 1px solid var(--crease);
+    box-shadow: 0 16px 22px -20px #2a190c;
+    padding: var(--space-3) clamp(1.1rem, 3.6vw, 2.6rem) var(--space-4); }
+  .tent__foot { border-top: 1px dotted var(--dot); margin-top: var(--space-3);
+    padding-top: var(--space-2); font-size: 0.72rem; color: var(--fg-muted);
+    letter-spacing: 0.04em; font-variant-numeric: tabular-nums; max-width: 40em; }
+
+  /* 杯痕。整頁只出現這一次 */
+  .ring { position: absolute; right: clamp(0.6rem, 5vw, 3.2rem); top: -1.5rem;
+    width: 5.6rem; height: 5.6rem; pointer-events: none; transform: rotate(-7deg);
+    background: radial-gradient(circle, transparent 0 39%, #6b3f1f2e 40% 46%,
+      #6b3f1f14 47% 52%, transparent 53%); }
+
+  /* 第一張卡被立起來那一下。除了這裡，整頁不動 */
+  @keyframes standup { from { opacity: 0; transform: translateY(8px) scaleY(0.985); }
+                       to   { opacity: 1; transform: none; } }
+  .tent--first { animation: standup 0.55s var(--ease) both; transform-origin: 50% 100%; }
+
+  /* 首屏 */
+  .kick { font-size: var(--step-s); letter-spacing: 0.14em; color: var(--fg-muted);
+    margin: 0 0 var(--space-2); }
+  h1 { font-size: clamp(1.75rem, 6vw, 3rem); line-height: 1.14; margin: 0 0 var(--space-3); }
+  .lede { font-size: var(--step-1); line-height: 1.55; max-width: 22em;
+    margin: 0 0 var(--space-3); }
+
+  /* 客人點開網頁想知道的三件事，就在第一眼的位置 */
+  .ask { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--crease); }
+  .ask li { display: grid; grid-template-columns: 3.4rem 1fr; align-items: baseline;
+    gap: 0.1rem var(--space-2); padding-block: 0.5rem;
+    border-bottom: 1px solid var(--crease); }
+  .ask b { font-size: 0.72rem; letter-spacing: 0.16em; color: var(--fg-muted); font-weight: 600; }
+  .ask strong { font-size: var(--step-1); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ask i { grid-column: 1 / -1; font-style: normal; font-size: var(--step-s);
+    line-height: 1.7; color: var(--fg-muted); max-width: 34em; }
+
+  /* 地址、時間、電話。實體店的這三件不能埋在頁尾 */
+  .now { display: grid; gap: 1px; background: var(--crease);
+    border: 1px solid var(--crease); margin-top: var(--space-2);
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
+  .now div { background: var(--paper); padding: 0.5rem 0.8rem; }
+  .now b { display: block; font-size: 0.66rem; letter-spacing: 0.16em;
+    color: var(--fg-muted); font-weight: 600; }
+  .now strong { font-size: var(--step-0); font-weight: 600; line-height: 1.5;
+    font-variant-numeric: tabular-nums; }
+  .now a { color: inherit; }
+
+  /* 重複單元：卡面上一列。左邊一件事，右邊一個狀態，點線隔開 */
+  h2 { font-size: var(--step-2); margin: 0 0 var(--space-1); }
+  .sub { color: var(--fg-muted); font-size: var(--step-s); max-width: 32em;
+    margin: 0 0 var(--space-2); }
+  .lines { list-style: none; margin: var(--space-2) 0 0; padding: 0; }
+  .lines > li { display: grid; grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline; gap: 0.1rem var(--space-3); padding-block: var(--space-3);
+    border-bottom: 1px dotted var(--dot); }
+  .lines > li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .lines h3 { font-size: var(--step-1); margin: 0 0 0.2rem; }
+  .lines p { margin: 0; color: var(--fg-muted); font-size: var(--step-s); max-width: 30em; }
+  .seatno { display: block; font-size: 0.68rem; letter-spacing: 0.14em;
+    color: var(--fg-muted); font-variant-numeric: tabular-nums; margin-bottom: 0.2rem; }
+  .val { justify-self: end; text-align: right; white-space: nowrap;
+    font-variant-numeric: tabular-nums; font-size: var(--step-1); font-weight: 700; }
+  .val small { display: block; font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em;
+    color: var(--fg-muted); }
+  .val--no { color: var(--mark); font-size: var(--step-0); }
+  .val--word { font-size: var(--step-0); }
+
+  /* 座位配置。有沒有插座一眼看得到，同樣的內容下面每一列都有文字 */
+  .plan { display: grid; gap: var(--space-2); grid-template-columns: minmax(0, 1fr);
+    border: 1px solid var(--crease); background: #f2e9d9;
+    padding: var(--space-2); margin: var(--space-3) 0 var(--space-2); }
+  .zone { border: 1px solid var(--edge); background: var(--paper); padding: 0.5rem 0.6rem; }
+  .zone b { display: block; font-size: 0.66rem; letter-spacing: 0.13em;
+    color: var(--fg-muted); font-weight: 600; margin-bottom: 0.4rem; }
+  .seats { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .seat { width: 0.85rem; height: 0.85rem; border: 1px solid var(--edge); border-radius: 2px; }
+  .seat--p { background: var(--accent); border-color: var(--accent); }
+  .door { border: 1px dashed var(--edge); color: var(--fg-muted);
+    font-size: 0.66rem; letter-spacing: 0.16em; display: flex; align-items: center;
+    justify-content: center; padding: 0.5rem; }
+  .legend { font-size: var(--step-s); color: var(--fg-muted); margin: 0 0 var(--space-2);
+    max-width: 34em; }
+
+  /* 克制族的按鈕：方角、細框，不做位移 */
+  .btn { border-radius: 2px; font-weight: 600; letter-spacing: 0.04em; }
+  .btn-ghost { border-color: var(--edge); background: var(--paper); }
+  .actions { margin-top: var(--space-3); }
+  .after { color: var(--fg-muted); font-size: var(--step-s); max-width: 34em;
+    margin: var(--space-3) 0 0; }
+
+  footer { max-width: 58rem; margin-inline: auto; margin-top: var(--space-5);
+    border-top-color: var(--edge); }
+
+  @media (min-width: 42rem) {
+    .ask li { grid-template-columns: 3.6rem 8.5rem minmax(0, 1fr); }
+    .ask i { grid-column: 3; }
+    .plan { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+      grid-template-areas: "win corner" "long corner" "bar door"; }
+    .z-win { grid-area: win; } .z-long { grid-area: long; }
+    .z-corner { grid-area: corner; } .z-bar { grid-area: bar; } .door { grid-area: door; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tent--first { animation: none; opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main" class="table">
+
+  <section class="tent tent--first">
+    <div class="tent__fold"><b>立在　長桌 L01–L10</b><span class="no">卡 01</span></div>
+    <div class="tent__face">
+      <div class="ring" aria-hidden="true"></div>
+      <p class="kick">台中市西區中興街 41 號　一個人顧的咖啡店</p>
+      <h1><span>長桌咖啡</span><span>一個人來，不限時</span></h1>
+      <p class="lede"><span>二十四個位子，十六個有插座，</span><span>多數客人待兩三個小時。</span></p>
+
+      <ul class="ask">
+        <li><b>位子</b><strong>24 席</strong>
+          <i>長桌 10、吧台 6、窗邊 4、角落 4。想知道現在還有沒有空位，打電話最快，我從吧台看得到整間店。</i></li>
+        <li><b>久坐</b><strong>不限時</strong>
+          <i>平日坐到打烊都可以。週六日 11:00 到 15:00 人多，那段時間一個位子兩小時。</i></li>
+        <li><b>插座</b><strong>16 席有</strong>
+          <i>長桌與窗邊每一席一個，直接插不用問我。吧台那 6 席刻意沒有拉線。</i></li>
+      </ul>
+
+      <div class="now">
+        <div><b>開門</b><strong>09:00 到 18:00</strong></div>
+        <div><b>電話</b><strong><a href="tel:0423014188">04-2301-4188</a></strong></div>
+        <div><b>公休</b><strong>每週一</strong></div>
+        <div><b>怎麼走</b><strong><a href="https://maps.example.tw" rel="noopener">中興街 41 號</a></strong></div>
+      </div>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="tel:0423014188">打電話問還有沒有位子</a>
+        <a class="btn btn-ghost" href="#seats">看座位配置</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="tent" id="seats">
+    <div class="tent__fold"><b>立在　吧台 B01–B06</b><span>沖煮台正對面</span>
+      <span class="no">卡 02</span></div>
+    <div class="tent__face">
+      <h2><span>二十四個位子，</span><span>哪一個適合你</span></h2>
+      <p class="sub">帶電腦的人看長桌與窗邊，只想喝一杯的人坐吧台。</p>
+
+      <div class="plan" aria-hidden="true">
+        <div class="zone z-win"><b>窗邊 W01–W04　面街</b><div class="seats">
+          <span class="seat seat--p"></span><span class="seat seat--p"></span>
+          <span class="seat seat--p"></span><span class="seat seat--p"></span></div></div>
+        <div class="zone z-long"><b>長桌 L01–L10</b><div class="seats">
+          <span class="seat seat--p"></span><span class="seat seat--p"></span>
+          <span class="seat seat--p"></span><span class="seat seat--p"></span>
+          <span class="seat seat--p"></span><span class="seat seat--p"></span>
+          <span class="seat seat--p"></span><span class="seat seat--p"></span>
+          <span class="seat seat--p"></span><span class="seat seat--p"></span></div></div>
+        <div class="zone z-corner"><b>角落 C1　C2　兩張雙人桌</b><div class="seats">
+          <span class="seat seat--p"></span><span class="seat"></span>
+          <span class="seat seat--p"></span><span class="seat"></span></div></div>
+        <div class="zone z-bar"><b>吧台 B01–B06　沖煮台</b><div class="seats">
+          <span class="seat"></span><span class="seat"></span><span class="seat"></span>
+          <span class="seat"></span><span class="seat"></span><span class="seat"></span></div></div>
+        <div class="door">門口</div>
+      </div>
+      <p class="legend">實心的方格是有插座的位子，空心的沒有。整間店二十四席，十六席有插座。</p>
+
+      <ul class="lines">
+        <li>
+          <div><span class="seatno">L01 – L10</span><h3>長桌 10 席</h3>
+          <p>兩百四十公分的舊會議桌，一邊坐五個人。桌面底下兩排延長線，每一席一個插座。對面會坐到不認識的人，介意的話往窗邊坐。</p></div>
+          <span class="val">10 席<small>插座 10</small></span>
+        </li>
+        <li>
+          <div><span class="seatno">B01 – B06</span><h3>吧台 6 席</h3>
+          <p>面對沖煮台，看得到我在做什麼，也方便問豆子。這六席刻意沒有拉插座，留給不帶電腦的人。中午以前幾乎都有空位。</p></div>
+          <span class="val val--no">6 席<small>沒有插座</small></span>
+        </li>
+        <li>
+          <div><span class="seatno">W01 – W04</span><h3>窗邊 4 席</h3>
+          <p>面街的一排，光線最好，每一席一個插座。下午三點以後那面牆有點西曬，怕熱的往長桌坐。</p></div>
+          <span class="val">4 席<small>插座 4</small></span>
+        </li>
+        <li>
+          <div><span class="seatno">C1　C2</span><h3>角落雙人桌 4 席</h3>
+          <p>兩張兩人桌，靠牆那兩個位子有插座。兩個人要講話坐這裡，長桌那邊大家都在做自己的事。這四席最先被坐滿。</p></div>
+          <span class="val">4 席<small>插座 2</small></span>
+        </li>
+      </ul>
+      <div class="tent__foot">合計 24 席 · 週六日中午通常滿，平日多半有位子。要確定的話打一通電話最準。</div>
+    </div>
+  </section>
+
+  <section class="tent" id="rules">
+    <div class="tent__fold"><b>立在　窗邊 W01–W04</b><span>店裡在跑的規矩</span>
+      <span class="no">卡 03</span></div>
+    <div class="tent__face">
+      <h2><span>可以待多久，</span><span>可以講話嗎</span></h2>
+      <p class="sub">先寫出來，你就不用坐下之後還要開口問我。</p>
+      <ul class="lines">
+        <li>
+          <div><h3>平日不限時</h3><p>週二到週五，坐到打烊都可以。我不會過去收杯子，也不會在旁邊擦桌子暗示你。</p></div>
+          <span class="val val--word">不限時</span>
+        </li>
+        <li>
+          <div><h3>週六日的中午</h3><p>11:00 到 15:00 排隊的人最多，一個位子兩小時。時間到我會過去講一聲；還有空位的話我就不會講。</p></div>
+          <span class="val val--word">兩小時</span>
+        </li>
+        <li>
+          <div><h3>低消</h3><p>一杯飲料，內用外帶都算。點了之後想續，美式續杯 60 元，其他品項沒有續杯價。</p></div>
+          <span class="val">1 杯<small>飲料</small></span>
+        </li>
+        <li>
+          <div><h3>用電與網路</h3><p>插座就是給你用的，不用問。Wi-Fi 的密碼印在桌卡背面，忘了就問我，一天大概被問五次。</p></div>
+          <span class="val val--word">都可以</span>
+        </li>
+        <li>
+          <div><h3>講電話與視訊</h3><p>吧台跟門口那兩張椅子可以講。長桌與窗邊請戴耳機，整場都要說話的會議麻煩到外面接。</p></div>
+          <span class="val val--word">看位子</span>
+        </li>
+        <li>
+          <div><h3>東西放著離開</h3><p>去買個東西沒關係。超過三十分鐘沒回來，我會把你的東西收到櫃檯，位子先給在等的人。</p></div>
+          <span class="val val--no">30 分鐘</span>
+        </li>
+        <li>
+          <div><h3>外接螢幕</h3><p>長桌可以，那裡的插座夠。窗邊與角落的檯面只有四十公分深，放了螢幕就沒地方放杯子。</p></div>
+          <span class="val val--word">只有長桌</span>
+        </li>
+      </ul>
+      <div class="tent__foot">這七條就是全部。桌上那張卡寫的跟這裡一樣，字比較小而已。</div>
+    </div>
+  </section>
+
+  <section class="tent" id="menu">
+    <div class="tent__fold"><b>立在　角落 C1</b><span>今天的價目</span>
+      <span class="no">卡 04</span></div>
+    <div class="tent__face">
+      <h2><span>喝什麼，多少錢</span></h2>
+      <p class="sub">豆子每天兩支，寫在櫃檯的小黑板上。這裡只寫價錢，好不好喝要你自己來一趟。</p>
+      <ul class="lines">
+        <li>
+          <div><h3>手沖　淺焙</h3><p>每天換一支。想喝什麼風味可以先講，我照你講的挑，不多收錢。</p></div>
+          <span class="val">160<small>元</small></span>
+        </li>
+        <li>
+          <div><h3>手沖　深焙</h3><p>另外那一支，固定走深焙。加牛奶要另外算 20 元。</p></div>
+          <span class="val">150<small>元</small></span>
+        </li>
+        <li>
+          <div><h3>美式</h3><p>冰熱同價。同一天在店裡續杯 60 元，外帶不能續。</p></div>
+          <span class="val">110<small>元</small></span>
+        </li>
+        <li>
+          <div><h3>拿鐵</h3><p>只有一種尺寸。燕麥奶加 20 元。</p></div>
+          <span class="val">140<small>元</small></span>
+        </li>
+        <li>
+          <div><h3>無咖啡因</h3><p>洋甘菊或伯爵，二選一。下午之後點這個的人比咖啡多。</p></div>
+          <span class="val">120<small>元</small></span>
+        </li>
+        <li>
+          <div><h3>司康</h3><p>原味與起司兩種，每天早上烤十二個，賣完就沒有。</p></div>
+          <span class="val">70<small>元</small></span>
+        </li>
+        <li>
+          <div><h3>乳酪蛋糕</h3><p>隔壁棟那間烘焙工作室做的，一天送八片過來。</p></div>
+          <span class="val">130<small>元</small></span>
+        </li>
+      </ul>
+      <div class="tent__foot">低消一杯飲料 · 現金與行動支付都可以，沒有刷卡機 · 自己帶杯子折 10 元。</div>
+    </div>
+  </section>
+
+  <section class="tent" id="when">
+    <div class="tent__fold"><b>立在　角落 C2</b><span>一天的樣子</span>
+      <span class="no">卡 05</span></div>
+    <div class="tent__face">
+      <h2><span>哪個時段還有位子</span></h2>
+      <p class="sub">這是電話裡最多人問的一題，所以整天的狀況寫在這裡。</p>
+      <ul class="lines">
+        <li>
+          <div><h3>剛開門</h3><p>整張長桌都空著。這個時間進來的多半是要寫東西的人，店裡只有磨豆的聲音。</p></div>
+          <span class="val">09:00</span>
+        </li>
+        <li>
+          <div><h3>坐到一半</h3><p>長桌大概五個人，窗邊還有。附近上班的會過來外帶，出杯要等一下。</p></div>
+          <span class="val">11:00</span>
+        </li>
+        <li>
+          <div><h3>最滿的兩小時</h3><p>平日通常還剩兩三個位子，週六日多半要在門口等。等的人我會登記，空出來打給你。</p></div>
+          <span class="val">13:00</span>
+        </li>
+        <li>
+          <div><h3>開始空出來</h3><p>上午進來的人陸續走了。想找安靜的長桌位子，這個時間最好找。</p></div>
+          <span class="val">16:00</span>
+        </li>
+        <li>
+          <div><h3>最後點單</h3><p>17:30 收單，之後我開始洗器具。已經坐著的人可以待到 18:00。</p></div>
+          <span class="val">17:30</span>
+        </li>
+      </ul>
+      <div class="tent__foot">每週一公休 · 國定假日照常，只有除夕到初三休息。</div>
+    </div>
+  </section>
+
+  <section class="tent" id="no">
+    <div class="tent__fold"><b>立在　門口</b><span>進來之前先看一眼</span>
+      <span class="no">卡 06</span></div>
+    <div class="tent__face">
+      <h2><span>六件先講清楚的事</span></h2>
+      <p class="sub">寫在門口那張卡上，免得你特地跑一趟才發現不合用。</p>
+      <ul class="lines">
+        <li>
+          <div><h3>訂位</h3><p>只有二十四個位子，先訂走就沒有現場的份了。人多的時候我在門口登記，空出來打給你。</p></div>
+          <span class="val val--no">不接受</span>
+        </li>
+        <li>
+          <div><h3>包場與開會</h3><p>四個人以上一起講話，會蓋掉整間店。要開會的話，走路三分鐘有兩間有包廂的店。</p></div>
+          <span class="val val--no">不接</span>
+        </li>
+        <li>
+          <div><h3>推車與兒童椅</h3><p>走道只有七十公分，推車進不來，也沒有兒童椅。門口有兩張椅子可以坐著喝。</p></div>
+          <span class="val val--no">沒有</span>
+        </li>
+        <li>
+          <div><h3>寵物</h3><p>導盲犬可以直接進來。其他毛小孩請待在門口那兩張椅子，我端出去給你。</p></div>
+          <span class="val val--word">門口可以</span>
+        </li>
+        <li>
+          <div><h3>刷卡</h3><p>現金與行動支付都收，沒有刷卡機。轉角便利商店有提款機。</p></div>
+          <span class="val val--no">沒有</span>
+        </li>
+        <li>
+          <div><h3>出杯速度</h3><p>一個人沖一個人收，尖峰時段一杯手沖要等八到十分鐘。趕時間的話點美式，那個快。</p></div>
+          <span class="val val--word">要等</span>
+        </li>
+      </ul>
+      <div class="tent__foot">這六件寫在門口，是為了讓你在推門進來之前就看得到。</div>
+    </div>
+  </section>
+
+  <section class="tent" id="about">
+    <div class="tent__fold"><b>立在　櫃檯</b><span>這家店</span>
+      <span class="no">卡 07</span></div>
+    <div class="tent__face">
+      <h2><span>開這家店的人</span></h2>
+      <p class="sub">我是周啟安，這間店的沖煮、收銀、擦桌子都是我。</p>
+      <ul class="lines">
+        <li>
+          <div><h3>開店</h3><p>本來在做室內裝修，做到第八年開始想要一個自己每天待著的地方，就把中興街這個店面租下來。</p></div>
+          <span class="val">2022</span>
+        </li>
+        <li>
+          <div><h3>搬進那張長桌</h3><p>原本擺六張兩人桌，客人擠得動不了。二手家具行看到一張淘汰的會議桌，兩百四十公分，搬回來自己磨了兩天。</p></div>
+          <span class="val">2024</span>
+        </li>
+        <li>
+          <div><h3>拉了那十六個插座</h3><p>常客大部分是自己接案的人。走線那個週末店休兩天，長桌與窗邊每一席一個插座。</p></div>
+          <span class="val">2025</span>
+        </li>
+      </ul>
+      <p class="after">要問位子、要問今天的豆子、要跟我講你不吃什麼，打電話或寫信都可以。營業時間我都在店裡，電話有時候在沖水會晚一點接，響完再打一次就好。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="tel:0423014188">04-2301-4188</a>
+        <a class="btn btn-ghost" href="mailto:chou@example.tw">chou@example.tw</a>
+        <a class="btn btn-ghost" href="https://maps.example.tw" rel="noopener">看地圖怎麼走</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 長桌咖啡　台中市西區中興街 41 號　週二到週日 09:00 到 18:00</span>
+    <ul>
+      <li><a href="tel:0423014188">04-2301-4188</a></li>
+      <li><a href="mailto:chou@example.tw">Email</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

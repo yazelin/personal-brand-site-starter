@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>梁書帆 — 我怎麼賺你的錢，寫在第一條</title>
+<meta name="description" content="新竹的保險經紀人，第八年。顧問費怎麼算、佣金從哪裡來、一年會聯絡你幾次、哪些事我不做，五條條款寫完，你不用先打電話來問。這一頁不提供投資建議，原因寫在第三條。">
+<link rel="canonical" href="https://advisor.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="梁書帆 — 我怎麼賺你的錢，寫在第一條">
+<meta property="og:description" content="新竹的保險經紀人。顧問費、佣金從哪裡來、一年聯絡你幾次、我不做的事，寫成五條可以逐條對照的條款。">
+<meta property="og:url" content="https://advisor.example.tw/">
+<meta property="og:image" content="https://advisor.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>§</text></svg>">
+<link rel="stylesheet" href="../templates/tokens.css">
+<link rel="stylesheet" href="../templates/base.css">
+<style>
+  /* 族：克制（幾乎不動）。這一行的受眾戒心最重，來之前就在防被推銷，
+     所以版面要像一份可以拿去逐條對的文件，不要像廣告。
+
+     概念：保單條款。每一張保單後面附的那本小冊子。
+
+     容器＝一條條款：左邊直排的條號欄、條名與側標、條文、款項、但書。
+     重複單元＝一款：款名加本文，寬螢幕時中間有一道細線隔開，
+     窄螢幕折成款名在上、本文在下。
+     分節＝第一條到第五條，最後接附表一（收費對照）。
+
+     為什麼是這一行的東西：保險真正的商品就是那本條款。簽名的時候看的是業務員的臉，
+     賠不賠的時候看的是第幾條第幾款。顧問的工作就是把條款翻成人話，
+     所以他的收費與界線也寫成條款，讓客戶用同一種方式對。
+
+     「我怎麼賺你的錢」是第一條，不在最後一頁。三個最戒備的問題
+     （賣誰家的、怎麼賺錢、會不會一直打）在封面的三格，390px 寬也在第一屏。
+
+     裝飾只在第一屏出現一次：螢光筆畫過第一條那句扣抵，還有最後的簽名欄。
+     條號欄、款項、但書從第一屏用到頁尾。 */
+  :root {
+    --bg: #eceef2;   --fg: #14171d;   --fg-muted: #4d525c;
+    --accent: #1d3557; --accent-fg: #f7f9fc;
+    --line: #d7dbe2; --rule: #c3c8d1; --paper: #fcfcfa;
+    --tint: #e3e7ee; --hl: #ffe37a;   --pen: #8a3b2f;
+  }
+  html { background: var(--bg); }
+  .doc { max-width: 62rem; margin-inline: auto; padding-inline: var(--space-3); }
+  section { padding: 0; }
+  h1 span, h2 span { display: inline-block; }
+
+  /* 冊子的書眉。整頁只出現這一次 */
+  .slug { display: flex; flex-wrap: wrap; gap: 0.3rem var(--space-3);
+    border-bottom: 1px solid var(--fg); padding: var(--space-3) 0 0.5rem;
+    font-size: 0.72rem; letter-spacing: 0.1em; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums; }
+  .slug b { color: var(--fg); font-weight: 600; letter-spacing: 0.18em; }
+  .slug .src { margin-left: auto; }
+
+  /* 封面：條款本翻開的第一頁，真的保單會在這裡放重要事項 */
+  .cover { border: 1px solid var(--rule); border-top: 4px solid var(--accent);
+    background: var(--paper); margin-top: var(--space-4);
+    padding: var(--space-4) var(--space-3) var(--space-3); }
+  .cover__grid { display: grid; gap: var(--space-4); }
+  .cover .eyebrow { margin-bottom: var(--space-2); }
+  .cover h1 { font-size: var(--step-3); margin: 0 0 var(--space-3); }
+  .cover .lede { color: var(--fg-muted); max-width: 30em; margin: 0; }
+
+  /* 見面之前的三問。這三格是整頁最先被讀到的東西 */
+  .ask__t { font-size: 0.72rem; letter-spacing: 0.16em; color: var(--fg-muted);
+    margin: 0 0 var(--space-2); }
+  .ask { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .ask li { border-left: 3px solid var(--accent); padding-left: var(--space-2); }
+  .ask b { display: block; font-size: var(--step-s); color: var(--accent);
+    letter-spacing: 0.08em; }
+  .ask span { display: block; }
+  .ask em { font-style: normal; font-weight: 600; }
+
+  /* 容器：一條條款。左邊直排條號，右邊條文。從第一屏用到頁尾 */
+  .art { border: 1px solid var(--rule); background: var(--paper);
+    margin-top: var(--space-5); display: grid;
+    grid-template-columns: 2.4rem minmax(0, 1fr); }
+  .art__no { writing-mode: vertical-rl; background: var(--tint);
+    border-right: 1px solid var(--rule); color: var(--accent);
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.32em;
+    padding: var(--space-3) 0; text-align: start; }
+  .art__in { padding: var(--space-3); min-width: 0; }
+  .art__hd { display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0.2rem var(--space-2); border-bottom: 1px solid var(--fg);
+    padding-bottom: 0.5rem; margin-bottom: var(--space-3); }
+  .art__hd h2 { font-size: var(--step-1); margin: 0; }
+  .art__hd .tag { margin-left: auto; font-size: 0.7rem; letter-spacing: 0.16em;
+    color: var(--fg-muted); }
+  /* 條文本文兩端對齊，印刷品的排法 */
+  .art__lead { max-width: 34em; text-align: justify;
+    text-justify: inter-ideograph; }
+
+  /* 重複單元：一款。款號用中文數字，跟著條走重新數 */
+  .cls { list-style: none; margin: 0; padding: 0; counter-reset: k; }
+  .cls > li { counter-increment: k; display: grid;
+    grid-template-columns: 1.9rem minmax(0, 1fr); column-gap: 0.2rem;
+    padding: 0.7rem 0; border-bottom: 1px dotted var(--rule); }
+  .cls > li::before { content: counter(k, cjk-ideographic) "、"; grid-column: 1;
+    font-size: var(--step-s); color: var(--fg-muted); }
+  .cls > li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .cls b { grid-column: 2; font-weight: 600; }
+  .cls .t { grid-column: 2; }
+  .cls em { font-style: normal; font-weight: 600;
+    font-variant-numeric: tabular-nums; }
+  .cls i { display: block; font-style: normal; color: var(--fg-muted);
+    font-size: var(--step-s); }
+
+  /* 但書。條款裡最有辨識度的一列，每一條都有 */
+  /* 橫線要拉滿整條的寬度，所以 max-width 開在裡面那一段文字上，不是開在 p 身上 */
+  .prov { display: grid; grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 var(--space-2); align-items: start; margin: var(--space-3) 0 0;
+    padding-top: var(--space-2); border-top: 1px solid var(--fg);
+    font-size: var(--step-s); max-width: none; }
+  .prov span { max-width: 34em; }
+  .prov b { border: 1px solid var(--accent); color: var(--accent);
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em;
+    padding: 0.1rem 0.4rem; line-height: 1.6; }
+
+  .art__cta { margin-top: var(--space-3); padding-top: var(--space-3);
+    border-top: 1px solid var(--line); }
+  .art__cta p { margin: 0; font-size: var(--step-s); color: var(--fg-muted);
+    max-width: 40em; }
+  .art__cta .actions { margin-top: var(--space-2); }
+
+  /* 附表一：收費對照。跟條文不同的節奏，金額靠右 */
+  .sch { list-style: none; margin: 0; padding: 0; }
+  .sch > li { display: grid; grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--space-2); padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line); }
+  .sch > li:last-child { border-bottom: 0; }
+  .sch b { font-weight: 600; }
+  .sch .amt { text-align: right; font-weight: 600; color: var(--accent);
+    font-variant-numeric: tabular-nums; }
+  .sch i { grid-column: 1 / -1; font-style: normal; font-size: var(--step-s);
+    color: var(--fg-muted); }
+  .foot-note { margin: var(--space-3) 0 0; padding-top: var(--space-2);
+    border-top: 1px solid var(--fg); font-size: var(--step-s);
+    color: var(--fg-muted); }
+
+  /* 簽名欄。整頁的裝飾只有這裡與螢光筆兩處 */
+  .sign { margin-top: var(--space-3); padding-top: var(--space-3);
+    border-top: 1px solid var(--line); display: flex; flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3); align-items: end; max-width: none;
+    font-size: 0.72rem; letter-spacing: 0.12em; color: var(--fg-muted); }
+  .sign .box { flex: 1 1 9rem; border-bottom: 1px dashed var(--rule);
+    padding-bottom: 1.4rem; }
+
+  /* 整頁只有這裡在動：顧問拿螢光筆畫過第一條那句話 */
+  .hl { background-image: linear-gradient(var(--hl), var(--hl));
+    background-repeat: no-repeat; background-position: 0 0.72em;
+    background-size: 0 0.72em; -webkit-box-decoration-break: clone;
+    box-decoration-break: clone; animation: mark 0.8s var(--ease) 0.45s forwards; }
+  @keyframes mark { to { background-size: 100% 0.72em; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hl { animation: none; background-size: 100% 0.72em; }
+  }
+
+  @media (min-width: 48rem) {
+    /* 款名獨立成欄，中間一道細線。條款本的黑體小標就長這樣 */
+    .cls > li { grid-template-columns: 1.9rem 8.6rem minmax(0, 1fr);
+      column-gap: 0; }
+    .cls b { grid-column: 2; padding-right: 0.9rem;
+      border-right: 1px solid var(--line); }
+    .cls .t { grid-column: 3; padding-left: 0.9rem; }
+    .art__in { padding: var(--space-4) var(--space-4) var(--space-3); }
+    .sch > li { grid-template-columns: 9rem minmax(0, 1fr) 7rem; }
+    .sch i { grid-column: 2; }
+    .sch .amt { grid-column: 3; }
+  }
+  @media (max-width: 40rem) {
+    /* 三個答案要全部落在第一屏，連 375 寬、667 高的機器也一樣。
+       這幾個數字是照著量出來的高度調的，不是隨手填的 */
+    .slug { padding-top: var(--space-2); }
+    .cover { padding-top: var(--space-2); }
+    .cover h1 { margin-bottom: var(--space-2); }
+    .cover__grid { gap: var(--space-3); }
+    .ask { gap: 0.5rem; }
+    .ask__t { margin-bottom: 0.4rem; }
+  }
+  @media (min-width: 56rem) {
+    /* 不對稱雙欄：條名在左，三問在右 */
+    .cover__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: var(--space-5); align-items: start; }
+    .cover { padding: var(--space-5) var(--space-4) var(--space-4); }
+  }
+
+  footer { max-width: 62rem; margin-inline: auto; margin-top: var(--space-5); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main" class="doc">
+
+  <div class="slug">
+    <b>顧問服務條款</b><span>梁書帆　保險經紀人</span><span>新竹市東區</span>
+    <span class="src">版本 2026.08　共 5 條、附表 1</span>
+  </div>
+
+  <header class="cover">
+    <div class="cover__grid">
+      <div>
+        <p class="eyebrow">保險經紀人 · 新竹市</p>
+        <h1><span>我怎麼賺你的錢，</span><span>寫在第一條</span></h1>
+        <p class="lede">執業第八年。收費、佣金、聯絡的頻率、我不做的事，寫成下面五條。</p>
+      </div>
+      <div>
+        <p class="ask__t">見面之前　你會先問的三件，不用打電話來問</p>
+        <ul class="ask">
+          <li><b>你賣誰家的</b>
+            <span>登錄在保險經紀公司底下，<em>二十幾家</em>壽險與產險的商品都能報，不綁一家。</span></li>
+          <li><b>你怎麼賺錢</b>
+            <span>顧問費為主。佣金逐張列給你看，<em>收到多少就從你付的顧問費裡退多少</em>。</span></li>
+          <li><b>會不會一直打給我</b>
+            <span>一年主動聯絡<em>兩次</em>，晚上八點以後不打。你回一句先不用，我就停。</span></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <section class="art" id="fee">
+    <p class="art__no">第一條</p>
+    <div class="art__in">
+      <div class="art__hd"><h2><span>報酬</span></h2>
+        <span class="tag">利益揭露 · 6 款</span></div>
+      <p class="art__lead">我的收入只有兩個來源，都寫在下面六款。<span class="hl">佣金收多少，顧問費就退多少</span>，同一件工不跟你收兩次錢。</p>
+      <ol class="cls">
+        <li><b>保單健檢</b><span class="t">一次 <em>3,600 元</em>，含兩次面談與一份書面報告。報告寫你手上每一張保單賠什麼、哪兩張重複、哪一段沒有人接。<i>報告是你的。拿著它去找別人辦，我沒有意見。</i></span></li>
+        <li><b>年度顧問</b><span class="t">一年 <em>12,000 元</em>，含兩次檢視、續期保費提醒，理賠的時候我陪你送件。<i>不預收超過一年的費用。</i></span></li>
+        <li><b>佣金</b><span class="t">你透過我投保，保險公司把佣金付給我登錄的經紀公司，再撥給我。<i>每一張保單的佣金級距，我在你簽名之前寫在報告最後一頁，一張一張列。</i></span></li>
+        <li><b>扣抵</b><span class="t">上一款收到的佣金有多少，你付的顧問費就退多少，退到零為止。<i>這樣寫是為了讓「多推你買一張」對我沒有好處。</i></span></li>
+        <li><b>業績門檻</b><span class="t">我掛的經紀公司每年有件數規定，一年 <em>12 件</em>，這件事我先講。<i>我平常的件數在門檻以上，不需要靠說服你來補。你要問我今年還差幾件，我當場回答。</i></span></li>
+        <li><b>我不收的</b><span class="t">保管費、代收保費、你的網銀與保險公司帳號密碼、別人給的介紹費，這四樣我都不碰。<i>保費你自己付給保險公司，不經過我的帳戶。</i></span></li>
+      </ol>
+      <p class="prov"><b>但書</b><span>但你聽完之後決定不投保，前面兩款的顧問費照收，因為那是我實際做完的工。這種情形一年有三、四件。</span></p>
+      <div class="art__cta">
+        <p>先寄信給我，講三件事就好：家裡有幾個人靠你的收入、手上大概幾張保單、最近有沒有結婚、生小孩、買房或換工作。其他的我會問你。</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="mailto:liang@example.tw">寄信給我</a>
+          <a class="btn btn-ghost" href="#exclusion">先看我不做的事</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="art" id="scope">
+    <p class="art__no">第二條</p>
+    <div class="art__in">
+      <div class="art__hd"><h2><span>服務範圍</span></h2>
+        <span class="tag">我賣誰家的 · 6 款</span></div>
+      <p class="art__lead">我不屬於任何一家保險公司，登錄在一家保險經紀公司底下。這一條寫我能報什麼、熟什麼、不熟什麼。</p>
+      <ol class="cls">
+        <li><b>商品來源</b><span class="t">經紀公司簽約的壽險與產險公司二十幾家，要完整名單我寄給你。<i>這一頁不列公司名字。列出來就變成推薦，我在這裡不做推薦。</i></span></li>
+        <li><b>我熟的</b><span class="t">醫療、實支實付、重大傷病、意外、失能、長照這六類。<i>這幾類的條款差距最大，名字很像的兩張保單，理賠條件可以差很遠。我逐條比得出來。</i></span></li>
+        <li><b>也接的</b><span class="t">車險與住宅火險。<i>金額小，但每年要對一次有沒有多保、有沒有漏保。多數人的火險保額停在買房那一年。</i></span></li>
+        <li><b>先看你手上的</b><span class="t">第一次見面我只看你現有的保單，不帶建議書。<i>多數人手上的保單已經夠多，缺的是知道那幾張到底賠什麼。</i></span></li>
+        <li><b>我不熟的</b><span class="t">境外保單、公司團險的招標、複雜的資產傳承架構。<i>碰到我直接說不會，另外介紹人給你。</i></span></li>
+        <li><b>我不越線的</b><span class="t">稅務找記帳士或會計師，投資標的找有投顧執照的人。<i>保險經紀人能講的範圍有規定，我照規定走。</i></span></li>
+      </ol>
+      <p class="prov"><b>但書</b><span>但你手上的保障如果已經夠了，我會告訴你不用再買。這次的顧問費照收，保費你省下來。</span></p>
+    </div>
+  </section>
+
+  <section class="art" id="exclusion">
+    <p class="art__no">第三條</p>
+    <div class="art__in">
+      <div class="art__hd"><h2><span>除外事項</span></h2>
+        <span class="tag">這一頁不做的事 · 6 款</span></div>
+      <p class="art__lead">保單條款裡最該讀的一頁是除外責任，因為那寫的是不賠的情況。這一條是我的除外責任。</p>
+      <ol class="cls">
+        <li><b>不給投資建議</b><span class="t">這一頁不提供投資建議：沒有報酬率、沒有任何一張保單的名字，也沒有一句「這樣買比較划算」。</span></li>
+        <li><b>為什麼（規定）</b><span class="t">我拿的是保險經紀人的登錄資格，能講的到保障為止。<i>投資標的要有投顧執照的人才能給建議，我沒有那張執照，也不會假裝有。</i></span></li>
+        <li><b>為什麼（看人）</b><span class="t">同一張保單，對三十歲沒有小孩的人和對四十五歲揹著房貸的人，答案會相反。<i>要先知道你家的收入靠誰、已經有什麼、那筆錢多久用得到，才會有答案。網頁上寫得出來的都只是通則。</i></span></li>
+        <li><b>保證獲利</b><span class="t">有人跟你保證賺多少、保證穩賺，你可以把那一頁關掉。<i>包含我這一頁。我沒有寫那種數字，因為我不知道。</i></span></li>
+        <li><b>不代操</b><span class="t">我不碰你的錢，也不替你決定買賣。</span></li>
+        <li><b>不評論別人的</b><span class="t">你拿一張別人給的建議書來，我只講它賠什麼、不賠什麼、哪些情況不賠。<i>划不划算你自己判斷。我不做那種比較。</i></span></li>
+      </ol>
+      <p class="prov"><b>但書</b><span>但你拿建議書來問「這張到底賠什麼」，我逐條講給你聽，不收錢，也不會順手推我自己的。</span></p>
+    </div>
+  </section>
+
+  <section class="art" id="contact">
+    <p class="art__no">第四條</p>
+    <div class="art__in">
+      <div class="art__hd"><h2><span>聯絡、頻率與你的資料</span></h2>
+        <span class="tag">會不會一直打給我 · 7 款</span></div>
+      <p class="art__lead">這一條寫得比別條細，因為這是最多人在第一通電話裡就想問、又不好意思問的事。</p>
+      <ol class="cls">
+        <li><b>主動聯絡</b><span class="t">一年兩次。續期保費扣款前一次，年度檢視一次。<i>其他時間你找我，我才出現。</i></span></li>
+        <li><b>時間</b><span class="t">平日上午九點到晚上八點。<i>八點以後、週末與國定假日不打，除非你正在理賠或住院。</i></span></li>
+        <li><b>你說停</b><span class="t">你回一句「先不用」，我就停。<i>不會換一支號碼再打，也不會請同事打給你。</i></span></li>
+        <li><b>沒回也是回</b><span class="t">訊息傳出去你沒有回，我不追第二次。</span></li>
+        <li><b>你的資料</b><span class="t">只留在我這裡。<i>不給同業、不給貸款代辦、不給任何名單商。這一行的名單多半是這樣流出去的，所以我把它寫進條款。</i></span></li>
+        <li><b>刪除</b><span class="t">你說要刪，我當天刪，刪完寄一封信告訴你刪了哪些。</span></li>
+        <li><b>不開名單</b><span class="t">成交之後我不會請你介紹三個朋友給我。<i>你想介紹是你的事，我不開口問。</i></span></li>
+      </ol>
+      <p class="prov"><b>但書</b><span>但保險公司自己的續保通知、體檢與對保電話會直接找你，那不是我發的，我停不掉。接到不確定的電話，拍下來問我。</span></p>
+    </div>
+  </section>
+
+  <section class="art" id="start">
+    <p class="art__no">第五條</p>
+    <div class="art__in">
+      <div class="art__hd"><h2><span>開始與終止</span></h2>
+        <span class="tag">你隨時可以停 · 6 款</span></div>
+      <p class="art__lead">從寄信到換掉我，六款都寫在這裡。終止的那兩款寫在最後，是因為它跟開始一樣重要。</p>
+      <ol class="cls">
+        <li><b>先寄信</b><span class="t">講三件事：家裡幾個人靠你的收入、手上大概幾張保單、最近有沒有變動。<i>我一個工作天內回。</i></span></li>
+        <li><b>第一次見面</b><span class="t">一小時，不收費，不帶建議書。<i>我看你手上的保單，當場告訴你我幫得上哪一段。談完不合適就到這裡，我不會再打給你。</i></span></li>
+        <li><b>報告</b><span class="t">收費從這一款開始。兩週內給你書面報告，紙本與檔案各一份。</span></li>
+        <li><b>你決定</b><span class="t">買不買、跟誰買，你決定。<i>你說不要，我不會問第二次原因。</i></span></li>
+        <li><b>終止</b><span class="t">年度顧問隨時可以停，剩下的月份退你。<i>停掉之後我不會再主動聯絡你。</i></span></li>
+        <li><b>換人</b><span class="t">你要換一個顧問服務手上的保單，我一週內把資料整理好交出去。<i>不拖，也不會打去問你為什麼。</i></span></li>
+      </ol>
+      <p class="prov"><b>但書</b><span>但保單本身的權利在你和保險公司之間，換不換人服務都不影響它。這一點很多人以為相反，所以寫在這裡。</span></p>
+      <div class="art__cta">
+        <p>白天多半在客戶那裡，看到信會回。經紀人登錄字號與經紀公司的名稱、地址寫在委任文件上，見面時一併給你看。</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="mailto:liang@example.tw">寄信給我</a>
+          <a class="btn btn-ghost" href="tel:0972118118">0972-118-118</a>
+        </div>
+      </div>
+      <p class="sign" aria-hidden="true"><span class="box">客戶簽名</span><span class="box">日期</span><span class="box">說明人　梁書帆</span></p>
+      <p class="foot-note">上面那三格是紙本才要簽的。面談時我會把五條念一次，你簽的就是這一份。</p>
+    </div>
+  </section>
+
+  <section class="art" id="schedule">
+    <p class="art__no">附表一</p>
+    <div class="art__in">
+      <div class="art__hd"><h2><span>收費對照</span></h2>
+        <span class="tag">錢的流向 · 7 列</span></div>
+      <ol class="sch">
+        <li><b>第一次見面</b><i>不收費 · 約一小時</i><span class="amt">0 元</span></li>
+        <li><b>保單健檢</b><i>你付給我 · 第二次面談之後</i><span class="amt">3,600 元</span></li>
+        <li><b>年度顧問</b><i>你付給我 · 一年一次，可以隨時停</i><span class="amt">12,000 元</span></li>
+        <li><b>佣金</b><i>保險公司付給經紀公司 · 你簽名之前先看到金額</i><span class="amt">逐張列給你</span></li>
+        <li><b>顧問費扣抵</b><i>我退給你 · 收到佣金的當月</i><span class="amt">等額退還</span></li>
+        <li><b>理賠陪同</b><i>含在年度顧問裡 · 需要的時候</i><span class="amt">0 元</span></li>
+        <li><b>介紹費</b><i>我不收，也不付給任何人</i><span class="amt">0 元</span></li>
+      </ol>
+      <p class="foot-note">七列就是全部。委任文件簽的那天我印一份給你對，之後不會冒出第八列。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 梁書帆 · 新竹市東區 · 保險經紀人</span>
+    <ul>
+      <li><a href="tel:0972118118">0972-118-118</a></li>
+      <li><a href="mailto:liang@example.tw">Email</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
