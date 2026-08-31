@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>曾郁婷 — 我教機械手臂從一箱亂堆的零件裡，把指定的那一個拿出來</title>
+<meta name="description" content="機械工程學系助理教授，研究散裝料箱的視覺抓取。這一頁寫清楚我在做什麼、能接與不能接哪一類合作、實驗室現在有幾個人。">
+<link rel="canonical" href="https://researcher.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="曾郁婷 — 我教機械手臂從一箱亂堆的零件裡，把指定的那一個拿出來">
+<meta property="og:description" content="機械工程學系助理教授，研究散裝料箱的視覺抓取。能接與不能接哪一類合作、實驗室現在有幾個人，都寫在這一頁。">
+<meta property="og:url" content="https://researcher.example.tw/">
+<meta property="og:image" content="https://researcher.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▤</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 族：克制（幾乎不動）。她的受眾是同行、產業窗口與要選指導教授的學生，
+     三種人都要先覺得這個人可靠，所以整頁只有首屏那一組夾爪在動。
+
+     概念：料箱。散裝料箱就是「非結構化環境」本人，也是她每天在看的東西。
+
+     容器＝一個料箱：粗框、箱口的加厚邊、箱口左邊插著一張標籤，箱內有隔板的淡線。
+     重複單元＝一個料件：料號、內容、右邊一格註記。研究線、論文、能接的合作、
+       做過的案子、實驗室的現況，全部都是料件。
+     分節＝箱號 00 到 06，每一箱的標籤上寫這一箱是給誰看的。
+
+     裝飾只做一次：首屏那一箱的料件是歪的（東西剛倒進去），還有一組夾爪夾著其中一個。
+     箱 01 以下的料件都排正了，因為已經被拿出來整理過。 */
+  :root {
+    --bg: #eeece7; --fg: #1b1a17; --fg-muted: #5b584f;
+    --accent: #1f3b52; --accent-fg: #f7f6f2;
+    --line: #d6d2c8; --rule: #c4bfb2; --paper: #f8f7f3; --tint: #e3e0d7;
+    --mark: #a04a1e;
+  }
+  html { background: var(--bg); }
+  body { background: var(--bg); color: var(--fg); }
+  section { padding: 0; }
+  h1 span, h2 span { display: inline-block; }
+  .shelf { max-width: 66rem; margin-inline: auto; padding-inline: var(--space-3); }
+
+  /* 料架上的那一條標籤帶。整頁只出現這一次 */
+  .slug { display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0.3rem var(--space-3); border-bottom: 2px solid var(--fg);
+    padding: var(--space-3) 0 0.5rem; font-size: 0.72rem; letter-spacing: 0.1em;
+    color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+  .slug b { color: var(--fg); font-weight: 600; letter-spacing: 0.16em; }
+  .slug .st { margin-left: auto; color: var(--mark); }
+
+  /* 容器：一個料箱。從第一屏用到頁尾 */
+  .bin { position: relative; margin-top: var(--space-5);
+    border: 2px solid var(--fg); background: var(--paper);
+    box-shadow: 9px 9px 0 rgba(27, 26, 23, 0.09); }
+  .bin--top { margin-top: var(--space-4); }
+
+  /* 箱口的加厚邊：一道粗邊再壓一道細線 */
+  .bin__rim { position: relative; display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0.35rem var(--space-3); background: var(--tint);
+    border-bottom: 2px solid var(--fg); padding: 0.55rem var(--space-3) 0.5rem; }
+  .bin__rim::after { content: ''; position: absolute; left: 0; right: 0; bottom: 3px;
+    border-bottom: 1px solid var(--rule); }
+  .bin__rim h2 { font-size: var(--step-s); font-weight: 600; letter-spacing: 0.12em;
+    margin: 0; line-height: 1.7; }
+  .bin__rim .who { font-size: 0.72rem; letter-spacing: 0.1em; color: var(--fg-muted); }
+  .bin__rim .cnt { margin-left: auto; font-size: 0.72rem; letter-spacing: 0.08em;
+    color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+
+  /* 箱口插著的那張標籤 */
+  .tag { background: var(--paper); border: 1px solid var(--fg);
+    box-shadow: inset 0 0 0 2px var(--tint); padding: 0.12em 0.6em;
+    font-size: 0.7rem; letter-spacing: 0.14em; font-variant-numeric: tabular-nums; }
+
+  /* 箱內：隔板的淡線 */
+  .bin__body { padding: var(--space-3);
+    background-image: linear-gradient(90deg, rgba(31, 59, 82, 0.06) 1px, transparent 1px);
+    background-size: 5.5rem 100%; }
+  .bin__foot { border-top: 1px solid var(--fg); padding: 0.55rem var(--space-3);
+    font-size: 0.72rem; letter-spacing: 0.04em; color: var(--fg-muted); }
+  .bin__cta { border-top: 1px solid var(--fg); padding: var(--space-3); }
+  .bin__cta p { margin: 0; font-size: var(--step-s); color: var(--fg-muted); max-width: 36em; }
+  .bin__cta .actions { margin-top: var(--space-3); }
+
+  /* 重複單元：一個料件 */
+  .parts { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .part { background: var(--bg); border: 1px solid var(--rule);
+    box-shadow: 3px 3px 0 rgba(27, 26, 23, 0.07);
+    padding: 0.7rem var(--space-3); display: grid; gap: 0.15rem var(--space-3); }
+  .part__no { font-size: var(--step-s); font-weight: 600; letter-spacing: 0.08em;
+    color: var(--accent); font-variant-numeric: tabular-nums; }
+  .part__m b { display: block; font-weight: 600; }
+  .part__m i { display: block; font-style: normal; font-size: var(--step-s);
+    color: var(--fg-muted); line-height: 1.8; max-width: 38em; }
+  .part__v { font-size: var(--step-s); letter-spacing: 0.06em; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums; }
+  .part__v.on { color: var(--accent); font-weight: 600; }
+  .part__v.no { color: var(--mark); }
+  @media (min-width: 48rem) {
+    .part { grid-template-columns: 4.6rem 1fr 8.5rem; }
+    .part__v { text-align: right; }
+  }
+
+  /* 首屏 */
+  .mast { padding: var(--space-5) var(--space-3) var(--space-4); }
+  .mast .eyebrow { margin-bottom: var(--space-3); }
+  .mast h1 { font-size: var(--step-3); margin: 0 0 var(--space-3); }
+  .mast .lede { font-size: var(--step-1); color: var(--fg-muted); max-width: 26em; margin: 0; }
+
+  /* 只做一次的裝飾：一箱倒進去的件，夾爪正夾著其中一個 */
+  .tray { position: relative; display: flex; align-items: flex-end; justify-content: center;
+    gap: 0.3rem; width: 100%; max-width: 25rem; min-height: 8rem;
+    margin: var(--space-5) 0 var(--space-2);
+    padding: 0 1.1rem 0.7rem; border: 2px solid var(--fg); border-top: 0;
+    background: var(--tint); box-shadow: 5px 5px 0 rgba(27, 26, 23, 0.09); }
+  .tray::before { content: ''; position: absolute; left: 4px; right: 4px; bottom: 4px;
+    border-bottom: 1px solid var(--rule); }
+  .blk { display: block; background: var(--paper); border: 1.5px solid var(--fg);
+    box-shadow: 2px 2px 0 rgba(27, 26, 23, 0.10); }
+  .b1 { width: 3rem;   height: 1.4rem; transform: rotate(-5deg); }
+  .b2 { width: 1.7rem; height: 2.4rem; transform: rotate(3deg); margin-left: -0.5rem; }
+  .b3 { width: 2.4rem; height: 1.8rem; transform: rotate(-2deg); }
+  .b4 { width: 3rem;   height: 1.2rem; transform: rotate(4deg); }
+  .b5 { width: 1.4rem; height: 1.4rem; transform: rotate(-3deg); margin-left: -0.4rem; }
+  .b6 { width: 2rem;   height: 2.7rem; transform: rotate(2deg); }
+  .hold { position: relative; display: block; margin-inline: 1.5rem; }
+  /* 伸下去的那隻手 */
+  .arm { position: absolute; left: 50%; top: -3.4rem; width: 2px; height: 2.9rem;
+    margin-left: -1px; background: var(--mark); }
+  .arm::before { content: ''; position: absolute; left: -0.9rem; top: 0;
+    width: 1.8rem; border-top: 2px solid var(--mark); }
+  .hold::before, .hold::after { content: ''; position: absolute; top: -11px; bottom: -6px;
+    width: 10px; border: 2px solid var(--mark); }
+  .hold::before { left: -13px; border-right: 0; animation: jawl 5.5s ease-in-out infinite; }
+  .hold::after  { right: -13px; border-left: 0;  animation: jawr 5.5s ease-in-out infinite; }
+  @keyframes jawl { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }
+  @keyframes jawr { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-4px); } }
+  .cap { font-size: var(--step-s); color: var(--fg-muted); margin: 0; max-width: 36em; }
+
+  /* 三種訪客各自把自己挑出來。滑過去那一張就被扶正了 */
+  .route { display: grid; gap: var(--space-2); margin-top: var(--space-4); }
+  .route a { display: block; text-decoration: none; background: var(--bg);
+    border: 1px solid var(--fg); padding: var(--space-3);
+    box-shadow: 4px 4px 0 rgba(27, 26, 23, 0.11);
+    transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease); }
+  .route a:nth-child(1) { transform: rotate(-1.1deg); }
+  .route a:nth-child(2) { transform: rotate(0.7deg); }
+  .route a:nth-child(3) { transform: rotate(-0.5deg); }
+  .route a:hover, .route a:focus-visible { transform: rotate(0deg) translate(-2px, -2px);
+    box-shadow: 7px 7px 0 rgba(27, 26, 23, 0.16); }
+  .route b { display: block; font-size: 0.72rem; letter-spacing: 0.14em;
+    color: var(--mark); font-weight: 600; margin-bottom: 0.3rem; }
+  .route strong { display: block; font-size: var(--step-1); font-weight: 600;
+    line-height: 1.35; margin-bottom: 0.35rem; }
+  .route span { display: block; font-size: var(--step-s); color: var(--fg-muted); line-height: 1.75; }
+  @media (min-width: 48rem) { .route { grid-template-columns: repeat(3, 1fr); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hold::before, .hold::after { animation: none; }
+    .route a:hover, .route a:focus-visible { transform: rotate(0deg); }
+  }
+
+  /* 手機：料架、箱體、料件三層的邊距會疊在一起，窄螢幕要各收一階 */
+  @media (max-width: 46rem) {
+    .shelf { padding-inline: var(--space-2); }
+    .bin { box-shadow: 6px 6px 0 rgba(27, 26, 23, 0.09); }
+    .bin__rim, .bin__foot, .bin__cta { padding-inline: var(--space-2); }
+    .bin__body { padding: var(--space-2); background-size: 4rem 100%; }
+    .mast { padding: var(--space-4) 0 var(--space-3); }
+    .part { padding: 0.65rem var(--space-2); }
+    .part__no { letter-spacing: 0.12em; }
+    .tray { max-width: 100%; margin-top: var(--space-4); }
+    .route a { padding: var(--space-2) var(--space-3); }
+  }
+
+  footer { max-width: 66rem; margin-inline: auto; margin-top: var(--space-5); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main" class="shelf">
+
+  <div class="slug">
+    <b>機械手臂抓取實驗室</b><span>助理教授　曾郁婷</span><span>更新 2026.08</span>
+    <span class="st">2026 秋收兩位碩士生　產學合作 Q4 還能談一件</span>
+  </div>
+
+  <header class="bin bin--top">
+    <div class="bin__rim">
+      <span class="tag">箱 00</span><span class="who">主料箱</span>
+      <span class="cnt">剛倒進去，還沒整理</span>
+    </div>
+    <div class="bin__body">
+      <div class="mast">
+        <p class="eyebrow">機械工程學系助理教授 · 台南</p>
+        <h1><span>我教機械手臂從一箱亂堆的零件裡，</span><span>把指定的那一個拿出來</span></h1>
+        <p class="lede">產線上的手臂會抓排好的料。零件一倒進料箱、換一批沒見過的型號、或是表面會反光，它就伸不下去。我做的就是這一段。</p>
+
+        <div class="tray" aria-hidden="true">
+          <span class="blk b1"></span>
+          <span class="blk b2"></span>
+          <span class="hold"><i class="arm"></i><span class="blk b3"></span></span>
+          <span class="blk b4"></span>
+          <span class="blk b5"></span>
+          <span class="blk b6"></span>
+        </div>
+        <p class="cap">箱子裡有六個件，這一次要拿的是被夾住的那一個。哪幾個現在拿得起來、要從哪個角度伸下去，這兩題就是我的題目。</p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="mailto:tseng@example.tw">寫信給我</a>
+          <a class="btn btn-ghost" href="#scope">看我能接與不能接什麼</a>
+        </div>
+      </div>
+
+      <nav class="route" aria-label="三種訪客的入口">
+        <a href="#work">
+          <b>同行</b><strong>我在做什麼</strong>
+          <span>四條研究線與五篇發表，包含一條做了一年半停掉的。</span>
+        </a>
+        <a href="#scope">
+          <b>產業界</b><strong>能不能用在你們的產線上</strong>
+          <span>能接與不能接寫在同一箱，還有三個做過的案子與費用的範圍。</span>
+        </a>
+        <a href="#lab">
+          <b>想加入的學生</b><strong>實驗室平常在幹嘛</strong>
+          <span>幾個人、有哪些機台、一週怎麼過、進來之前要會什麼。</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="bin" id="work">
+    <div class="bin__rim">
+      <span class="tag">箱 01</span><h2><span>研究在做什麼</span></h2>
+      <span class="who">給同行</span><span class="cnt">4 件</span>
+    </div>
+    <div class="bin__body">
+      <ol class="parts">
+        <li class="part"><span class="part__no">R-01</span>
+          <span class="part__m"><b>亂堆料箱的單件取放</b>
+            <i>一箱倒進去的零件，機器要自己決定先拿哪一個。我們的做法是先挑出現在就拿得起來的那幾個，其餘的先撥開，再判斷一次。</i></span>
+          <span class="part__v on">進行中</span></li>
+        <li class="part"><span class="part__no">R-02</span>
+          <span class="part__m"><b>沒見過的零件</b>
+            <i>訓練時沒出現過的型號，不重新蒐一次資料也要能抓。我們只認幾何形狀，不認外觀與顏色。</i></span>
+          <span class="part__v on">投稿中</span></li>
+        <li class="part"><span class="part__no">R-03</span>
+          <span class="part__m"><b>會反光與半透明的表面</b>
+            <i>不鏽鋼件與塑膠殼在深度相機下面會缺一塊。我們把缺掉的那一塊補回來，相機不用換。</i></span>
+          <span class="part__v on">收尾中</span></li>
+        <li class="part"><span class="part__no">R-04</span>
+          <span class="part__m"><b>用夾爪的受力去修正抓取</b>
+            <i>做了一年半。換一批零件就要重調一次參數，我們停掉了。蒐到的力量資料整理成公開資料集放著，還有人在用。</i></span>
+          <span class="part__v no">已停 2025</span></li>
+      </ol>
+    </div>
+    <div class="bin__foot">四件裡有一件是停掉的。留在這裡是因為有人問過同一個方向，我可以直接告訴他我們撞到什麼。</div>
+  </section>
+
+  <section class="bin" id="pubs">
+    <div class="bin__rim">
+      <span class="tag">箱 02</span><h2><span>發表</span></h2>
+      <span class="who">給同行</span><span class="cnt">5 件</span>
+    </div>
+    <div class="bin__body">
+      <ol class="parts">
+        <li class="part"><span class="part__no">P-01</span>
+          <span class="part__m"><b>亂堆料箱裡的抓取順序　2026 · RA-L</b>
+            <i>解掉的：疊在一起的件要先動哪一個。沒解掉的：件數超過三十個就開始變慢。</i></span>
+          <span class="part__v">審稿中</span></li>
+        <li class="part"><span class="part__no">P-02</span>
+          <span class="part__m"><b>只看幾何形狀的抓取姿態　2025 · IROS</b>
+            <i>解掉的：沒見過的型號不用重新訓練。沒解掉的：軟的、會變形的件不適用。</i></span>
+          <span class="part__v">已發表</span></li>
+        <li class="part"><span class="part__no">P-03</span>
+          <span class="part__m"><b>反光表面的深度補全　2025 · ICRA</b>
+            <i>解掉的：不鏽鋼件在深度圖上缺掉的區塊。沒解掉的：整片鏡面還是不行。</i></span>
+          <span class="part__v">已發表</span></li>
+        <li class="part"><span class="part__no">P-04</span>
+          <span class="part__m"><b>先撥動再抓　2024 · ICRA</b>
+            <i>解掉的：卡在箱角的件先撥一下再抓。沒解掉的：撥的力道到現在還是手調的。</i></span>
+          <span class="part__v">已發表</span></li>
+        <li class="part"><span class="part__no">P-05</span>
+          <span class="part__m"><b>亂堆料箱的力量與影像資料集　2024</b>
+            <i>兩萬三千次抓取，其中四千次是失敗的。失敗那一段被別人拿去用得最多。</i></span>
+          <span class="part__v on">公開下載</span></li>
+      </ol>
+    </div>
+    <div class="bin__foot">程式碼與資料集都放在公開的地方，連結寫在每一篇的第一頁。找不到就直接寫信給我。</div>
+  </section>
+
+  <section class="bin" id="scope">
+    <div class="bin__rim">
+      <span class="tag">箱 03</span><h2><span>能接與不能接</span></h2>
+      <span class="who">給產業界</span><span class="cnt">9 件</span>
+    </div>
+    <div class="bin__body">
+      <ol class="parts">
+        <li class="part"><span class="part__no">A-01</span>
+          <span class="part__m"><b>可行性評估</b>
+            <i>拿你們的零件與現場照片，四到六週給一份能不能做的報告。多數案子停在這裡，對雙方都省。</i></span>
+          <span class="part__v on">可以接</span></li>
+        <li class="part"><span class="part__no">A-02</span>
+          <span class="part__m"><b>既有手臂加上視覺抓取</b>
+            <i>手臂不用換。加一組相機與軟體，接你們現有的控制器。</i></span>
+          <span class="part__v on">可以接</span></li>
+        <li class="part"><span class="part__no">A-03</span>
+          <span class="part__m"><b>抓取失敗的原因分析</b>
+            <i>已經導入但成功率上不去，把影像與紀錄給我，我們找出是哪一類的件在掉。</i></span>
+          <span class="part__v on">可以接</span></li>
+        <li class="part"><span class="part__no">A-04</span>
+          <span class="part__m"><b>產學合作與學生專題</b>
+            <i>一年期為主，一位碩士生每週到廠一天。成果與資料的歸屬寫進合約，不留模糊地帶。</i></span>
+          <span class="part__v on">可以接</span></li>
+        <li class="part"><span class="part__no">N-01</span>
+          <span class="part__m"><b>整條產線的規劃與交鑰匙工程</b>
+            <i>我們沒有工程施作與保固的能力，這一段要找系統整合商。規格我可以幫你看。</i></span>
+          <span class="part__v no">不接</span></li>
+        <li class="part"><span class="part__no">N-02</span>
+          <span class="part__m"><b>現場維護與二十四小時支援</b>
+            <i>學校沒有這個編制，我給不了你這個承諾。</i></span>
+          <span class="part__v no">不接</span></li>
+        <li class="part"><span class="part__no">N-03</span>
+          <span class="part__m"><b>手臂本體與夾爪的機構設計</b>
+            <i>我們用市面上買得到的夾爪。機構設計不在我的專長裡面。</i></span>
+          <span class="part__v no">不接</span></li>
+        <li class="part"><span class="part__no">N-04</span>
+          <span class="part__m"><b>「什麼零件都能抓」的通用系統</b>
+            <i>我做不出來，目前也沒有人做得出來。有人這樣跟你講的時候要小心。</i></span>
+          <span class="part__v no">不接</span></li>
+        <li class="part"><span class="part__no">N-05</span>
+          <span class="part__m"><b>三個月內要上線的案子</b>
+            <i>學期與學生的節奏配合不了，接了會拖到你們。急的案子請直接找設備商。</i></span>
+          <span class="part__v no">不接</span></li>
+      </ol>
+    </div>
+    <div class="bin__foot">費用的範圍：可行性評估是固定金額的小型產學案，六位數初；往下開發多半是一年期的產學合作案，規模七位數上下。實際金額看題目，第一次談完就會給你一個範圍。</div>
+  </section>
+
+  <section class="bin" id="cases">
+    <div class="bin__rim">
+      <span class="tag">箱 04</span><h2><span>做過的案子</span></h2>
+      <span class="who">給產業界</span><span class="cnt">3 件</span>
+    </div>
+    <div class="bin__body">
+      <ol class="parts">
+        <li class="part"><span class="part__no">C-01</span>
+          <span class="part__m"><b>金屬扣件廠　混料料箱的取放　2024 至 2025</b>
+            <i>我負責視覺與抓取這一段，手臂與料架是他們的設備商做的。單件成功率 94%，剩下的 6% 疊在箱角，那些現在還是人工挑。導入之後從兩個人一班，改成一個人顧兩台。</i></span>
+          <span class="part__v on">已導入</span></li>
+        <li class="part"><span class="part__no">C-02</span>
+          <span class="part__m"><b>塑膠殼件廠　半透明件的深度補全　2025</b>
+            <i>他們的件在深度相機下面幾乎拍不到。我只做補深度這一段，四個月，交出去的是一個接在他們流程中間的模組。手臂與整線都是別人做的。</i></span>
+          <span class="part__v on">已交付</span></li>
+        <li class="part"><span class="part__no">C-03</span>
+          <span class="part__m"><b>自動化設備商　可行性評估　2023</b>
+            <i>評估完的結論是那批零件不適合視覺抓取，用震動盤加治具便宜得多。案子沒有往下做，評估費照收。</i></span>
+          <span class="part__v no">建議不做</span></li>
+      </ol>
+    </div>
+    <div class="bin__foot">三件裡有一件的結論是別做。先講清楚做不到的部分，後面才不用互相為難。</div>
+  </section>
+
+  <section class="bin" id="lab">
+    <div class="bin__rim">
+      <span class="tag">箱 05</span><h2><span>實驗室現況</span></h2>
+      <span class="who">給想加入的學生</span><span class="cnt">6 件</span>
+    </div>
+    <div class="bin__body">
+      <ol class="parts">
+        <li class="part"><span class="part__no">L-01</span>
+          <span class="part__m"><b>幾個人</b>
+            <i>我、一位專任助理、三位碩士生。2026 秋天收兩位，之後看畢業的人數。</i></span>
+          <span class="part__v">目前 5 人</span></li>
+        <li class="part"><span class="part__no">L-02</span>
+          <span class="part__m"><b>有哪些機台</b>
+            <i>兩台六軸手臂（一台在系館，一台放在合作廠的產線旁邊）、三種夾爪、兩台深度相機、一台四張顯示卡的工作站。實機時間比模擬多。</i></span>
+          <span class="part__v">實機為主</span></li>
+        <li class="part"><span class="part__no">L-03</span>
+          <span class="part__m"><b>一週怎麼過</b>
+            <i>週一組會，每個人講十分鐘，包含這一週壞掉的東西。週四整天是實機時段，機台排隊用。其他時間你自己安排，我不點名。</i></span>
+          <span class="part__v">兩個固定時段</span></li>
+        <li class="part"><span class="part__no">L-04</span>
+          <span class="part__m"><b>進來之前要會什麼</b>
+            <i>Python 寫得動、線性代數還記得、願意自己接線與拆夾爪。ROS 不會沒關係，前兩個月我帶你。</i></span>
+          <span class="part__v">三件</span></li>
+        <li class="part"><span class="part__no">L-05</span>
+          <span class="part__m"><b>誰不適合來</b>
+            <i>只想跑模擬、不想碰硬體的人。還有希望題目一開始就定好、照著做完就畢業的人。這裡的題目多半做到一半才知道問題出在哪。</i></span>
+          <span class="part__v no">先說清楚</span></li>
+        <li class="part"><span class="part__no">L-06</span>
+          <span class="part__m"><b>我能給你與不能給你的</b>
+            <i>能給你一台真正在轉的手臂、工廠現場的資料，還有掛你名字的論文。不能保證兩年畢業，前三位平均是兩年半。</i></span>
+          <span class="part__v">講在前面</span></li>
+      </ol>
+    </div>
+    <div class="bin__foot">想來的話先寫信，不用等推甄公告。談過再決定要不要投，對你比較省時間。</div>
+  </section>
+
+  <section class="bin" id="contact">
+    <div class="bin__rim">
+      <span class="tag">箱 06</span><h2><span>怎麼找我</span></h2>
+      <span class="who">給所有人</span><span class="cnt">5 件</span>
+    </div>
+    <div class="bin__body">
+      <ol class="parts">
+        <li class="part"><span class="part__no">K-01</span>
+          <span class="part__m"><b>Email</b>
+            <i>tseng@example.tw，兩到三個工作天回。信裡寫清楚你是哪一種身分，我比較好接話。</i></span>
+          <span class="part__v on">最快</span></li>
+        <li class="part"><span class="part__no">K-02</span>
+          <span class="part__m"><b>Office hour</b>
+            <i>每週三 14:00 到 16:00，系館研究室。線上也可以，先寫信約一個時間。</i></span>
+          <span class="part__v">每週一次</span></li>
+        <li class="part"><span class="part__no">K-03</span>
+          <span class="part__m"><b>產業界來信寫三件事</b>
+            <i>零件的照片、一天要處理幾件、現在這件事是誰在做。有這三件我就能判斷要不要見面，也省得你先做一份簡報。</i></span>
+          <span class="part__v">三件事</span></li>
+        <li class="part"><span class="part__no">K-04</span>
+          <span class="part__m"><b>想加入的學生寫一件事</b>
+            <i>寫一件你自己動手做過的東西，兩三段就好，做壞的也算。成績單先不用寄。</i></span>
+          <span class="part__v">兩三段</span></li>
+        <li class="part"><span class="part__no">K-05</span>
+          <span class="part__m"><b>同行要資料</b>
+            <i>資料集、程式碼或原始的量測檔案直接寫信要，不用先客氣一輪。有引用就好。</i></span>
+          <span class="part__v">直接寫信</span></li>
+      </ol>
+    </div>
+    <div class="bin__cta">
+      <p>白天多半在實驗室或工廠，信會回。要談合作的話，第一次見面我通常先問你們現在怎麼做這件事，還有為什麼想改。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:tseng@example.tw">寫信給我</a>
+        <a class="btn btn-ghost" href="#scope">先看能接與不能接</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 曾郁婷 · 機械手臂抓取實驗室 · 台南</span>
+    <ul>
+      <li><a href="mailto:tseng@example.tw">Email</a></li>
+      <li><a href="#pubs">發表與資料集</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

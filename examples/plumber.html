@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>文賢水電 — 只跑三重、蘆洲、五股，出勤費 500 元</title>
+<meta name="description" content="新北三重、蘆洲、五股的水電師傅陳文賢，一個人接單，做了十八年。白天多半一到兩小時內到，出勤費 500 元，到場看過再報價。漏水、跳電、熱水器、通排水。">
+<link rel="canonical" href="https://plumber.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="文賢水電 — 只跑三重、蘆洲、五股，出勤費 500 元">
+<meta property="og:description" content="做了十八年的水電師傅，一個人接單。白天多半一到兩小時內到，出勤費 500 元，到場看過再報價。">
+<meta property="og:url" content="https://plumber.example.tw/">
+<meta property="og:image" content="https://plumber.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▤</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 族：粗獷。動的性格是「彈」，撥桿跟按鈕都會位移，沒有軟綿綿的緩動。
+     選這一族是因為受眾的處境：家裡在漏水、在跳電，人可能正拿著手機站在暗的地方。
+     那種時候要的是超大字、粗框、高對比，不是留白與細字。
+
+     概念：配電箱。跳電的人第一件事就是去看那個箱子，那是師傅跟屋主共有的物件。
+       容器 —— 每一節是一片電箱面板，頂緣一條鐵灰匯流排標示條，整箱共用一道粗框。
+       重複單元 —— 一路開關：左邊實體撥桿加通電燈，中間迴路名稱，右邊一塊安培標示牌。
+       分節 —— 迴路編號 P1 到 P6，收尾是箱門內側那張施作標籤。
+     撥桿的 ON 與 OFF 是拿來講「我修這些」跟「這些我不做」的，但兩節的標題本身
+     就把話講完了，關掉所有裝飾這一頁還是讀得懂。
+     裝飾只做一次：門上的黑黃警示貼條、總開關的合閘動作、底部導軌都只出現在頭尾。 */
+
+  :root { --bg:#e7e8ea; --fg:#15171a; --fg-muted:#54585e;
+          --accent:#f5c518; --accent-fg:#15171a; --line:#15171a;
+          --plate:#f8f8f6; --steel:#c9ced2; --live:#12703a; --dead:#9aa1a8; }
+
+  body { background: var(--bg); color: var(--fg);
+    background-image: repeating-linear-gradient(0deg, rgba(21,23,26,.045) 0 1px, transparent 1px 7px); }
+
+  .box { max-width: 62rem; margin-inline: auto;
+    padding: var(--space-5) var(--space-3) var(--space-6); }
+  section { padding: 0; }
+
+  /* 電箱本體。整箱只有一個位移陰影，面板之間共用同一道框 */
+  .cab { border: 3px solid var(--fg); box-shadow: 12px 12px 0 var(--fg); background: var(--plate); }
+  .panel + .panel { border-top: 3px solid var(--fg); }
+
+  /* 門上那張貼條。整頁只出現這一次，而且它本身就是電話，
+     手機上不用捲就看得到號碼 */
+  .hazard { display: block; padding: .5rem .6rem; border-bottom: 3px solid var(--fg);
+    text-decoration: none; color: var(--fg);
+    background: repeating-linear-gradient(45deg, var(--accent) 0 14px, var(--fg) 14px 28px); }
+  .hazard span { display: inline-block; background: var(--fg); color: var(--accent);
+    font-size: var(--step-0); font-weight: 700; letter-spacing: .04em; padding: .22em .8em;
+    font-variant-numeric: tabular-nums; }
+  .hazard b { white-space: nowrap; }
+  .hazard:hover span { background: var(--plate); color: var(--fg); }
+
+  /* 匯流排標示條 */
+  .bus { display: flex; align-items: center; justify-content: space-between;
+    gap: var(--space-2); padding: .32rem .8rem; border-bottom: 3px solid var(--fg);
+    background: linear-gradient(180deg, #e4e8ea, var(--steel)); }
+  .bus b { font-size: .72rem; letter-spacing: .18em; font-weight: 700; }
+  .bus .no { background: var(--fg); color: var(--plate); font-size: .7rem; letter-spacing: .14em;
+    padding: .16em .62em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .in { padding: var(--space-4) clamp(1rem, 3.5vw, 2.2rem); }
+
+  /* 總開關。載入時扳一次，之後不動 */
+  .main { display: flex; align-items: center; gap: var(--space-3);
+    border: 3px solid var(--fg); background: var(--steel);
+    padding: .55rem .8rem; margin-bottom: var(--space-3); }
+  .mainlever { flex: none; width: 2.3rem; height: 3.5rem; border: 3px solid var(--fg);
+    background: var(--accent); position: relative; overflow: hidden; }
+  .mainlever i { position: absolute; left: 3px; right: 3px; top: 3px; height: 1.45rem;
+    background: var(--fg); animation: closein .45s steps(3, end) .3s both; }
+  @keyframes closein { from { transform: translateY(1.5rem); } to { transform: translateY(0); } }
+  .main b { display: block; font-size: .7rem; letter-spacing: .18em; font-weight: 700;
+    color: #33383e; }
+  .main strong { display: flex; align-items: center; gap: .5rem; font-size: 1.05rem;
+    font-weight: 700; line-height: 1.5; font-variant-numeric: tabular-nums; }
+  .pilot { flex: none; width: .95rem; height: .95rem; border: 3px solid var(--fg);
+    border-radius: 50%; background: var(--live); animation: lit 1.15s linear both; }
+  @keyframes lit { 0%, 66% { background: var(--dead); } 67%, 100% { background: var(--live); } }
+
+  h1 { font-size: clamp(2rem, 6.6vw, 3.9rem); line-height: 1.1; margin: 0 0 var(--space-3); }
+  h1 span { display: block; }
+  h2 { font-size: var(--step-2); margin: 0 0 var(--space-1); }
+  h2 span { display: inline-block; }
+  .lede { font-size: var(--step-1); max-width: 44ch; margin: 0 0 var(--space-4); }
+  .lede span { display: inline-block; }
+  .sub { color: var(--fg-muted); margin: 0 0 var(--space-3); max-width: 42ch;
+    font-size: var(--step-s); }
+
+  /* 第一屏那四片標示牌，左邊各鎖兩顆螺絲 */
+  .tags4 { display: grid; gap: var(--space-2);
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); }
+  .tags4 > div { position: relative; border: 3px solid var(--fg); background: var(--plate);
+    box-shadow: 5px 5px 0 var(--fg); padding: .72rem .9rem .8rem 1.55rem; }
+  .tags4 > div::before, .tags4 > div::after { content: ''; position: absolute; left: .48rem;
+    width: .4rem; height: .4rem; border-radius: 50%; background: var(--fg); }
+  .tags4 > div::before { top: .82rem; }
+  .tags4 > div::after { bottom: .82rem; }
+  .tags4 b { display: block; font-size: .68rem; letter-spacing: .16em; font-weight: 700;
+    color: var(--fg-muted); }
+  .tags4 strong { display: block; font-size: 1.08rem; font-weight: 700; line-height: 1.45;
+    font-variant-numeric: tabular-nums; }
+  .tags4 small { display: block; font-size: var(--step-s); color: var(--fg-muted);
+    line-height: 1.65; margin-top: .12rem; }
+  .tags4 a { color: inherit; }
+
+  /* 一路開關：撥桿、迴路、標示牌 */
+  .ways { list-style: none; margin: var(--space-3) 0 0; padding: 0; }
+  .way { display: grid; grid-template-columns: auto 1fr auto; align-items: start;
+    gap: var(--space-1) var(--space-3); padding-block: var(--space-3);
+    border-bottom: 2px dashed var(--steel); }
+  .way:first-child { padding-top: 0; }
+  .way:last-child { border-bottom: 0; padding-bottom: 0; }
+  /* 撥桿。合上的時候露出黃色的通電窗，扳下來就是灰的 */
+  .lever { position: relative; width: 1.7rem; height: 2.8rem; margin-top: 1.05rem;
+    border: 3px solid var(--fg); background: var(--accent); }
+  .lever::before { content: ''; position: absolute; left: 50%; top: -.68rem;
+    width: .48rem; height: .48rem; margin-left: -.34rem; border: 2px solid var(--fg);
+    border-radius: 50%; background: var(--live); }
+  .lever::after { content: ''; position: absolute; left: 3px; right: 3px; top: 3px;
+    height: 1rem; background: var(--fg); }
+  .way h3 { font-size: var(--step-1); margin: 0 0 .18rem; }
+  .way p { margin: 0; color: var(--fg-muted); font-size: var(--step-s); max-width: 44ch; }
+  .amp { justify-self: end; text-align: center; min-width: 5.6rem;
+    border: 3px solid var(--fg); background: var(--plate); box-shadow: 3px 3px 0 var(--fg);
+    padding: .26rem .55rem .34rem; }
+  .amp b { display: block; font-size: .6rem; letter-spacing: .16em; font-weight: 700;
+    color: var(--fg-muted); }
+  .amp strong { display: block; font-size: 1rem; font-weight: 700; line-height: 1.4;
+    white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  /* 這一節的撥桿全部扳下來，燈也是暗的 */
+  .off .lever { background: #dde1e4; }
+  .off .lever::before { background: var(--dead); }
+  .off .lever::after { top: auto; bottom: 3px; background: var(--dead); }
+  .off h3 { color: var(--fg-muted); }
+  .off .amp { border-color: var(--fg-muted); box-shadow: 3px 3px 0 var(--dead); }
+  .off .amp strong { color: var(--fg-muted); }
+
+  /* 箱底的導軌 */
+  .rail { height: 1.5rem; border-top: 3px solid var(--fg);
+    background: linear-gradient(180deg, var(--steel), #a9afb4); }
+
+  /* 箱門內側那張施作標籤，四角鎖螺絲 */
+  .label { margin-top: var(--space-5); border: 3px solid var(--fg);
+    box-shadow: 10px 10px 0 var(--fg); transform: rotate(-.7deg);
+    padding: var(--space-4) clamp(1.1rem, 3.5vw, 2.2rem);
+    background-color: var(--plate);
+    background-image:
+      radial-gradient(circle .26rem at .75rem .75rem, var(--fg) 96%, transparent),
+      radial-gradient(circle .26rem at calc(100% - .75rem) .75rem, var(--fg) 96%, transparent),
+      radial-gradient(circle .26rem at .75rem calc(100% - .75rem), var(--fg) 96%, transparent),
+      radial-gradient(circle .26rem at calc(100% - .75rem) calc(100% - .75rem), var(--fg) 96%, transparent);
+    background-repeat: no-repeat; }
+  .label .kick { font-size: .7rem; letter-spacing: .18em; font-weight: 700;
+    color: var(--fg-muted); margin: 0 0 .3rem; }
+  .spec { list-style: none; margin: var(--space-3) 0 var(--space-3); padding: 0; }
+  .spec li { display: grid; grid-template-columns: 4.6rem 1fr; gap: var(--space-2);
+    align-items: baseline; padding-block: .42rem; border-bottom: 2px dotted var(--steel);
+    font-variant-numeric: tabular-nums; }
+  .spec b { font-size: .68rem; letter-spacing: .16em; font-weight: 700; color: var(--fg-muted); }
+  .spec a { color: inherit; }
+  .after { max-width: 42ch; color: var(--fg-muted); font-size: var(--step-s);
+    margin: 0 0 var(--space-3); }
+
+  /* 按下去會陷進去 */
+  .btn { border: 3px solid var(--fg); border-radius: 0; box-shadow: 6px 6px 0 var(--fg);
+    font-weight: 700; font-size: var(--step-0); padding: .7em 1.3em; }
+  .btn:hover { transform: translate(3px, 3px); box-shadow: 3px 3px 0 var(--fg); }
+  .btn:active { transform: translate(6px, 6px); box-shadow: none; }
+  .btn-primary { background: var(--accent); color: var(--accent-fg); }
+  .btn-ghost { background: var(--plate); color: var(--fg); }
+  .actions { margin-top: var(--space-3); }
+  .callnote { font-size: var(--step-s); color: var(--fg-muted); max-width: 40ch;
+    margin: var(--space-3) 0 0; }
+
+  footer .wrap { max-width: 62rem; }
+
+  @media (max-width: 34rem) {
+    .way { grid-template-columns: auto 1fr; }
+    .amp { grid-column: 2; justify-self: start; margin-top: .5rem; }
+  }
+  /* 手機上第一屏要塞得下範圍、時間、費用、電話與按鈕，所以把節奏收緊 */
+  @media (max-width: 27rem) {
+    .box { padding-top: var(--space-3); }
+    h1 { font-size: 1.85rem; }
+    .in { padding-block: var(--space-3); }
+    .lede { font-size: var(--step-0); margin-bottom: var(--space-3); }
+    .tags4 > div { padding-block: .55rem .6rem; }
+    .tags4 small { line-height: 1.55; }
+    .hazard span { font-size: var(--step-s); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mainlever i, .pilot { animation: none; }
+    .btn:hover, .btn:active { transform: none; box-shadow: 6px 6px 0 var(--fg); }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main">
+<div class="box">
+
+  <div class="cab">
+
+    <a class="hazard" href="tel:0937268140"><span>漏水、跳電、沒熱水　先打 <b>0937-268-140</b></span></a>
+
+    <section class="panel">
+      <div class="bus"><b>總盤</b><span class="no">P1</span></div>
+      <div class="in">
+
+        <div class="main">
+          <span class="mainlever" aria-hidden="true"><i></i></span>
+          <div>
+            <b>總開關</b>
+            <strong><span class="pilot" aria-hidden="true"></span>今天照常出工，08:00 到 21:00</strong>
+          </div>
+        </div>
+
+        <h1><span>文賢水電</span><span>只跑三重、蘆洲、五股</span></h1>
+        <p class="lede"><span>陳文賢，做水電十八年，一個人接單。</span><span>這三區以外我不跑，跑遠了到場時間講不準。</span></p>
+
+        <div class="tags4">
+          <div><b>服務範圍</b><strong>三重、蘆洲、五股</strong><small>三重跟蘆洲最快，五股看是哪一段。</small></div>
+          <div><b>多久會到</b><strong>1 到 2 小時</strong><small>平常日白天。手上有單的話我會直接跟你講還要多久。</small></div>
+          <div><b>出勤費</b><strong>500 元</strong><small>到場看過才報價。不修也是這個數，決定修就折抵工資。</small></div>
+          <div><b>電話</b><strong><a href="tel:0937268140">0937-268-140</a></strong><small>我自己接，不轉接。</small></div>
+        </div>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="tel:0937268140">現在打給我</a>
+          <a class="btn btn-ghost" href="#money">先看怎麼算錢</a>
+        </div>
+        <p class="callnote">接通之後我會問四件事：哪一區、什麼狀況、發生多久了、你什麼時候方便。電話裡判斷得出來的，我會先跟你講大概落在多少。</p>
+
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="bus"><b>我修這些</b><span class="no">P2</span></div>
+      <div class="in">
+        <h2>五類，佔我八成的單</h2>
+        <p class="sub">右邊那欄是到場之後大概要花的時間，不含材料要跑一趟去買的狀況。</p>
+        <ul class="ways">
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>漏水</h3><p>水管、水龍頭、馬桶、水塔浮球。牆裡面的漏水我帶抓漏設備，先把點找出來再決定要不要打。</p></div>
+            <span class="amp"><b>工時</b><strong>1 到 3 小時</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>跳電與沒電</h3><p>無熔絲開關一直跳、單一插座沒電、整戶暗掉、二十年以上的舊配電箱整組換掉。</p></div>
+            <span class="amp"><b>工時</b><strong>1 小時內</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>熱水器</h3><p>換裝、點不著、水忽冷忽熱。瓦斯的跟電熱的都做，換裝一定裝在通風的位置，不裝室內。</p></div>
+            <span class="amp"><b>工時</b><strong>2 小時</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>燈具、插座、抽風機</h3><p>換燈、加插座、加開關、浴室抽風機與暖風機。這類多半半天內能收工。</p></div>
+            <span class="amp"><b>工時</b><strong>30 分鐘起</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>通排水</h3><p>廚房、浴室、陽台落水頭。我通到水真的排得下去才算做完，當場放水給你看。</p></div>
+            <span class="amp"><b>工時</b><strong>1 小時</strong></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel off">
+      <div class="bus"><b>這些我不做</b><span class="no">P3</span></div>
+      <div class="in">
+        <h2>先寫出來，省得你白等一天</h2>
+        <p class="sub">這一排的撥桿是扳下來的。碰到這幾種，我在電話裡就會跟你講，不會先出門收了出勤費才說。</p>
+        <ul class="ways">
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>冷氣</h3><p>冷氣要證照也要收冷媒的設備，那是另一個行業。我固定介紹一位在蘆洲做冷氣的師傅，電話給你自己打。</p></div>
+            <span class="amp"><b>怎麼辦</b><strong>介紹別人</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>大樓公共管線</h3><p>頂樓水塔、地下室加壓泵浦、公共立管。我動了會變成責任歸屬的麻煩，要走管委會跟原施工廠商。</p></div>
+            <span class="amp"><b>怎麼辦</b><strong>找管委會</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>全室重新配管配線</h3><p>那種要拆一個月，我一個人做會拖到你入住的時間。找有工班的比較快。</p></div>
+            <span class="amp"><b>怎麼辦</b><strong>找工班</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>家電本體</h3><p>洗衣機、冰箱、烘乾機裡面壞掉的零件。我只負責到插座、進水跟排水這一段。</p></div>
+            <span class="amp"><b>怎麼辦</b><strong>找原廠</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>消防設備與用電容量變更</h3><p>要簽證的都不行。那要有牌的技師蓋章，我沒有那個牌。</p></div>
+            <span class="amp"><b>怎麼辦</b><strong>要技師</strong></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel" id="money">
+      <div class="bus"><b>怎麼算錢</b><span class="no">P4</span></div>
+      <div class="in">
+        <h2>只有三項：出勤費、工資、材料</h2>
+        <p class="sub">收工之前我會把這三項當場念一次給你聽，加起來才是要付的錢。</p>
+        <ul class="ways">
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>出勤費</h3><p>到場看過才報價。你聽了不想修，付這個數我就走，不會勸你。決定修的話這筆折抵工資。</p></div>
+            <span class="amp"><b>金額</b><strong>500 元</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>工資</h3><p>第一個小時的價錢。動手之前我會先講這件事大概要幾小時，講完你點頭我才開工。</p></div>
+            <span class="amp"><b>金額</b><strong>800 元起</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>追加工時</h3><p>第一小時之後每半小時。不到半小時的零頭我不算。</p></div>
+            <span class="amp"><b>金額</b><strong>300 元</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>材料</h3><p>照材料行開給我的價錢收，發票留著給你看。我靠工資賺錢，材料不賺你的價差。</p></div>
+            <span class="amp"><b>金額</b><strong>不加價</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>晚上與國定假日</h3><p>21:00 以後跟國定假日加這個數。我會在電話裡先講，到現場才加算我的。</p></div>
+            <span class="amp"><b>金額</b><strong>加 400 元</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>沒有的名目</h3><p>沒有開單費、車馬費、耗材費、清潔費。你聽到這幾個名目，那不是我開的單。</p></div>
+            <span class="amp"><b>金額</b><strong>0 元</strong></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="bus"><b>多久會到</b><span class="no">P5</span></div>
+      <div class="in">
+        <h2>看你什麼時候打</h2>
+        <p class="sub">我一個人做，同一個時間只能在一個地方。所以下面寫的是實話，不是最快的那個數字。</p>
+        <ul class="ways">
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>平常日白天</h3><p>08:00 到 18:00。手上沒單的話收線就出門，三重蘆洲車程十五分鐘。</p></div>
+            <span class="amp"><b>到場</b><strong>1 到 2 小時</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>我人已經在別人家</h3><p>我會跟你講手上這件還要多久，你自己決定要等我，還是先找別人。我不會叫你在家裡乾等。</p></div>
+            <span class="amp"><b>到場</b><strong>當場告訴你</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>晚上</h3><p>18:00 到 21:00 還接，要看那天的單排到哪裡。加成從 21:00 才開始算。</p></div>
+            <span class="amp"><b>到場</b><strong>看當天排單</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>半夜</h3><p>只接兩種：漏水已經滴到樓下鄰居，或是整戶跳電推不回去。其他的等天亮我第一個去。</p></div>
+            <span class="amp"><b>到場</b><strong>只接兩種</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>週日</h3><p>休息。很急的話還是打，我接了就會直接回你去或不去，不會已讀不回。</p></div>
+            <span class="amp"><b>到場</b><strong>多半休息</strong></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="bus"><b>打之前先知道</b><span class="no">P6</span></div>
+      <div class="in">
+        <h2>五件事</h2>
+        <p class="sub">這幾條是十八年來最常被問的，寫在這裡，電話裡就不用再花五分鐘。</p>
+        <ul class="ways">
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>電話裡能講的我就講</h3><p>常見的狀況我會直接給你一個範圍，例如換水龍頭大概多少。給不出來的我會說要到現場看，不會在電話裡先報一個好聽的數字，到場再往上加。</p></div>
+            <span class="amp"><b>重點</b><strong>先給範圍</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>我在工地可能接不到</h3><p>手插在牆裡的時候沒辦法接。響完沒人接就留一通未接，我收工一定回，通常在半小時內。</p></div>
+            <span class="amp"><b>重點</b><strong>一定回電</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>付款</h3><p>現金或轉帳，收工當場付。刷卡沒有。要收據我開給你，上面會分開寫工資跟材料。</p></div>
+            <span class="amp"><b>重點</b><strong>現金或轉帳</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>保固</h3><p>我做的那一段保固三個月。同一個地方再漏、再跳，我回來看不收出勤費。材料本身的問題我幫你跟廠商處理。</p></div>
+            <span class="amp"><b>重點</b><strong>三個月</strong></span>
+          </li>
+          <li class="way">
+            <span class="lever" aria-hidden="true"></span>
+            <div><h3>租屋處的叫修</h3><p>先問過房東再叫我。修完的收據房東多半要，我開好給你拿去請款。</p></div>
+            <span class="amp"><b>重點</b><strong>先問房東</strong></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="rail" aria-hidden="true"></div>
+  </div>
+
+  <section class="label">
+    <p class="kick">箱門內側　施作標籤</p>
+    <h2>做這一行十八年</h2>
+    <ul class="spec">
+      <li><b>施作</b><span>陳文賢</span></li>
+      <li><b>入行</b><span>2008 年跟著師傅跑三重的公寓，跑了六年才自己出來</span></li>
+      <li><b>收範圍</b><span>2014 年起只接三重、蘆洲、五股</span></li>
+      <li><b>電話</b><span><a href="tel:0937268140">0937-268-140</a></span></li>
+      <li><b>地圖</b><span><a href="https://maps.example.tw" rel="noopener">工具車停在三重區重新路一帶</a></span></li>
+    </ul>
+    <p class="after">為什麼只收這三區：跑得近，我才敢跟你講一到兩小時；材料行也都在這附近，缺零件我十分鐘就補得到。以前接到桃園、接到內湖，光路上就一個半小時，兩邊都不好過。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="tel:0937268140">0937-268-140</a>
+      <a class="btn btn-ghost" href="#money">再看一次收費</a>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 文賢水電　新北市三重區、蘆洲區、五股區</span>
+  <ul><li><a href="tel:0937268140">0937-268-140</a></li></ul>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>莊惠茹 — 年營業額三千萬以下，一個人的公司也算</title>
+<meta name="description" content="台中的記帳士，只接年營業額三千萬以下的小公司與工作室。月費、每個月要準備哪些單據、什麼時候要給我，六張傳票寫完，你不用先寫信來問。">
+<link rel="canonical" href="https://accountant.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="莊惠茹 — 年營業額三千萬以下，一個人的公司也算">
+<meta property="og:description" content="台中的記帳士，只接年營業額三千萬以下的小公司與工作室。月費、每個月要準備哪些單據、什麼時候要給我，都寫在這一頁。">
+<meta property="og:url" content="https://accountant.example.tw/">
+<meta property="og:image" content="https://accountant.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>◫</text></svg>">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="base.css">
+<style>
+  /* 族：克制（幾乎不動）。這一行的受眾怕被推銷，也怕被念。
+     版面要像一份可以拿去對的文件，不要像廣告。
+
+     概念：記帳傳票。做帳的人每天都在開的那張紙。
+
+     容器＝一張傳票：票頭（傳票號、類別、筆數）、欄名列、分錄列、合計列。
+     重複單元＝一筆分錄：科目、摘要、借方、貸方。
+     分節＝傳票號 No.001 到 No.006，一張傳票講一件事。
+
+     借方欄寫「你這邊要出的」，貸方欄寫「我這邊要出的」，
+     所以「每個月要準備什麼給你」這一題，在版面上有固定的位置。
+     每張傳票兩邊的筆數相等，合計列用會計的雙線收在下面。
+
+     裝飾只在第一張傳票出現一次：直排的「第一聯　客戶存查」與那顆蓋下去的名章。
+     容器、欄位與傳票號從第一屏用到頁尾。 */
+  :root {
+    --bg: #f4f1e8;   --fg: #1c1a15;    --fg-muted: #5c584d;
+    --accent: #9c3324; --accent-fg: #f8f5ec;
+    --line: #ddd7c6; --rule: #cfc8b4;  --paper: #fbf9f2;
+    --tint: #eeead9; --num: #f6f2e3;   --chop: #a33a2c;
+  }
+  html { background: var(--bg); }
+  .doc { max-width: 66rem; margin-inline: auto; padding-inline: var(--space-3); }
+  section { padding: 0; }
+  h1 span, h2 span { display: inline-block; }
+
+  /* 冊頁的頁首。整頁只出現這一次 */
+  .slug { display: flex; flex-wrap: wrap; gap: 0.3rem var(--space-3);
+    border-bottom: 3px double var(--fg); padding: var(--space-3) 0 0.5rem;
+    font-size: 0.72rem; letter-spacing: 0.1em; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums; }
+  .slug b { color: var(--fg); font-weight: 600; letter-spacing: 0.18em; }
+  .slug .src { margin-left: auto; }
+
+  /* 容器：一張傳票。從第一屏用到頁尾 */
+  .vou { border: 1px solid var(--fg); background: var(--paper);
+    margin-top: var(--space-4); }
+  .vou__bar { display: flex; flex-wrap: wrap; gap: 0.3rem var(--space-3);
+    align-items: baseline; background: var(--tint);
+    border-bottom: 1px solid var(--fg); padding: 0.5rem var(--space-3);
+    font-size: var(--step-s); }
+  .vou__bar h2, .vou__bar .t { font-size: var(--step-s); font-weight: 600;
+    letter-spacing: 0.16em; margin: 0; line-height: 1.7; color: inherit; }
+  .vou__bar .q { color: var(--fg-muted); letter-spacing: 0.08em; }
+  .vou__bar .no { margin-left: auto; color: var(--chop); letter-spacing: 0.12em;
+    font-variant-numeric: tabular-nums; }
+
+  /* 第一張傳票的摘要欄。直排邊條、標題、名章 */
+  .vou__sum { display: grid; grid-template-columns: auto 1fr auto;
+    gap: var(--space-3); align-items: start;
+    padding: var(--space-5) var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--fg); }
+  .copy { writing-mode: vertical-rl; letter-spacing: 0.3em; font-size: 0.72rem;
+    color: var(--fg-muted); border-right: 1px solid var(--rule);
+    padding-right: 0.6rem; align-self: stretch; }
+  .vou__sum h1 { font-size: var(--step-3); margin: 0 0 var(--space-3); }
+  .vou__sum .lede { color: var(--fg-muted); max-width: 40ch; margin: 0; }
+  .vou__sum .eyebrow { margin-bottom: var(--space-2); }
+  .chop { display: grid; grid-template-rows: 1fr 1fr; grid-auto-flow: column;
+    direction: rtl; place-items: center; width: 4.4rem; height: 4.4rem;
+    border: 2.5px solid var(--chop); color: var(--chop); opacity: 0.9;
+    font-size: 1.1rem; line-height: 1; transform: rotate(-6deg); }
+
+  /* 分錄列。窄螢幕折成幾行，寬螢幕才排成四欄 */
+  .line { display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0.15rem var(--space-2); padding: 0.75rem var(--space-3); }
+  .cols { display: none; }
+  .rows { list-style: none; margin: 0; padding: 0; }
+  .rows > li { border-bottom: 1px solid var(--line); }
+  .rows > li:last-child { border-bottom: 0; }
+
+  .k { font-size: var(--step-s); color: var(--fg-muted); letter-spacing: 0.14em; }
+  .m { flex: 1 1 100%; font-size: var(--step-s); }
+  .m b { display: block; font-size: var(--step-0); font-weight: 600; }
+  .m i { font-style: normal; color: var(--fg-muted); }
+  .dr, .cr { flex: 1 1 100%; font-size: var(--step-s); font-weight: 600;
+    font-variant-numeric: tabular-nums; }
+  .dr::before, .cr::before { font-weight: 400; letter-spacing: 0.1em;
+    color: var(--fg-muted); }
+  .dr::before { content: "借方 · 你這邊　"; }
+  .cr::before { content: "貸方 · 我這邊　"; }
+  .dr:empty, .cr:empty { display: none; }
+
+  /* 合計列。會計的雙線收在總數下面 */
+  .vou__foot { border-top: 1px solid var(--fg); background: var(--tint);
+    font-size: 0.74rem; letter-spacing: 0.04em; }
+  .vou__foot .m { font-size: 0.74rem; color: var(--fg-muted); }
+  .vou__foot .dr, .vou__foot .cr { border-bottom: 3px double var(--fg);
+    padding-bottom: 0.3rem; }
+  .vou__foot .dr::before { content: "借方　"; }
+  .vou__foot .cr::before { content: "貸方　"; }
+
+  .vou__cta { border-top: 1px solid var(--fg); padding: var(--space-3); }
+  .vou__cta p { margin: 0 0 var(--space-2); font-size: var(--step-s);
+    color: var(--fg-muted); max-width: 48ch; }
+  .vou__cta .actions { margin-top: 0; }
+
+  /* 整頁只有這裡在動：第一張傳票逐列開出來，名章最後蓋下去 */
+  @keyframes rowin { from { opacity: 0; transform: translateY(-4px); }
+                     to   { opacity: 1; transform: none; } }
+  @keyframes chopdown { from { opacity: 0; transform: rotate(-17deg) scale(1.6); }
+                        to   { opacity: 0.9; transform: rotate(-6deg) scale(1); } }
+  .vou--first .rows > li { animation: rowin 0.42s var(--ease) both; }
+  .vou--first .rows > li:nth-child(2) { animation-delay: 0.07s; }
+  .vou--first .rows > li:nth-child(3) { animation-delay: 0.14s; }
+  .vou--first .rows > li:nth-child(4) { animation-delay: 0.21s; }
+  .vou--first .rows > li:nth-child(5) { animation-delay: 0.28s; }
+  .vou--first .rows > li:nth-child(6) { animation-delay: 0.35s; }
+  .vou--first .chop { animation: chopdown 0.4s var(--ease) 0.55s both; }
+  @media (prefers-reduced-motion: reduce) {
+    .vou--first .rows > li { animation: none; opacity: 1; transform: none; }
+    .vou--first .chop { animation: none; opacity: 0.9; transform: rotate(-6deg); }
+  }
+
+  @media (min-width: 52rem) {
+    .cols, .line { display: grid; grid-template-columns: 4.6rem 1fr 8.6rem 8.6rem;
+      gap: 0; padding: 0; align-items: stretch; }
+    .line > * { padding: 0.8rem 0.7rem; }
+    .line > .k { padding-left: var(--space-3); }
+    .line > .cr { padding-right: var(--space-3); }
+    .dr, .cr { text-align: right; border-left: 1px solid var(--rule);
+      background: var(--num); }
+    .dr::before, .cr::before { content: none; }
+    .dr:empty, .cr:empty { display: block; }
+    .cols { font-size: 0.7rem; letter-spacing: 0.14em; color: var(--fg-muted);
+      border-bottom: 1px solid var(--fg); }
+    .cols .dr, .cols .cr { font-weight: 400; }
+    .vou__foot .dr, .vou__foot .cr { padding-bottom: 0.5rem; }
+  }
+  @media (max-width: 40rem) {
+    .vou__sum { grid-template-columns: 1fr; }
+    .copy { writing-mode: horizontal-tb; border-right: 0; padding-right: 0;
+      border-bottom: 1px solid var(--rule); padding-bottom: 0.4rem;
+      letter-spacing: 0.18em; }
+  }
+
+  footer { max-width: 66rem; margin-inline: auto; margin-top: var(--space-5); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main" class="doc">
+
+  <div class="slug">
+    <b>記帳傳票</b><span>莊惠茹記帳士事務所</span><span>台中市西屯區</span>
+    <span class="src">本冊共 6 張 · 製表 2026.08</span>
+  </div>
+
+  <section class="vou vou--first">
+    <div class="vou__bar"><span class="t">開帳</span>
+      <span class="q">傳票類別：接案條件</span><span class="no">No.001 · 6 筆</span></div>
+
+    <div class="vou__sum">
+      <span class="copy">第一聯　客戶存查</span>
+      <div>
+        <p class="eyebrow">記帳士 · 台中市西屯區</p>
+        <h1><span>年營業額三千萬以下，</span><span>一個人的公司也算</span></h1>
+        <p class="lede">記帳士第十一年，客戶都是這個規模。月費多少、每個月要給我什麼、什麼時候要給，六張傳票寫完，你不用先寫信來問價錢。</p>
+      </div>
+      <span class="chop" aria-hidden="true"><span>莊</span><span>惠</span><span>茹</span><span>印</span></span>
+    </div>
+
+    <div class="cols line"><span class="k">科目</span><span class="m">摘要</span>
+      <span class="dr">借方　你這邊</span><span class="cr">貸方　我這邊</span></div>
+    <ol class="rows">
+      <li class="line"><span class="k">規模</span>
+        <span class="m"><b>年營業額三千萬以下</b><i>這是我全部客戶的範圍。再往上的公司需要的東西我給不了，會請你找大一點的事務所。</i></span>
+        <span class="dr">3,000 萬以下</span><span class="cr"></span></li>
+      <li class="line"><span class="k">型態</span>
+        <span class="m"><b>公司、行號、工作室都接</b><i>沒有員工也接。上個月剛登記完、還沒有第一筆收入的也接。</i></span>
+        <span class="dr">1 人起</span><span class="cr"></span></li>
+      <li class="line"><span class="k">期限</span>
+        <span class="m"><b>每月 10 日前，把上個月的單據給我</b><i>拍照丟進雲端資料夾就好。不用整理、不用貼在 A4 紙上、不用按日期排。</i></span>
+        <span class="dr">每月 10 日</span><span class="cr"></span></li>
+      <li class="line"><span class="k">月費</span>
+        <span class="m"><b>記帳月費 2,500 元起</b><i>含做帳、開傳票，還有每兩個月一次的營業稅申報。憑證 60 張以內都是這個價。</i></span>
+        <span class="dr"></span><span class="cr">2,500 元起</span></li>
+      <li class="line"><span class="k">年度</span>
+        <span class="m"><b>五月的營所稅結算申報另計</b><i>四月先把報價寄給你，你同意了我才做。不會做完才通知你要付多少。</i></span>
+        <span class="dr"></span><span class="cr">8,000 元起</span></li>
+      <li class="line"><span class="k">首談</span>
+        <span class="m"><b>第一次談不收費</b><i>半小時。談完你覺得不合適就算了，我不會再打給你。</i></span>
+        <span class="dr"></span><span class="cr">0 元</span></li>
+    </ol>
+    <div class="vou__foot line"><span class="k">合計</span>
+      <span class="m">兩邊筆數相等，這張傳票才開得下去。你要出的三件、我要出的三件，都在上面。</span>
+      <span class="dr">3 筆</span><span class="cr">3 筆</span></div>
+    <div class="vou__cta">
+      <p>先寫信給我，講三件事就好：你做什麼的、登記多久了、現在有沒有人在幫你記帳。其他的我會問你。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:chuang@example.tw">寄信給我</a>
+        <a class="btn btn-ghost" href="#monthly">先看每個月要準備什麼</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="vou" id="scope">
+    <div class="vou__bar"><h2><span>我接的，</span><span>還有我不接的</span></h2>
+      <span class="q">傳票類別：承接範圍</span><span class="no">No.002 · 7 筆</span></div>
+    <div class="cols line"><span class="k">科目</span><span class="m">摘要</span>
+      <span class="dr">借方　你這邊</span><span class="cr">貸方　我這邊</span></div>
+    <ol class="rows">
+      <li class="line"><span class="k">承接</span>
+        <span class="m"><b>公司帳與行號帳的日常記帳</b><i>每個月做帳、每兩個月的營業稅申報、每年五月的結算申報。這是我主要在做的事。</i></span>
+        <span class="dr">主要業務</span><span class="cr">接</span></li>
+      <li class="line"><span class="k">承接</span>
+        <span class="m"><b>剛登記完、第一年還沒有收入</b><i>沒有收入也要記帳。量少，月費算你 1,800，等有收入了再調回去。</i></span>
+        <span class="dr">0 收入</span><span class="cr">接</span></li>
+      <li class="line"><span class="k">承接</span>
+        <span class="m"><b>接手前一家事務所留下的帳</b><i>先看過再報價。整理的費用一次算清楚，不會按月疊上去。</i></span>
+        <span class="dr">舊帳</span><span class="cr">接</span></li>
+      <li class="line"><span class="k">承接</span>
+        <span class="m"><b>薪資造冊與勞健保的投保作業</b><i>五人以下我一起做，含在月費裡。人再多要另外談。</i></span>
+        <span class="dr">5 人以下</span><span class="cr">接</span></li>
+      <li class="line"><span class="k">轉介</span>
+        <span class="m"><b>要查核簽證的申報</b><i>那要會計師才能簽。你到那個規模的時候我會直接告訴你，也可以介紹兩家給你比。</i></span>
+        <span class="dr">簽證案件</span><span class="cr">轉介</span></li>
+      <li class="line"><span class="k">不接</span>
+        <span class="m"><b>境外公司、加密資產、跨國的帳</b><i>我沒做過。硬接的話你會付錢讓我學，那不划算。</i></span>
+        <span class="dr">沒經驗</span><span class="cr">不接</span></li>
+      <li class="line"><span class="k">不接</span>
+        <span class="m"><b>要我配合做兩套帳</b><i>問到這件事我會直接掛掉電話，沒有第二句。</i></span>
+        <span class="dr">兩套帳</span><span class="cr">不接</span></li>
+    </ol>
+    <div class="vou__foot line"><span class="k">合計</span>
+      <span class="m">這一頁沒有寫任何節稅的方法。哪些能列、要怎麼報，要看你實際的帳與行業，寫在網頁上的通則多半不適用你。你問我，我照你的情況回。</span>
+      <span class="dr">7 筆</span><span class="cr">7 筆</span></div>
+  </section>
+
+  <section class="vou" id="monthly">
+    <div class="vou__bar"><h2><span>每個月的往來</span></h2>
+      <span class="q">傳票類別：例行分錄</span><span class="no">No.003 · 10 筆</span></div>
+    <div class="cols line"><span class="k">科目</span><span class="m">摘要</span>
+      <span class="dr">借方　你這邊</span><span class="cr">貸方　我這邊</span></div>
+    <ol class="rows">
+      <li class="line"><span class="k">憑證</span>
+        <span class="m"><b>你付出去的發票與收據</b><i>紙本拍照、電子發票存檔，兩種都可以。載具的明細不用自己抓，我來對。</i></span>
+        <span class="dr">每月 10 日前</span><span class="cr"></span></li>
+      <li class="line"><span class="k">憑證</span>
+        <span class="m"><b>你開出去的發票與收款紀錄</b><i>如果你用的是電子發票平台，把帳號給我，我自己去撈。</i></span>
+        <span class="dr">每月 10 日前</span><span class="cr"></span></li>
+      <li class="line"><span class="k">銀行</span>
+        <span class="m"><b>公司帳戶的對帳單</b><i>網銀下載的 PDF 就好。有幾個帳戶就給我幾份。</i></span>
+        <span class="dr">每帳戶 1 份</span><span class="cr"></span></li>
+      <li class="line"><span class="k">薪資</span>
+        <span class="m"><b>薪資明細與勞健保繳費單</b><i>有請人才要給。你自己一個人的話這一列跳過。</i></span>
+        <span class="dr">有才給</span><span class="cr"></span></li>
+      <li class="line"><span class="k">私卡</span>
+        <span class="m"><b>用個人的錢先墊的公司支出</b><i>在帳單上把那幾筆圈起來、寫一句買什麼就好。這是最常漏掉的一項。</i></span>
+        <span class="dr">標一下就好</span><span class="cr"></span></li>
+      <li class="line"><span class="k">帳務</span>
+        <span class="m"><b>做帳、開傳票、登入帳簿</b><i>你給我的每一張單據，最後都會落在某一筆分錄上。要看的話隨時跟我要。</i></span>
+        <span class="dr"></span><span class="cr">每月</span></li>
+      <li class="line"><span class="k">申報</span>
+        <span class="m"><b>營業稅申報</b><i>兩個月一次。申報書與繳款單我會寄給你留存。</i></span>
+        <span class="dr"></span><span class="cr">每兩個月</span></li>
+      <li class="line"><span class="k">報表</span>
+        <span class="m"><b>一張看得懂的收支表</b><i>這個月收多少、花在哪幾類、還剩多少。一頁，不是三十頁的財報。</i></span>
+        <span class="dr"></span><span class="cr">每月 20 日</span></li>
+      <li class="line"><span class="k">缺件</span>
+        <span class="m"><b>缺什麼我列一張清單給你</b><i>寫明缺哪一筆、大概多少錢、我從哪裡看出來的。不用你猜我要什麼。</i></span>
+        <span class="dr"></span><span class="cr">收件後 3 天</span></li>
+      <li class="line"><span class="k">態度</span>
+        <span class="m"><b>單據少了，不會被我念</b><i>發票掉了就講。能補的我告訴你怎麼補，補不回來的照實入帳。開三年的公司，單據很少是全的。</i></span>
+        <span class="dr"></span><span class="cr">每一次</span></li>
+    </ol>
+    <div class="vou__foot line"><span class="k">合計</span>
+      <span class="m">你要出的五件，我要出的五件。這張傳票是我們每個月會重複一次的東西。</span>
+      <span class="dr">5 筆</span><span class="cr">5 筆</span></div>
+  </section>
+
+  <section class="vou" id="fee">
+    <div class="vou__bar"><h2><span>收費</span></h2>
+      <span class="q">傳票類別：費用</span><span class="no">No.004 · 7 筆</span></div>
+    <div class="cols line"><span class="k">科目</span><span class="m">摘要</span>
+      <span class="dr">借方　你這邊</span><span class="cr">貸方　我這邊</span></div>
+    <ol class="rows">
+      <li class="line"><span class="k">月費</span>
+        <span class="m"><b>記帳月費</b><i>做帳、傳票、每兩個月的營業稅申報、每月一張收支表。憑證 60 張以內。</i></span>
+        <span class="dr">每月</span><span class="cr">2,500 元起</span></li>
+      <li class="line"><span class="k">超量</span>
+        <span class="m"><b>憑證超過 60 張</b><i>每多 30 張加 400 元。連續兩個月超過我才會調，調之前先算給你看。</i></span>
+        <span class="dr">超過 60 張</span><span class="cr">另計</span></li>
+      <li class="line"><span class="k">年度</span>
+        <span class="m"><b>營所稅結算申報</b><i>每年五月做。四月先報價，你同意了我才動工。</i></span>
+        <span class="dr">每年五月</span><span class="cr">8,000 元起</span></li>
+      <li class="line"><span class="k">舊帳</span>
+        <span class="m"><b>接手舊帳的整理</b><i>看過你的帳再報，一次算清。缺件太多的話我會先講要花多久。</i></span>
+        <span class="dr">一次性</span><span class="cr">5,000 元起</span></li>
+      <li class="line"><span class="k">薪資</span>
+        <span class="m"><b>薪資造冊與勞健保</b><i>五人以下含在月費裡，不另外收。</i></span>
+        <span class="dr">5 人以下</span><span class="cr">0 元</span></li>
+      <li class="line"><span class="k">諮詢</span>
+        <span class="m"><b>平常問我問題</b><i>訊息或電話都可以，不另外算錢。你最後找別人記帳，也不收。</i></span>
+        <span class="dr">隨時</span><span class="cr">0 元</span></li>
+      <li class="line"><span class="k">付款</span>
+        <span class="m"><b>月繳或季繳，你選</b><i>匯款，每一筆我都開發票給你。不收現金、不收紅包。</i></span>
+        <span class="dr">月繳或季繳</span><span class="cr">開立發票</span></li>
+    </ol>
+    <div class="vou__foot line"><span class="k">合計</span>
+      <span class="m">上面是我全部的收費項目。簽委任書那天我會把這張表印一份給你，簽完不會多出東西。</span>
+      <span class="dr">7 筆</span><span class="cr">7 筆</span></div>
+  </section>
+
+  <section class="vou" id="calendar">
+    <div class="vou__bar"><h2><span>我什麼時候</span><span>會來找你要東西</span></h2>
+      <span class="q">傳票類別：年度行事曆</span><span class="no">No.005 · 6 筆</span></div>
+    <div class="cols line"><span class="k">時點</span><span class="m">摘要</span>
+      <span class="dr">借方　你這邊</span><span class="cr">貸方　我這邊</span></div>
+    <ol class="rows">
+      <li class="line"><span class="k">單月</span>
+        <span class="m"><b>一、三、五、七、九、十一月</b><i>這幾個月要申報前兩個月的營業稅，所以月初我會催你一次。</i></span>
+        <span class="dr">10 日前給單據</span><span class="cr">15 日前送申報</span></li>
+      <li class="line"><span class="k">每月</span>
+        <span class="m"><b>其他月份</b><i>一樣 10 日前給我，只是那個月沒有申報要送。</i></span>
+        <span class="dr">10 日前給單據</span><span class="cr">20 日給收支表</span></li>
+      <li class="line"><span class="k">一月</span>
+        <span class="m"><b>年初的扣繳憑單</b><i>有請人或有付租金、外包費用的才需要。我會提前一週跟你要全年的名單。</i></span>
+        <span class="dr">1 月 10 日前</span><span class="cr">1 月底前辦完</span></li>
+      <li class="line"><span class="k">四月</span>
+        <span class="m"><b>結算申報的報價</b><i>這個月不用給我東西。我把去年的帳整理完，把費用寄給你確認。</i></span>
+        <span class="dr">不用給東西</span><span class="cr">寄報價給你</span></li>
+      <li class="line"><span class="k">五月</span>
+        <span class="m"><b>營所稅結算申報</b><i>我算完會先給你看，你確認過我才送出去。</i></span>
+        <span class="dr">5 日前確認</span><span class="cr">月底前送出</span></li>
+      <li class="line"><span class="k">隨時</span>
+        <span class="m"><b>收到國稅局的信</b><i>拍給我就好，先不要自己回。多數是例行的查對，不用緊張。</i></span>
+        <span class="dr">收到就拍給我</span><span class="cr">1 個工作天回</span></li>
+    </ol>
+    <div class="vou__foot line"><span class="k">合計</span>
+      <span class="m">一年就是這六件事在輪。時間我先寫在這裡，你不用記，到了我會來找你。</span>
+      <span class="dr">6 筆</span><span class="cr">6 筆</span></div>
+  </section>
+
+  <section class="vou" id="start">
+    <div class="vou__bar"><h2><span>怎麼開始</span></h2>
+      <span class="q">傳票類別：開戶流程</span><span class="no">No.006 · 5 筆</span></div>
+    <div class="cols line"><span class="k">步驟</span><span class="m">摘要</span>
+      <span class="dr">借方　你這邊</span><span class="cr">貸方　我這邊</span></div>
+    <ol class="rows">
+      <li class="line"><span class="k">01</span>
+        <span class="m"><b>寫信給我</b><i>講你做什麼的、登記多久了、現在有沒有人在幫你記帳。三句話就夠。</i></span>
+        <span class="dr">3 句話</span><span class="cr">1 個工作天回</span></li>
+      <li class="line"><span class="k">02</span>
+        <span class="m"><b>談一次</b><i>見面或線上都可以。我問你行業與單據量，當場把月費算給你。不合適我當天就會說。</i></span>
+        <span class="dr">半小時</span><span class="cr">0 元</span></li>
+      <li class="line"><span class="k">03</span>
+        <span class="m"><b>我給你一張報價單</b><i>月費、年度費用、什麼時候開始，寫成一張紙。你可以拿去跟別家比，比完再回我。</i></span>
+        <span class="dr">你決定</span><span class="cr">一張紙</span></li>
+      <li class="line"><span class="k">04</span>
+        <span class="m"><b>簽委任書</b><i>記帳士證書字號與事務所登記，那天一併給你看。</i></span>
+        <span class="dr">簽名</span><span class="cr">證書給你看</span></li>
+      <li class="line"><span class="k">05</span>
+        <span class="m"><b>開一個雲端資料夾</b><i>你把單據拍進去，剩下的我來。第一個月我會盯緊一點，抓出你們公司的節奏。</i></span>
+        <span class="dr">拍照上傳</span><span class="cr">當月開始</span></li>
+    </ol>
+    <div class="vou__foot line"><span class="k">合計</span>
+      <span class="m">到這裡為止都不用付錢。真的開始做帳，才有第一張帳單。</span>
+      <span class="dr">5 筆</span><span class="cr">5 筆</span></div>
+    <div class="vou__cta">
+      <p>白天多半在國稅局或客戶那邊，看到信會回。事務所在西屯，台中以外的客戶我也接，這幾年多半沒見過面也做得下去。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:chuang@example.tw">寄信給我</a>
+        <a class="btn btn-ghost" href="tel:0422000000">04-2200-0000</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 莊惠茹記帳士事務所 · 台中市西屯區</span>
+    <ul>
+      <li><a href="tel:0422000000">04-2200-0000</a></li>
+      <li><a href="mailto:chuang@example.tw">Email</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
