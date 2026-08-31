@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>賴柏勳 — 一班六個人，坐滿就不收</title>
+<meta name="description" content="國中數學與理化，一班最多六個人，坐滿就不收。台中北屯，捷運文心崇德站走五分鐘。小班一堂兩小時 700 元，一對一 1,600 元。這裡沒有榜單，我給家長的是每堂課結束當天的三行紀錄。">
+<link rel="canonical" href="https://tutor.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="賴柏勳 — 一班六個人，坐滿就不收">
+<meta property="og:description" content="國中數學與理化，一班最多六個人。台中北屯，小班一堂兩小時 700 元。沒有榜單，只有每堂課結束當天的三行紀錄。">
+<meta property="og:url" content="https://tutor.example.tw/">
+<meta property="og:image" content="https://tutor.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>▦</text></svg>">
+<link rel="stylesheet" href="../templates/tokens.css">
+<link rel="stylesheet" href="../templates/base.css">
+<style>
+  /* 族：克制（幾乎不動）。家長挑老師要的是可靠，
+     所以整間教室只有一種東西會動：空著的那幾個位子。
+
+     概念：座位表。補習班老師手上那張畫著課桌的表。
+     容器＝一張課桌。粗框、不模糊的位移陰影、桌子外面一張椅子，一個區塊坐一張桌。
+     重複單元＝一個座位方格。實心是有人，虛線是空著；班表、清單、對照都用同一個方格。
+     分節＝一排。前排 A、後排 B，座號用 counter() 從 A1 連號到 B3，
+     左邊的走道掛直排的排標。
+     整頁就是他那間六人教室：五張桌子坐了內容，第六張空著，那一格就是聯絡方式。
+     裝飾（白板、板溝上的兩支筆、磁鐵壓著的班表）只在第一屏出現一次，
+     容器、座號、方格從第一屏用到頁尾。
+     換底色的時候覆寫 tokens 的 --bg 與 --fg，不另外發明一組。 */
+  :root {
+    --bg: #eceee7;        --fg: #1b201c;        --fg-muted: #575e53;
+    --line: #ccd1c5;      --accent: #24503f;    --accent-fg: #f4f6ef;
+    --desk: #f7f7f1;      --board: #fcfcf8;     --free: #767f70;
+    --room-left: clamp(0.9rem, 9vw, 11rem);
+    --room-right: clamp(0.9rem, 3vw, 3rem);
+    --maxw: 60rem;
+  }
+  body { background: var(--bg); color: var(--fg); }
+  section { padding: 0; }
+  h1 span, h2 span { display: inline-block; }
+
+  /* 破除置中：整間教室靠左擺，右邊留一條窄走道 */
+  .room { max-width: var(--maxw);
+    margin: var(--space-4) var(--room-right) var(--space-5) var(--room-left); }
+
+  /* 白板。整頁唯一的裝飾件，只出現這一次 */
+  .board { position: relative; background: var(--board);
+    border: 2px solid var(--fg); box-shadow: 10px 10px 0 rgba(27, 32, 28, 0.09);
+    padding: var(--space-4); margin-bottom: calc(var(--space-6) + 8px); }
+  .board h1 { font-size: clamp(1.95rem, 5.4vw, 3.05rem); line-height: 1.22;
+    margin: 0 0 var(--space-3); }
+  .board .lede { font-size: var(--step-1); color: var(--fg-muted);
+    max-width: 26em; margin: 0; }
+  .board .note { font-size: var(--step-s); margin: var(--space-3) 0 0; max-width: 30em; }
+  /* 板溝，跟兩支放在上面的筆 */
+  .tray { position: absolute; left: 14%; right: 14%; bottom: -12px; height: 10px;
+    background: var(--bg); border: 2px solid var(--fg); border-top: 0;
+    display: flex; align-items: center; gap: 9px; padding-left: 16px; }
+  .tray i { width: 28px; height: 4px; background: var(--accent); }
+  .tray i + i { background: #8a3b32; }
+
+  /* 磁鐵壓在白板上的那張班表 */
+  .sheet { position: relative; background: var(--desk); border: 1px solid var(--line);
+    box-shadow: 5px 5px 0 rgba(27, 32, 28, 0.07); padding: var(--space-3);
+    margin: var(--space-4) 0 var(--space-2); transform: rotate(-0.6deg); }
+  .sheet::before { content: ''; position: absolute; top: -8px; left: 1.5rem;
+    width: 15px; height: 15px; border-radius: 50%; background: var(--accent);
+    box-shadow: 2px 2px 0 rgba(27, 32, 28, 0.16); }
+  .sheet__cap { font-size: var(--step-s); color: var(--fg-muted);
+    margin: 0 0 var(--space-2); max-width: none; }
+  .sheet__cap b { color: var(--fg); font-weight: 600; letter-spacing: 0.1em;
+    margin-right: 0.7em; }
+
+  .chart { list-style: none; margin: 0; padding: 0; }
+  /* 班名與座位方格要靠在一起才讀得成一列，寬螢幕上不要把方格甩到最右邊 */
+  .chart > li { display: grid; grid-template-columns: minmax(0, 19rem) auto;
+    justify-content: start; gap: 0.15rem var(--space-5); align-items: center;
+    padding-block: 0.55rem; border-top: 1px dotted var(--line); }
+  .chart > li:first-child { border-top: 0; padding-top: 0; }
+  .chart b { font-weight: 600; line-height: 1.5; }
+  .chart .when { display: block; font-size: var(--step-s); color: var(--fg-muted);
+    line-height: 1.6; }
+  .occ { display: flex; align-items: center; gap: var(--space-2); }
+  .vac { font-size: var(--step-s); color: var(--fg-muted); white-space: nowrap; }
+  .vac--open { color: var(--accent); font-weight: 600; }
+
+  /* 重複單元：一個座位方格。實心有人，虛線空著 */
+  .seats { display: flex; gap: 5px; }
+  .seat { width: 13px; height: 13px; border: 1.5px solid var(--fg); background: var(--fg); }
+  .seat--free { background: transparent; border-style: dashed; border-color: var(--free); }
+  /* 整站唯一會動的東西：白板上那張表裡還空著的位子 */
+  .board .seat--free { animation: vacant 5.5s ease-in-out infinite; }
+  @keyframes vacant { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .board .seat--free { animation: none; opacity: 1; }
+  }
+
+  /* 分節：一排。左邊是走道，掛直排的排標 */
+  .rowgroup { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr);
+    gap: var(--space-5) var(--space-3); margin-bottom: var(--space-6);
+    counter-reset: seat; }
+  .rowlabel { grid-column: 1; grid-row: 1 / -1; align-self: start;
+    writing-mode: vertical-rl; letter-spacing: 0.24em; font-size: 0.74rem;
+    color: var(--fg-muted); margin: 0; padding-top: 0.35rem; max-width: none; }
+  .rowlabel b { font-weight: 600; color: var(--fg); }
+
+  /* 容器：一張課桌 */
+  .desk { grid-column: 2; position: relative; background: var(--desk);
+    border: 2px solid var(--fg); box-shadow: 8px 8px 0 rgba(27, 32, 28, 0.10);
+    padding: var(--space-4) var(--space-3) var(--space-3); }
+  .desk__no { position: absolute; top: -2px; left: -2px; background: var(--fg);
+    color: var(--desk); font-size: 0.72rem; letter-spacing: 0.12em;
+    padding: 0.2em 0.6em; font-variant-numeric: tabular-nums; }
+  .desk__no::after { counter-increment: seat; content: counter(seat); }
+  /* 椅子。從天花板往下看，就是桌子外面那一塊 */
+  .desk::after { content: ''; position: absolute; left: 2.6rem; bottom: -11px;
+    width: 3rem; height: 9px; background: var(--bg);
+    border: 2px solid var(--fg); border-top: 0; }
+  .desk h2 { font-size: var(--step-2); margin: 0 0 var(--space-2); }
+  .desk h3 { font-size: var(--step-0); margin: 0 0 0.2rem; }
+  .desk > p:last-child { margin-bottom: 0; }
+
+  /* 空著的那一張桌子 */
+  .desk--free { background: transparent; border-style: dashed; border-color: var(--free);
+    box-shadow: none; }
+  .desk--free::after { border-color: var(--free); border-style: dashed; border-top: 0; }
+  .desk--free .desk__no { background: var(--free); color: var(--bg); }
+
+  .facts li { grid-template-columns: 6rem 1fr; border-bottom-color: var(--line); }
+  .money { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  .slots { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .slots li { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: var(--space-2);
+    border-top: 1px dotted var(--line); padding-top: var(--space-2); }
+  .slots b { font-weight: 600; font-size: var(--step-s); letter-spacing: 0.04em; }
+  .slots p { margin: 0; }
+
+  .seatlist { list-style: none; margin: 0 0 var(--space-3); padding: 0;
+    display: grid; gap: var(--space-2); }
+  .seatlist li { position: relative; padding-left: 1.7rem; max-width: var(--maxw-text); }
+  .seatlist li::before { content: ''; position: absolute; left: 0; top: 0.62em;
+    width: 12px; height: 12px; border: 1.5px solid var(--fg); background: var(--fg); }
+  .seatlist--free li::before { background: transparent; border-style: dashed;
+    border-color: var(--free); }
+
+  .asked { margin-top: var(--space-3); border-top: 1px solid var(--line);
+    padding-top: var(--space-2); font-size: var(--step-s); }
+  .asked > b { display: block; font-size: 0.9em; font-weight: 600; letter-spacing: 0.14em;
+    color: var(--fg-muted); margin-bottom: 0.25rem; }
+  .asked .q { font-weight: 600; margin-bottom: 0.3rem; }
+  .asked p:last-child { margin-bottom: 0; }
+
+  /* 頁尾跟教室對齊。base.css 的 .wrap 是 width:100% 加內距，
+     照那樣加左右邊界會整個推出畫面外，所以這裡改成 auto 讓邊界吃得到寬度 */
+  footer .wrap { width: auto; max-width: var(--maxw); padding-inline: 0;
+    margin: 0 var(--room-right) 0 var(--room-left); }
+
+  @media (max-width: 46rem) {
+    :root { --room-left: clamp(0.9rem, 4vw, 2rem); --room-right: clamp(0.9rem, 4vw, 2rem); }
+    .board { padding: var(--space-3); }
+    .board h1 { margin-bottom: var(--space-2); }
+    .board .note { margin-top: var(--space-2); }
+    .board .actions { margin-top: var(--space-3); }
+    .sheet { margin-top: var(--space-3); padding: var(--space-2) var(--space-3); }
+    .sheet__cap { margin-bottom: var(--space-1); }
+    .chart > li { padding-block: 0.35rem; }
+    .rowgroup { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+    .rowlabel { grid-row: auto; grid-column: 1; writing-mode: horizontal-tb;
+      letter-spacing: 0.2em; padding-top: 0; }
+    .desk { grid-column: 1; }
+    .chart > li { grid-template-columns: minmax(0, 1fr); }
+    .occ { margin-top: 0.2rem; }
+    .slots li, .facts li { grid-template-columns: minmax(0, 1fr); gap: 0.15rem; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main" class="room">
+
+  <header class="board">
+    <p class="eyebrow">國中數學與理化　台中北屯　教了九年</p>
+    <h1><span>一班六個人，</span><span>坐滿就不收</span></h1>
+    <p class="lede">六張桌子，一堂課我走三輪。誰卡在哪一題，當天晚上你就會收到。</p>
+
+    <div class="sheet">
+      <p class="sheet__cap"><b>這學期的班</b>虛線的方格是還空著的位子。</p>
+      <ul class="chart">
+        <li>
+          <div><b>國三數學</b><span class="when">週二、週四　晚上七點到九點</span></div>
+          <div class="occ">
+            <span class="seats" aria-hidden="true"><i class="seat"></i><i class="seat"></i><i class="seat"></i><i class="seat"></i><i class="seat"></i><i class="seat"></i></span>
+            <span class="vac">六個人坐滿了，可以排候補</span>
+          </div>
+        </li>
+        <li>
+          <div><b>國二數學</b><span class="when">週一、週三　晚上七點到九點</span></div>
+          <div class="occ">
+            <span class="seats" aria-hidden="true"><i class="seat"></i><i class="seat"></i><i class="seat"></i><i class="seat"></i><i class="seat seat--free"></i><i class="seat seat--free"></i></span>
+            <span class="vac vac--open">還有兩個位子</span>
+          </div>
+        </li>
+        <li>
+          <div><b>國三理化</b><span class="when">週六　早上九點到十一點</span></div>
+          <div class="occ">
+            <span class="seats" aria-hidden="true"><i class="seat"></i><i class="seat"></i><i class="seat"></i><i class="seat"></i><i class="seat"></i><i class="seat seat--free"></i></span>
+            <span class="vac vac--open">還有一個位子</span>
+          </div>
+        </li>
+        <li>
+          <div><b>一對一</b><span class="when">平日下午兩點到五點、週六下午</span></div>
+          <div class="occ">
+            <span class="seats" aria-hidden="true"><i class="seat seat--free"></i></span>
+            <span class="vac vac--open">還有兩個時段</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <p class="note">這一頁沒有榜單，也沒有分數。<a href="#seat-b2">成效這一題我只能這樣回答</a>，寫在後排第二張桌子上。</p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="mailto:lai@example.tw">寫信問位子</a>
+      <a class="btn btn-ghost" href="tel:0933116208">打電話 0933-116-208</a>
+    </div>
+
+    <div class="tray" aria-hidden="true"><i></i><i></i></div>
+  </header>
+
+  <div class="rowgroup">
+    <p class="rowlabel"><b>前排</b>　ROW A</p>
+
+    <section class="desk" id="seat-a1">
+      <span class="desk__no" aria-hidden="true">A</span>
+      <h2>一班六個人，多一個都不行</h2>
+      <p>兩個小時裡我要走三輪：看你們動筆、看你們卡住、再看你們自己做出來。六個人我走得完。第七個人進來，我一堂只走得完兩輪，第三輪就要留到下個禮拜。</p>
+      <p>教室裡就是六張桌子，坐滿了我不加椅子，也不從隔壁班挪一張進來。想進已經滿的班就先排候補，通常一到兩個月會空出位子，我會照排的順序打給你。</p>
+      <h3>這三種孩子，一對一比小班適合</h3>
+      <ul class="seatlist seatlist--free">
+        <li>進度落後一年以上的。跟著小班走，他每一堂都在追別人，追不上就更不想來。</li>
+        <li>只剩三個月要會考的。時間不夠分給別人的問題，一對一直接補他缺的那幾塊。</li>
+        <li>在別人面前不敢說「我不會」的孩子。有些孩子要單獨相處兩三次才肯開口。</li>
+      </ul>
+      <div class="asked">
+        <b>家長問過</b>
+        <p class="q">「六個人跟一對一差在哪？」</p>
+        <p>小班的孩子會聽到另外五個人問問題，那些問題他自己想不到。一對一的進度全照他走，代價是他問完就結束了，沒有別人的錯可以看。兩種我都帶，你可以先上一堂小班再決定。</p>
+      </div>
+    </section>
+
+    <section class="desk" id="seat-a2">
+      <span class="desk__no" aria-hidden="true">A</span>
+      <h2>時間、地點、費用</h2>
+      <ul class="facts">
+        <li><b>小班時段</b><span>白板上那張表就是這學期全部的班，沒有另外開。一堂兩個小時。</span></li>
+        <li><b>一對一</b><span>平日下午兩點到五點、週六下午。目前剩兩個時段。</span></li>
+        <li><b>地點</b><span>台中北屯區，捷運文心崇德站走五分鐘。巷子裡的一樓，門口可以停機車，開車的話對面有收費停車場。</span></li>
+        <li><b>小班費用</b><span class="money">一堂兩小時 700 元，一期八堂 5,600 元，開課前收一次。</span></li>
+        <li><b>一對一費用</b><span class="money">一堂兩小時 1,600 元，四堂一收。</span></li>
+        <li><b>試上</b><span class="money">小班可以先來一堂 300 元。</span><span>那一堂就照平常的流程上，我不會為了試上特別表演。</span></li>
+        <li><b>講義</b><span>我自己編、自己印，不另外收錢。參考書我不賣，要買哪一本我可以幫你看。</span></li>
+        <li><b>請假</b><span>前一天跟我說，那一堂我另外約時間補回來，不扣堂數。當天臨時有事直接傳訊息，一期兩次以內我不會計較。</span></li>
+        <li><b>退費</b><span>一期沒上完想停，剩下的堂數退給你，不問原因，也不用寫理由。</span></li>
+      </ul>
+      <div class="asked">
+        <b>家長問過</b>
+        <p class="q">「可以先繳一堂看看嗎？」</p>
+        <p>可以，那就是上面那堂 300 元的試上。我不收學期費，也沒有綁約，最多就是一期八堂。要停的時候你只要傳一句話。</p>
+      </div>
+    </section>
+
+    <section class="desk" id="seat-a3">
+      <span class="desk__no" aria-hidden="true">A</span>
+      <h2>那兩個小時在做什麼</h2>
+      <p>寫出來你就知道錢花在哪裡。這是每一堂的順序，九年沒有改過。</p>
+      <ol class="slots">
+        <li><b>前二十分鐘</b><p>上禮拜錯的題目再出一次，題型一樣，數字換掉。第二次還是錯，代表我上次沒講清楚，那一題我重講。</p></li>
+        <li><b>中間五十分鐘</b><p>新的觀念。我講十分鐘，你們自己做五分鐘，我走一輪看六本簿子。這一輪就是小班唯一的意義：六本我看得完。</p></li>
+        <li><b>接下來三十分鐘</b><p>自己做題目，卡住就舉手。這三十分鐘我站在教室裡走，不會回去坐我自己的位子滑手機。</p></li>
+        <li><b>最後二十分鐘</b><p>每個人挑一題講給我聽。講得出來才算會。講不出來我們就把那一題再拆一次，拆到他講得出來為止。</p></li>
+      </ol>
+      <div class="asked">
+        <b>家長問過</b>
+        <p class="q">「他上課會不會都在發呆？」</p>
+        <p>六個人的教室藏不住人。發呆我當場就看到了，會走過去問他卡在哪，不用等月考成績出來才告訴你。</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="rowgroup">
+    <p class="rowlabel"><b>後排</b>　ROW B</p>
+
+    <section class="desk" id="seat-b1">
+      <span class="desk__no" aria-hidden="true">B</span>
+      <h2>每堂課結束，你會收到這些</h2>
+      <p>家長最在意的是「他到底有沒有在進步」。我沒辦法用一個數字回答，但我可以讓你每個禮拜都看得到現在的位置。</p>
+      <ul class="seatlist">
+        <li><b>當天晚上三行字。</b>今天上到哪、他今天卡在哪一題、這個禮拜要做完什麼。三行寫完就傳給你，不會累積到週末一次補。</li>
+        <li><b>一本錯題本。</b>每個孩子一本，錯過的題目兩個禮拜後會再出一次。第二次做對才劃掉，做錯就留著。這本你隨時可以跟他要來看，上面有我的字。</li>
+        <li><b>每兩個禮拜一次的長訊息。</b>寫他這兩個禮拜哪裡變了、哪裡還沒變。沒變的我也會寫，不會只挑好聽的講。</li>
+        <li><b>段考之後的那一次。</b>我會跟你講這次的分數裡，哪幾題他本來就會、哪幾題是這兩個月才學會的。分數會跟著題目難易上下跳，後面那件事不會。</li>
+      </ul>
+      <div class="asked">
+        <b>家長問過</b>
+        <p class="q">「這樣你不是很累？」</p>
+        <p>一個班六個人，三行字寫六份，二十分鐘的事。這是我把班收小的另一個原因。</p>
+      </div>
+    </section>
+
+    <section class="desk" id="seat-b2">
+      <span class="desk__no" aria-hidden="true">B</span>
+      <h2>成效這一題，我只能這樣回答</h2>
+      <p>我沒有榜單，牆上也不會貼誰考上哪裡。一年帶不到三十個學生，任何一張榜單都是從裡面挑幾個好看的給你看，那張表不會告訴你其他人後來怎麼了。保證進步的合約我也不簽，一個我還沒見過的孩子，我沒有立場保證他的分數。</p>
+      <h3>這幾種學生，我看得到他變</h3>
+      <ul class="seatlist">
+        <li>願意把訂正做完的。功課可以沒寫完，訂正一定要做完，一次十五分鐘就夠。</li>
+        <li>缺課會補回來的。補課我另外約時間，你只要負責把人送來。</li>
+        <li>在課堂上敢說「我不會」的。六個人的班說一句不會不用等，也不會有人回頭看他。</li>
+        <li>家裡兩個月內不會再換第三個老師的。換來換去的成本最後都在孩子身上。</li>
+        <li>從基礎重來、願意等三個月的。那三個月在補洞，分數常常不會動，第四個月才看得出來。</li>
+      </ul>
+      <h3>這幾種我幫不上忙，第一次見面我就會講</h3>
+      <ul class="seatlist seatlist--free">
+        <li>完全不想來、被逼著來的孩子。前四堂就看得出來，看得出來我會直接跟你說，不會拖著收下一期。</li>
+        <li>想在三個月內從三十分變九十分的。我做不到，九年來一次也沒有做到過。</li>
+        <li>需要有人坐在旁邊盯著寫作業的。我這兩個小時都在講題目，你要的是陪讀，找陪讀比找我便宜。</li>
+        <li>落後兩年以上又只肯一個禮拜來一次的。這樣追不上，我會建議先一對一補基礎，一個禮拜兩次，或者介紹你去別的地方。</li>
+      </ul>
+      <p><b>八堂之後我看不到變化，我會主動跟你說停。</b>剩下的堂數退給你。讓一個沒有變化的孩子繼續坐在那裡，我拿得心虛，他也白坐了兩個小時。</p>
+      <div class="asked">
+        <b>家長問過</b>
+        <p class="q">「別家都有榜單，你怎麼證明你有用？」</p>
+        <p>證明不了，所以我請你來上一堂試上，坐在教室後面聽完兩個小時。你會看到我怎麼問他們問題、他們敢不敢回答。那兩個小時比任何一張表準。</p>
+      </div>
+    </section>
+
+    <section class="desk desk--free" id="seat-b3">
+      <span class="desk__no" aria-hidden="true">B</span>
+      <h2>這一格空著</h2>
+      <p>後排靠窗這一張現在沒有人坐。國二數學還有兩個位子，國三理化剩一個，一對一還有兩個時段。</p>
+      <ol class="slots">
+        <li><b>第一步</b><p>寫三行給我：孩子幾年級、上次段考數學大概幾分、他自己想不想來。第三行最重要。看不懂的地方我會再問你，兩天內回你。</p></li>
+        <li><b>第二步</b><p>來上一堂 300 元的試上，就坐這一格。上完不想繼續就直接跟我說，不用給理由，我也不會再打給你。</p></li>
+      </ol>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:lai@example.tw">寫信給賴老師</a>
+        <a class="btn btn-ghost" href="tel:0933116208">0933-116-208</a>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 賴柏勳　國中數學與理化</span>
+    <ul>
+      <li><a href="mailto:lai@example.tw">lai@example.tw</a></li>
+      <li><a href="tel:0933116208">0933-116-208</a></li>
+    </ul>
+  </div>
+</footer>
+</body>
+</html>

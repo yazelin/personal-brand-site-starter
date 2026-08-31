@@ -27,6 +27,11 @@ const linkedCss = [...html.matchAll(/<link[^>]+rel=["']stylesheet["'][^>]+href=[
   .map(p => readFileSync(p, 'utf8'))
   .join('\n');
 const allCss = html + '\n' + linkedCss;
+// token 解析要照瀏覽器真正的順序:先 <link> 進來的,再頁內 <style>。
+// allCss 是給「有沒有出現過某字串」那類檢查用的,順序相反不影響那些,
+// 但拿它算對比會拿到族的預設色,不是這一頁真正在用的顏色
+const inlineCss = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/gi)].map(m => m[1]).join('\n');
+const cascadeCss = (linkedCss + '\n' + inlineCss).replace(/\/\*[\s\S]*?\*\//g, '');
 
 // 標籤層級的檢查要看的是版面本身，不是 <script> 與 <style> 的內容。
 // 沒有拿掉的話，JS 註解裡提到的 <img> 會被當成真的圖片標籤
@@ -150,14 +155,30 @@ function ratio(a, b) {
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
 var vibe = attr(/<html[^>]*\sdata-vibe=["']([^"']+)["']/i) || '';
-// 取這個 vibe 的區塊，找不到就退回 :root。同名 token 取最後一次定義
-var scope = allCss;
-var vb = vibe && allCss.match(new RegExp('\\[data-vibe=["\']' + vibe + '["\']\\][^{]*\\{([^}]*)\\}'));
-var root = allCss.match(/:root[^{]*\{([^}]*)\}/);
+// 照 CSS 真正的規則解 token,不要自己發明優先序。
+// :root 與 [data-vibe="x"] 的 specificity 都是 (0,1,0),所以誰在後面誰贏,
+// 而頁面自己的 <style> 一定排在 link 進來的 tokens.css 後面。
+// 這裡原本先讀 vibe 區塊再退回 :root,結果是拿族的預設色去算頁面的對比。
+// 實測過一個宣告 calm 卻自己蓋成 #4a4a4a on #2b2b2b 的頁面:
+// 真實對比 1.60:1,舊寫法量到 calm 的 17.15:1,直接放行。
+var blocks = [];
+for (var mm, bre = /([^{}]+)\{([^}]*)\}/g; (mm = bre.exec(cascadeCss)); ) {
+  var sels = mm[1].split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+  if (!sels.length) continue;
+  var applies = sels.every(function (x) {
+    return x === ':root' || (vibe && x === '[data-vibe="' + vibe + '"]')
+      || (vibe && x === "[data-vibe='" + vibe + "']");
+  });
+  if (applies) blocks.push(mm[2]);
+}
 function token(name) {
-  var re = new RegExp('--' + name + '\\s*:\\s*([^;]+);');
-  var m = (vb && vb[1].match(re)) || (root && root[1].match(re)) || scope.match(re);
-  return m ? hex(m[1]) : null;
+  var re = new RegExp('--' + name + '\\s*:\\s*([^;]+)\\s*(?:;|$)');
+  for (var i = blocks.length - 1; i >= 0; i--) {
+    var m = blocks[i].match(re);
+    if (m) return hex(m[1]);
+  }
+  var g = cascadeCss.match(re);
+  return g ? hex(g[1]) : null;
 }
 var fg = token('fg'), bg = token('bg'), muted = token('fg-muted');
 var acc = token('accent'), accFg = token('accent-fg');

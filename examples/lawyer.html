@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>蔡孟儒律師 — 只辦勞資與車禍，其他的告訴你該找誰</title>
+<meta name="description" content="桃園中壢的律師，只辦勞資爭議與車禍兩類案子。哪幾類我開得出卷、哪幾類我不開卷、費用怎麼算、要走多久，三十二頁寫完。問我接不接不收錢，個案的法律意見不在網頁上談。">
+<link rel="canonical" href="https://lawyer.example.tw/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="蔡孟儒律師 — 只辦勞資與車禍，其他的告訴你該找誰">
+<meta property="og:description" content="桃園中壢的律師，只辦勞資爭議與車禍。開得出卷的、開不出卷的、費用與期程，都寫在這一頁。問我接不接不收錢。">
+<meta property="og:url" content="https://lawyer.example.tw/">
+<meta property="og:image" content="https://lawyer.example.tw/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%96%A5%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../templates/tokens.css">
+<link rel="stylesheet" href="../templates/base.css">
+<style>
+  /* 族：克制（文件感）。動的性格幾乎不動，整頁只有卷脊被碰到的時候會被抽出來一點。
+     會找律師的人正在麻煩裡，而且怕問一句就被收錢。版面要像一份可以拿去對的文件。
+
+     概念：案卷。律師的工作實體上就是裝卷：收一件案子就開一宗卷，
+     之後每一份書狀、每一次開庭都編頁次進去，結案再把卷封起來歸檔。
+     「這件我收不收」在事務所裡就是「要不要為你開一宗卷」，
+     所以案件類型的邊界，在這個概念裡本來就有位置。
+
+     容器＝一宗卷：左邊卷脊（直排標籤與兩個裝訂孔），右邊卷面，卷首一列寫卷次與起訖頁次。
+     重複單元＝卷內的一頁：頁次、事由、附記欄。附記欄的欄名每一卷不同，寫在卷首列上。
+     分節＝卷一到卷六，頁次從 001 連續編到 032，封面不編頁。
+
+     邊界怎麼變成版面：卷二開頭是一排卷脊，四格有卷號、四格是空的，
+     底下十頁用同一種列排，附記欄只有「開卷」與「不開卷」兩種值。
+
+     裝飾只在封面出現一次：卷脊的兩個裝訂孔與右上角的收案欄。
+     容器、頁次與附記欄從第一屏用到頁尾。
+
+     底色直接覆寫 tokens 的 --bg 與 --fg，沒有另外發明一組。
+     這一份不寫 data-vibe：寫了的話 tools/check.mjs 會拿 tokens.css 裡那一族的顏色
+     去算對比，比到的不是這一頁真正在用的顏色。 */
+  :root {
+    --bg: #d8cdb4;    --fg: #1a1712;    --fg-muted: #57503f;
+    --accent: #22364f; --accent-fg: #f7f4ea;
+    --paper: #f7f4ea; --rule: #e2dbc9;  --line: #bdb197;
+    --mark: #8e3a2f;  --tint: #efe9d9;
+    --maxw-text: 34em;
+  }
+  body { background: var(--bg); color: var(--fg);
+    background-image: repeating-linear-gradient(90deg,
+      rgba(26,23,18,.05) 0 1px, transparent 1px 8px); }
+
+  .file { max-width: 66rem; margin-inline: auto; padding-inline: var(--space-3); }
+  section { padding: 0; }
+  h1 span, h2 span { display: inline-block; }
+
+  /* 冊頁的頁首。整頁只出現這一次 */
+  .slug { display: flex; flex-wrap: wrap; gap: 0.2rem var(--space-3);
+    padding: var(--space-3) 0 0.45rem; border-bottom: 1px solid var(--fg);
+    font-size: 0.72rem; letter-spacing: 0.14em; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums; }
+  .slug b { color: var(--fg); font-weight: 600; letter-spacing: 0.24em; }
+  .slug .end { margin-left: auto; }
+
+  /* 容器：一宗卷。從第一屏用到頁尾 */
+  .vol { background: var(--paper); border: 1px solid var(--fg);
+    margin-top: var(--space-4); }
+  .vol__bar { display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0.2rem var(--space-3); background: var(--accent); color: var(--accent-fg);
+    padding: 0.5rem var(--space-3); font-size: var(--step-s); }
+  .vol__bar h2, .vol__bar .t { margin: 0; font-size: var(--step-s); font-weight: 600;
+    letter-spacing: 0.16em; line-height: 1.7; color: inherit; }
+  .vol__bar .no { letter-spacing: 0.2em; opacity: 0.75;
+    font-variant-numeric: tabular-nums; }
+  .vol__bar .col { margin-left: auto; opacity: 0.75; letter-spacing: 0.1em; }
+
+  /* 封面。卷脊在左，卷面在右，收案欄在右上角 */
+  .cover { display: grid; grid-template-columns: auto minmax(0, 1fr);
+    align-items: stretch; }
+  .spine { position: relative; writing-mode: vertical-rl; letter-spacing: 0.34em;
+    font-size: 0.74rem; color: var(--fg-muted); background: var(--tint);
+    border-right: 1px solid var(--line); padding: var(--space-4) 0.75rem;
+    display: flex; align-items: center; justify-content: center; }
+  .spine::before, .spine::after { content: ''; position: absolute; left: 50%;
+    width: 11px; height: 11px; margin-left: -5.5px; border-radius: 50%;
+    background: var(--bg); box-shadow: inset 0 1px 2px rgba(26,23,18,.45); }
+  .spine::before { top: 1.6rem; }
+  .spine::after { bottom: 1.6rem; }
+
+  .cover__in { padding: var(--space-4) var(--space-3) var(--space-3);
+    position: relative; }
+  .cover__in h1 { font-size: var(--step-3); margin: 0 0 var(--space-2); }
+  .cover .eyebrow { margin-bottom: var(--space-1); }
+  .lede { color: var(--fg-muted); max-width: 30em; margin: 0 0 var(--space-3);
+    text-wrap: balance; }
+  /* 收案欄。真的卷宗封面右上角就印著這一格 */
+  .intake { position: absolute; top: var(--space-3); right: var(--space-3);
+    border: 1px solid var(--line); padding: 0.3rem 0.6rem; text-align: center;
+    font-size: 0.66rem; letter-spacing: 0.16em; color: var(--fg-muted);
+    line-height: 1.6; }
+  .intake b { display: block; font-weight: 600; color: var(--fg);
+    font-variant-numeric: tabular-nums; letter-spacing: 0.1em; }
+
+  /* 封面的基本資料欄。三個必問的問題各一列，第四列寫不辦的 */
+  .fields { margin: 0 0 var(--space-3); border-top: 1px solid var(--rule); }
+  .fields > div { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr);
+    border-bottom: 1px solid var(--rule); }
+  .fields dt { padding: 0.55rem 0.6rem 0.55rem 0; font-size: 0.74rem;
+    letter-spacing: 0.16em; color: var(--fg-muted); }
+  .fields dd { margin: 0; padding: 0.55rem 0; font-size: var(--step-s); }
+  .fields .out { color: var(--mark); }
+
+  /* 卷二開頭的卷宗架。四格有卷號、四格是空的，邊界一眼看得完 */
+  .rack { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px; padding: var(--space-3) var(--space-3) var(--space-2);
+    background: linear-gradient(180deg, rgba(26,23,18,.09), transparent 55%); }
+  .tab { display: flex; align-items: center; justify-content: space-between;
+    writing-mode: vertical-rl; height: 8.4rem; padding: 0.7rem 0.3rem;
+    font-size: 0.78rem; letter-spacing: 0.18em; border: 1px solid var(--fg);
+    background: var(--paper); transition: transform 0.18s var(--ease); }
+  .tab--in { border-left: 5px solid var(--accent); }
+  .tab--out { border-style: dashed; border-color: var(--line); background: transparent;
+    color: var(--fg-muted);
+    background-image: repeating-linear-gradient(45deg,
+      transparent 0 7px, rgba(26,23,18,.06) 7px 14px); }
+  .tab i { font-style: normal; font-size: 0.66rem; letter-spacing: 0.1em;
+    color: var(--fg-muted); text-combine-upright: all; }
+  .tab--in i { color: var(--accent); }
+  .tab:hover { transform: translateY(-6px); }
+  .rack__cap { margin: 0; padding: 0 var(--space-3) var(--space-3);
+    font-size: var(--step-s); color: var(--fg-muted); max-width: 36em;
+    border-bottom: 1px solid var(--rule); }
+  @media (prefers-reduced-motion: reduce) {
+    .tab { transition: none; }
+    .tab:hover { transform: none; }
+  }
+
+  /* 重複單元：卷內的一頁 */
+  .pages { list-style: none; margin: 0; padding: 0; }
+  .pages > li { border-bottom: 1px solid var(--rule); }
+  .pages > li:last-child { border-bottom: 0; }
+  .pg { display: grid; grid-template-columns: 3.4rem minmax(0, 1fr);
+    gap: 0 var(--space-2); padding: var(--space-3); }
+  .pg__n { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums; padding-top: 0.35rem; }
+  .pg__b b { display: block; font-size: var(--step-0); font-weight: 600; }
+  .pg__b i { display: block; font-style: normal; font-size: var(--step-s);
+    color: var(--fg-muted); max-width: 38em; }
+  .pg__s { grid-column: 2; display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0.5rem var(--space-2); margin-top: 0.5rem; font-size: var(--step-s); }
+  .pg__t { border: 1px solid var(--line); padding: 0.05rem 0.5rem;
+    font-size: 0.7rem; letter-spacing: 0.14em; white-space: nowrap; }
+  .pg__t--in { border-color: var(--accent); color: var(--accent-fg);
+    background: var(--accent); }
+  .pg__t--out { border-color: var(--mark); color: var(--mark); border-style: dashed; }
+  .pg__v { color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+
+  /* 卷末註記。這一卷收在哪裡 */
+  .vol__end { border-top: 1px solid var(--fg); background: var(--tint);
+    padding: var(--space-2) var(--space-3); font-size: 0.76rem;
+    color: var(--fg-muted); }
+  .vol__end p { margin: 0; max-width: 40em; }
+  .vol__cta { border-top: 1px solid var(--rule); padding: var(--space-3); }
+  .vol__cta p { margin: 0; font-size: var(--step-s); color: var(--fg-muted);
+    max-width: 36em; }
+  .vol__cta .actions { margin-top: var(--space-2); }
+
+  /* 結卷。全卷的頁數收在這裡 */
+  .close { display: flex; flex-wrap: wrap; gap: 0.3rem var(--space-3);
+    align-items: baseline; margin-top: var(--space-4);
+    border-top: 1px solid var(--fg); padding-top: 0.5rem;
+    font-size: 0.72rem; letter-spacing: 0.06em; color: var(--fg-muted); }
+  .close b { letter-spacing: 0.3em; color: var(--fg); }
+
+  @media (min-width: 52rem) {
+    /* 桌機把卷脊收窄，看起來才像抽屜裡並排的卷宗，不是八張卡片 */
+    .rack { grid-template-columns: repeat(8, minmax(0, 5.6rem));
+      justify-content: start; }
+    .tab { height: 10rem; }
+    .pg { grid-template-columns: 4.4rem minmax(0, 1fr) 13rem; }
+    .pg__s { grid-column: 3; margin-top: 0; align-content: start;
+      flex-direction: column; gap: 0.35rem;
+      border-left: 1px solid var(--rule); padding-left: var(--space-3); }
+    .cover__in { padding: var(--space-5) var(--space-4) var(--space-4); }
+    .fields > div { grid-template-columns: 5rem minmax(0, 1fr); }
+  }
+  @media (max-width: 40rem) {
+    .cover { grid-template-columns: 1fr; }
+    .spine { writing-mode: horizontal-tb; letter-spacing: 0.24em;
+      border-right: 0; border-bottom: 1px solid var(--line);
+      padding: 0.4rem var(--space-3); justify-content: flex-start; }
+    .spine::before { top: 50%; left: auto; right: 2.4rem; margin: -5.5px 0 0; }
+    .spine::after { top: 50%; bottom: auto; left: auto; right: 1rem;
+      margin: -5.5px 0 0; }
+    .cover__in { padding: var(--space-3); }
+    .cover__in .actions { margin-top: var(--space-3); }
+    .fields dt, .fields dd { padding-block: 0.45rem; }
+    .intake { top: 0; right: 0; border-width: 0 0 1px 1px; }
+    .cover__in h1 { max-width: 12em; }
+    .tab { height: 7rem; }
+  }
+
+  footer { max-width: 66rem; margin-inline: auto; margin-top: var(--space-5); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<main id="main" class="file">
+
+  <div class="slug">
+    <b>案卷</b><span>蔡孟儒律師事務所</span><span>桃園市中壢區</span>
+    <span class="end">全卷共 32 頁 · 封面不編頁 · 2026.08 製</span>
+  </div>
+
+  <section class="vol">
+    <div class="vol__bar"><span class="t">卷 一</span>
+      <span class="no">封面</span><span class="col">附記欄：收案</span></div>
+
+    <div class="cover">
+      <span class="spine">蔡孟儒律師事務所　勞資與車禍</span>
+      <div class="cover__in">
+        <div class="intake">收案<b>2026.08</b></div>
+        <p class="eyebrow">律師 · 桃園市中壢區</p>
+        <h1><span>只辦勞資與車禍，</span><span>其他的告訴你該找誰</span></h1>
+        <p class="lede">執業第十二年，九成的案子是這兩類。先寫三行問我接不接，這一段不收錢。</p>
+
+        <dl class="fields">
+          <div><dt>案由</dt><dd>勞資爭議、車禍。這兩類以外我不開卷。</dd></div>
+          <div><dt>費用</dt><dd>問我接不接 0 元。談案情一小時 2,000 元，委任後折抵。案件 3 萬元起。</dd></div>
+          <div><dt>期間</dt><dd>勞資的調解多數 2 到 4 個月，走到一審判決通常 6 到 18 個月。</dd></div>
+          <div><dt>不辦</dt><dd class="out">刑事（車禍以外）、離婚與遺產、不動產登記。我直接告訴你該找誰。</dd></div>
+        </dl>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="mailto:tsai@example.tw">寄信問我接不接</a>
+          <a class="btn btn-ghost" href="#scope">先看我不辦哪些</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="vol" id="scope">
+    <div class="vol__bar"><h2><span>卷 二　開得出卷的，</span><span>開不出卷的</span></h2>
+      <span class="no">自 001 頁至 010 頁</span><span class="col">附記欄：開卷與否</span></div>
+
+    <div class="rack" aria-hidden="true">
+      <div class="tab tab--in">勞資爭議<i>01</i></div>
+      <div class="tab tab--in">職業災害<i>02</i></div>
+      <div class="tab tab--in">車禍求償<i>03</i></div>
+      <div class="tab tab--in">車禍刑事<i>04</i></div>
+      <div class="tab tab--out">刑事其他<i>無</i></div>
+      <div class="tab tab--out">家事<i>無</i></div>
+      <div class="tab tab--out">登記過戶<i>無</i></div>
+      <div class="tab tab--out">公司商務<i>無</i></div>
+    </div>
+    <p class="rack__cap">架上有卷號的四格是我辦的，空的四格我不開卷。底下十頁一頁一件，寫清楚為什麼，也寫不辦的該找誰。</p>
+
+    <ol class="pages">
+      <li><div class="pg"><span class="pg__n">頁 001</span>
+        <span class="pg__b"><b>勞資爭議</b><i>解僱與資遣、資遣費與預告工資、加班費與工資、特休、離職後的競業禁止條款。勞動契約要簽之前拿來給我看也算這一類。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--in">開卷</span><span class="pg__v">5 萬元起</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 002</span>
+        <span class="pg__b"><b>職業災害</b><i>上班受傷或通勤受傷之後，和公司談不攏的補償與賠償。醫療期間的工資與後續的失能部分都在這一頁裡。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--in">開卷</span><span class="pg__v">8 萬元起</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 003</span>
+        <span class="pg__b"><b>車禍求償</b><i>對方或保險公司給的數字你覺得不對，走和解、調解或民事訴訟。汽機車、行人被撞、乘客受傷都接。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--in">開卷</span><span class="pg__v">3 萬元起</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 004</span>
+        <span class="pg__b"><b>車禍的刑事部分</b><i>過失傷害的告訴與和解，還有附帶提起的民事求償。被告那一方我也接，兩邊我不會同時接同一件。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--in">開卷</span><span class="pg__v">4 萬元起</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 005</span>
+        <span class="pg__b"><b>車禍以外的刑事案件</b><i>毒品、詐欺、傷害、公共危險，我一件都不接。刑事辯護要靠平常一直在做的手感，我沒有。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--out">不開卷</span><span class="pg__v">給你兩個同業的名字</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 006</span>
+        <span class="pg__b"><b>離婚、監護、遺產分割</b><i>家事的節奏和勞資完全不同，排期也長，我沒有在做。接了你要多等的是時間。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--out">不開卷</span><span class="pg__v">給你兩個同業的名字</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 007</span>
+        <span class="pg__b"><b>不動產登記、繼承登記、買賣過戶</b><i>那是地政士（代書）在做的事，跑件的流程他們比我熟，收費也比找律師低。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--out">不開卷</span><span class="pg__v">找地政士</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 008</span>
+        <span class="pg__b"><b>公司、商務契約、智慧財產、跨國案件</b><i>不接。分界線在這裡：你和員工之間的契約我看，你和另一家公司之間的契約我不看。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--out">不開卷</span><span class="pg__v">給你兩個同業的名字</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 009</span>
+        <span class="pg__b"><b>一審開到一半才要換律師</b><i>先看卷。卷裡已經講出去的話收不回來，我要確認換人對你真的有幫助，才會接。看卷這一段照諮詢收費。</i></span>
+        <span class="pg__s"><span class="pg__t">看卷再定</span><span class="pg__v">2,000 元一小時</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 010</span>
+        <span class="pg__b"><b>要我保證告得贏</b><i>沒有人保證得了，法官還沒看過你的證據。你如果需要的是那句保證，我這裡給不了，這種委任我不接。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--out">不開卷</span><span class="pg__v">當場說不</span></span>
+      </div></li>
+    </ol>
+
+    <div class="vol__end"><p>收案範圍就是這十頁。你的事情不在裡面，寫信來我還是會回，只是回的內容會是該找誰。</p></div>
+  </section>
+
+  <section class="vol" id="fee">
+    <div class="vol__bar"><h2><span>卷 三　錢怎麼算</span></h2>
+      <span class="no">自 011 頁至 017 頁</span><span class="col">附記欄：金額</span></div>
+    <ol class="pages">
+      <li><div class="pg"><span class="pg__n">頁 011</span>
+        <span class="pg__b"><b>問我接不接，不收錢</b><i>寫三行給我：發生什麼、什麼時候、你想要什麼結果。我回你接或不接，不接會寫該找誰。這一段沒有帳單。</i></span>
+        <span class="pg__s"><span class="pg__t">不收費</span><span class="pg__v">0 元</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 012</span>
+        <span class="pg__b"><b>要談你的案情，一小時 2,000 元</b><i>把資料攤開來看，講你這件事有哪幾條路、各要花多少時間。後來委任我，這筆從案件費用裡扣掉。</i></span>
+        <span class="pg__s"><span class="pg__t">諮詢</span><span class="pg__v">2,000 元一小時</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 013</span>
+        <span class="pg__b"><b>勞資：調解程序</b><i>含撰狀、算金額、陪你出席調解期日。多數勞資案子先走這一段，很多也在這一段就結束了。</i></span>
+        <span class="pg__s"><span class="pg__t">案件</span><span class="pg__v">4 萬元起</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 014</span>
+        <span class="pg__b"><b>訴訟：按審級算，一審 8 萬元起</b><i>一審從遞狀到判決是同一筆，開幾次庭都不再加錢。要不要上訴到二審，判決下來我們再談，那是另一筆。</i></span>
+        <span class="pg__s"><span class="pg__t">案件</span><span class="pg__v">8 萬元起</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 015</span>
+        <span class="pg__b"><b>車禍：和解或調解的代理</b><i>陪你去區公所的調解委員會或和保險公司談。談成就結案，談不成要不要走訴訟，你決定。</i></span>
+        <span class="pg__s"><span class="pg__t">案件</span><span class="pg__v">3 萬元起</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 016</span>
+        <span class="pg__b"><b>不收成功報酬，可以分期</b><i>簽委任契約那天你就知道總共要付多少，不會贏了再多抽一份。簽約付一半，剩下的分兩期。</i></span>
+        <span class="pg__s"><span class="pg__t">付款</span><span class="pg__v">簽約付一半</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 017</span>
+        <span class="pg__b"><b>規費、鑑定費這些代墊款另計</b><i>要墊之前先告訴你金額，你點頭我才墊。每一筆都有收據，結案時一起對。</i></span>
+        <span class="pg__s"><span class="pg__t">代墊</span><span class="pg__v">實支實付</span></span>
+      </div></li>
+    </ol>
+    <div class="vol__end"><p>會跟你收的錢都在這七頁裡。委任契約拿到手可以帶回去看兩天，再回來簽。</p></div>
+  </section>
+
+  <section class="vol" id="time">
+    <div class="vol__bar"><h2><span>卷 四　要走多久</span></h2>
+      <span class="no">自 018 頁至 023 頁</span><span class="col">附記欄：期間</span></div>
+    <ol class="pages">
+      <li><div class="pg"><span class="pg__n">頁 018</span>
+        <span class="pg__b"><b>寄信給我之後</b><i>一到兩個工作天回你。在開庭的日子會晚一點，但不會沒有下文。</i></span>
+        <span class="pg__s"><span class="pg__t">回覆</span><span class="pg__v">1 到 2 個工作天</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 019</span>
+        <span class="pg__b"><b>談一次要多久</b><i>一小時。多數人談完當天就知道要不要走下去，不用再約第二次。</i></span>
+        <span class="pg__s"><span class="pg__t">諮詢</span><span class="pg__v">1 小時</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 020</span>
+        <span class="pg__b"><b>勞資：法院的勞動調解</b><i>勞資的案子上法院之前原則上要先走這一關。從遞狀到第一次期日大約一到一個半月，多數在三次期日之內結束。</i></span>
+        <span class="pg__s"><span class="pg__t">調解</span><span class="pg__v">2 到 4 個月</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 021</span>
+        <span class="pg__b"><b>車禍：先談和解或調解</b><i>區公所的調解委員會排期大約一個月，一次談不成可以再排。這一段談得成，後面整段都省下來。</i></span>
+        <span class="pg__s"><span class="pg__t">調解</span><span class="pg__v">1 到 3 個月</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 022</span>
+        <span class="pg__b"><b>調解不成，進到一審</b><i>我手上這幾年的案子多半是半年到一年半，中間開三到六次庭。多數庭期你不用到，我去。這是區間，我不能保證。</i></span>
+        <span class="pg__s"><span class="pg__t">訴訟</span><span class="pg__v">6 到 18 個月</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 023</span>
+        <span class="pg__b"><b>會咬人的是期限</b><i>車禍要走刑事過失傷害，法律給的告訴期間是六個月；民事求償的時效通則是兩年。這兩個從哪一天起算要看事實，我不會在網頁上替你算，但你寄信來，我至少能先告訴你急不急。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--out">先問時效</span><span class="pg__v">六個月／兩年</span></span>
+      </div></li>
+    </ol>
+    <div class="vol__end"><p>時間我先寫在這裡，是要你能自己排順序。開始之後每個月我會講一句現在在等什麼，沒有進度也會講。</p></div>
+  </section>
+
+  <section class="vol" id="limit">
+    <div class="vol__bar"><h2><span>卷 五　這一頁的界線</span></h2>
+      <span class="no">自 024 頁至 028 頁</span><span class="col">附記欄：性質</span></div>
+    <ol class="pages">
+      <li><div class="pg"><span class="pg__n">頁 024</span>
+        <span class="pg__b"><b>這一頁沒有一句話是針對你的案子講的</b><i>法律的答案幾乎都被事實決定：哪一天發生、簽過什麼、對方講過什麼、留下哪些紀錄。同一句「被資遣可以拿資遣費」，換一個到職日或換一種契約就是另一個答案。網頁上寫得出來的只有通則，通則多半用不到你這一件上。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--out">界線</span><span class="pg__v">不提供個案意見</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 025</span>
+        <span class="pg__b"><b>為什麼電話裡我不會回答「我這樣告得贏嗎」</b><i>沒看過資料就給的答案，你拿去用會出事，而我要負責。把東西攤開來看再講，那就是收費諮詢在做的事。</i></span>
+        <span class="pg__s"><span class="pg__t pg__t--out">界線</span><span class="pg__v">看過資料才講</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 026</span>
+        <span class="pg__b"><b>第一次見面要帶什麼</b><i>手上有什麼就帶什麼：勞健保投保資料、出勤紀錄、對話紀錄、行車紀錄器影像、診斷證明、估價單。什麼都沒有也可以來，缺的我會告訴你去哪裡調。</i></span>
+        <span class="pg__s"><span class="pg__t">常問</span><span class="pg__v">有什麼帶什麼</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 027</span>
+        <span class="pg__b"><b>已經在跟對方談了，還能找律師嗎</b><i>可以。只有一件事先提醒：還沒簽的和解書先別簽，簽下去就是契約，之後要推翻很難。你們談到哪一步，我看過才知道還有多少空間。</i></span>
+        <span class="pg__s"><span class="pg__t">常問</span><span class="pg__v">先別簽</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 028</span>
+        <span class="pg__b"><b>你會不會一直打給我</b><i>不會。案子有動作我才聯絡你。你要找我隨時可以，委任期間問問題不另外算錢。</i></span>
+        <span class="pg__s"><span class="pg__t">常問</span><span class="pg__v">不推銷</span></span>
+      </div></li>
+    </ol>
+    <div class="vol__end"><p>寫在這一頁的是通則，通則沒有辦法替你的案子作決定。要知道你這件怎麼走，我們得把文件攤開來看。</p></div>
+  </section>
+
+  <section class="vol" id="start">
+    <div class="vol__bar"><h2><span>卷 六　怎麼開始</span></h2>
+      <span class="no">自 029 頁至 032 頁</span><span class="col">附記欄：誰動作</span></div>
+    <ol class="pages">
+      <li><div class="pg"><span class="pg__n">頁 029</span>
+        <span class="pg__b"><b>寫三行寄給我</b><i>發生什麼、什麼時候發生、你想要什麼結果。附件不用整理，有什麼拍什麼。</i></span>
+        <span class="pg__s"><span class="pg__t">你</span><span class="pg__v">3 行</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 030</span>
+        <span class="pg__b"><b>我回你接或不接</b><i>一到兩個工作天。不接的話我會寫該找誰，這封信不收錢。</i></span>
+        <span class="pg__s"><span class="pg__t">我</span><span class="pg__v">0 元</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 031</span>
+        <span class="pg__b"><b>談一小時</b><i>事務所或線上都可以。當場把有哪幾條路、要花多少錢、要走多久算給你。你可以拿這些去問第二個律師。</i></span>
+        <span class="pg__s"><span class="pg__t">你和我</span><span class="pg__v">2,000 元</span></span>
+      </div></li>
+      <li><div class="pg"><span class="pg__n">頁 032</span>
+        <span class="pg__b"><b>決定了才簽委任契約</b><i>費用與範圍都寫在契約裡，開卷從那一天起算。不委任也沒關係，那一小時你買到的是一個判斷。</i></span>
+        <span class="pg__s"><span class="pg__t">你</span><span class="pg__v">開卷</span></span>
+      </div></li>
+    </ol>
+    <div class="vol__cta">
+      <p>開庭那幾天手機是關的，信會晚幾個小時回。事務所在中壢車站走路八分鐘，晚上七點前都可以約。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:tsai@example.tw">寄信問我接不接</a>
+        <a class="btn btn-ghost" href="tel:034261200">03-426-1200</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="close">
+    <b>結卷</b>
+    <span>全卷共 32 頁，封面不編頁。2026 年 8 月製表，費用或期間有調整，我改這一頁。</span>
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 蔡孟儒律師事務所 · 桃園市中壢區</span>
+    <ul>
+      <li><a href="tel:034261200">03-426-1200</a></li>
+      <li><a href="mailto:tsai@example.tw">Email</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
