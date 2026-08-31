@@ -16,7 +16,9 @@
     /* 中文標題不要用負字距。那是英文排版的習慣，全形字本來就沒有側邊空間，
        再收就會相碰 */
     letter-spacing: 0; margin: 0 0 var(--space-2); font-weight: 600; }
-  p { margin: 0 0 var(--space-3); }
+  /* 內文欄寬預設就收在 --maxw-text。中文一行超過三十八字,眼睛會抓不到下一行,
+     而版面上沒有東西會提醒你這件事。要更窄就自己蓋掉,不要靠記得加。 */
+  p { margin: 0 0 var(--space-3); max-width: var(--maxw-text); }
   a { color: inherit; text-underline-offset: 0.25em; text-decoration-thickness: 1px; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
   img { max-width: 100%; height: auto; display: block; }

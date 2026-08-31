@@ -117,6 +117,21 @@ else {
 }
 if (!/prefers-reduced-motion/.test(allCss)) warn('CSS 裡沒有 prefers-reduced-motion 的處理');
 
+// 八之二、中文頁面拿 ch 當內文欄寬
+// ch 是「0」這個字的寬度。實測 18px 的 Noto Sans TC:一個中文字 18px、一個 0 只有 10px,
+// 所以 34ch 排出來是 18.9 個中文字,不是 34 個。寫的人以為在設 34 字,拿到的是不到 19 字。
+// 用 em 或 --maxw-text 就沒這個問題,因為 1em 剛好是一個中文字寬。
+if (/[\u4e00-\u9fff]/.test(markup)) {
+  const chWidths = [...allCss.matchAll(/max-width:\s*([0-9.]+)ch/g)]
+    .map((m) => Number(m[1])).filter((n) => n >= 20);
+  if (chWidths.length) {
+    const n = chWidths[0];
+    warn(`用了 max-width: ${n}ch 當中文欄寬(共 ${chWidths.length} 處)。` +
+      `ch 是半形 0 的寬度,${n}ch 實際只有約 ${Math.round(n * 0.56)} 個中文字。` +
+      `想要 ${n} 個字就寫 ${n}em,或直接用 var(--maxw-text)`);
+  }
+}
+
 // 九、顏色對比
 // 使用者換上自己的品牌色之後最常出事的地方：按鈕的字看不見、次要文字太淡。
 // 從 tokens 直接算，不用截圖，也就抓不到版面問題，那部分留給人眼與 Lighthouse

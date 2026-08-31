@@ -41,6 +41,30 @@ node tools/check.mjs site/index.html
 
 1. **手機開一次。** 拉窄瀏覽器視窗不算，要拿真的手機開。
    最常出事的是首屏文字被動效壓住，還有按鈕在拇指構不到的位置。
+
+   **另外一定要用程式量一次橫向溢出**，因為它在縮圖上看不出來，
+   在桌機也不會發作，而使用者一滑就會看到整頁歪掉：
+
+   ```js
+   // 在 1440 與 390 兩個寬度各跑一次
+   document.documentElement.scrollWidth - document.documentElement.clientWidth
+   ```
+
+   大於 1 就是有東西超出去了。找兇手用這一段，它會列出右緣跑掉的元素：
+
+   ```js
+   const lim = document.documentElement.clientWidth;
+   [...document.querySelectorAll('*')]
+     .filter((el) => el.getBoundingClientRect().right > lim + 1)
+     .map((el) => el.tagName + '.' + el.className);
+   ```
+
+   **列不出來就是偽元素幹的**，去 CSS 找 `::before` / `::after` 裡面的
+   負 `inset`、負 `right`、負 `left`。這個 repo 自己的範例就中過三次，
+   三次都是刻意外擴的裝飾（頁緣直排標籤、文字底下的暗罩、圈起來的紅筆圈），
+   在桌機有版心外的空白可以站，到窄螢幕就沒有了。
+   修法是在窄螢幕把外擴量收掉，或在外層加 `overflow: clip`
+   （**不要用 `hidden`**，那會產生捲動容器把 `position: sticky` 弄壞）。
 2. **把網路調到慢速開一次。** 開發者工具裡把網路設成 Slow 4G，
    看第一眼出現的是不是白畫面。首屏動效在還沒載完的時候不能讓畫面空著。
 3. **關掉動畫再開一次。** 作業系統的「減少動態效果」打開，重新載入，
