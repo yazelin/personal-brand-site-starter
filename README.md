@@ -21,7 +21,7 @@ Docs are in Traditional Chinese. Zero dependencies, zero build step.
 
 ```
 請讀 https://github.com/yazelin/personal-brand-site-starter 的 AGENTS.md，
-照它的四個階段幫我做個人品牌網站。先訪談我，不要直接開始寫程式。
+照它的五個階段幫我做個人品牌網站。先訪談我，不要直接開始寫程式。
 ```
 
 接下來它會問你問題，一次一題。老實回答就好，答不出來的說不知道，它會替你決定。
@@ -45,7 +45,7 @@ ln -s ~/personal-brand-site-starter ~/.claude/skills/brand-site
 之後在任何專案裡打 `/brand-site` 就會叫出來，不用每次貼網址。
 兩種用法讀的是同一份 `AGENTS.md`，不會分岔。
 
-## 四個階段
+## 五個階段
 
 | 階段 | 做什麼 | 產出 |
 |---|---|---|
