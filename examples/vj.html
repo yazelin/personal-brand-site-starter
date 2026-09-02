@@ -91,10 +91,27 @@
     white-space: nowrap; }
 
   /* 設備與可接的檔期，用調音台推桿的感覺排 */
-  /* 場次上面先給一張真的畫面。範例的圖是生成的,不是真實演出的照片。 */
-  .setpic { margin: var(--space-3) 0 var(--space-4); }
-  .setpic img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover;
-    border-radius:10px; border:1px solid rgba(255,255,255,.08); }
+  /* 作品與控台。範例的圖是生成的,不是真實演出的照片。 */
+  .lead { color: var(--fg-muted); max-width: 46ch; margin: 0 0 var(--space-4); }
+  .looks { display:grid; gap:var(--space-3);
+    grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); margin:0 }
+  .looks figure { margin:0 }
+  .looks img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover;
+    border-radius:8px; border:1px solid rgba(255,255,255,.08) }
+  .looks figcaption { margin-top:.6rem; font-size:var(--step-s); color:var(--fg-muted);
+    line-height:1.75 }
+  .looks figcaption b { display:block; color:var(--c1); font-family:var(--mono);
+    font-size:.72rem; letter-spacing:.16em; margin-bottom:.2rem }
+  .deskrow { display:grid; gap:var(--space-4);
+    grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); align-items:start }
+  @media (max-width:46rem){ .deskrow { grid-template-columns:1fr } }
+  .deskpic { margin:0 }
+  .deskpic img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover;
+    border-radius:8px; border:1px solid rgba(255,255,255,.08) }
+  .steps { list-style:none; margin:0; padding:0; display:grid; gap:var(--space-3) }
+  .steps li { border-top:1px solid rgba(255,255,255,.10); padding-top:var(--space-2);
+    color:var(--fg-muted); font-size:var(--step-s); line-height:1.8 }
+  .steps b { display:block; color:var(--fg); font-size:var(--step-0); margin-bottom:.15rem }
   .fader { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
     gap: var(--space-3); }
   .fader div { border-top: 2px solid var(--c1); padding-top: var(--space-2); }
@@ -142,17 +159,54 @@
     </div>
   </section>
 
+  <section class="cue" id="look">
+    <div class="cue__id"><b>02</b>LOOK</div>
+    <div>
+      <h2><span>我的畫面</span><span>長什麼樣</span></h2>
+      <p class="lead">同一套系統，三種場的做法完全不同。決定畫面的是場地與音樂，不是我的喜好。</p>
+      <div class="looks">
+        <figure>
+          <img src="img/vj-theatre.webp" width="1000" height="563" loading="lazy"
+               alt="劇場舞台，兩位舞者剪影在單一投影面前，畫面只有一片緩慢的青色漸層。">
+          <figcaption><b>劇場</b>畫面只做呼吸，不搶舞者。整場可能只有一個顏色在變速度。</figcaption>
+        </figure>
+        <figure>
+          <img src="img/vj-festival.webp" width="1000" height="563" loading="lazy"
+               alt="戶外音樂祭主舞台，白天的大型 LED 牆播著高對比的琥珀與洋紅色塊。">
+          <figcaption><b>音樂祭</b>白天的場對比要打到底。細節在太陽下全部不見，只留大塊的形。</figcaption>
+        </figure>
+        <figure>
+          <img src="img/vj-hero.webp" width="1600" height="900" loading="lazy"
+               alt="演唱會舞台側面，三面 LED 螢幕播著青色與洋紅的流動視覺，樂手剪影在前。">
+          <figcaption><b>演唱會</b>三面屏加地板。安可沒排練過的歌也要跟得上，所以是即時算的，不是播檔。</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="cue" id="desk">
+    <div class="cue__id"><b>03</b>DESK</div>
+    <div>
+      <h2><span>現場那三個小時</span><span>我在做什麼</span></h2>
+      <div class="deskrow">
+        <figure class="deskpic">
+          <img src="img/vj-desk.webp" width="1000" height="563" loading="lazy"
+               alt="演出現場的控台：筆電上跑著節點式視覺軟體，旁邊是發光的 MIDI 控制器與一台小預覽螢幕。">
+        </figure>
+        <ol class="steps">
+          <li><b>訊號進來</b>音訊直接進電腦，鼓組與人聲分兩軌。分開才控制得了誰在推畫面。</li>
+          <li><b>節拍我手打</b>不用自動偵測。機器抓錯拍的時候，現場沒有人救得了。</li>
+          <li><b>手上只調三件事</b>密度、速度、顏色。其他全部事先設好，現場沒有時間找參數。</li>
+          <li><b>出事的時候</b>備援是一段可以無限循環的畫面，按一下就切過去，觀眾不會發現。</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
   <section class="cue" id="set">
-    <div class="cue__id"><b>02</b>SET</div>
+    <div class="cue__id"><b>04</b>SET</div>
     <div>
       <h2>跑過的場</h2>
-      <figure class="setpic">
-        <img src="img/vj-hero.webp"
-             srcset="img/vj-hero@800.webp 800w, img/vj-hero.webp 1600w"
-             sizes="(max-width:46rem) 92vw, 62vw"
-             width="1600" height="900" loading="lazy"
-             alt="演唱會舞台側面，三面 LED 螢幕播著青色與洋紅的流動視覺，樂手剪影在前，燈光穿過煙霧。">
-      </figure>
       <ul class="set">
         <li><span class="yr">2025</span>
           <div><h3>小巨蛋 · 樂團巡演最終場</h3>
@@ -171,7 +225,7 @@
   </section>
 
   <section class="cue">
-    <div class="cue__id"><b>03</b>SPEC</div>
+    <div class="cue__id"><b>05</b>SPEC</div>
     <div>
       <h2>可以配合的</h2>
       <div class="fader">
@@ -184,7 +238,7 @@
   </section>
 
   <section class="cue" id="contact">
-    <div class="cue__id"><b>04</b>CALL</div>
+    <div class="cue__id"><b>06</b>CALL</div>
     <div>
       <h2>談你的場</h2>
       <p style="color:var(--fg-muted);max-width:44ch">

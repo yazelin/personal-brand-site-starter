@@ -24,8 +24,9 @@
           --paper:#fffdf8; --card:#f3ece0; --stem:#5f7a52; --bloom:#c8617a; --gold:#b08d3f;
           --accent:#5f7a52; --accent-fg:#fffdf8; --line:#ddd2c2; }
   body { background: var(--bg); color: var(--fg);
-    background-image: radial-gradient(rgba(95,122,82,.05) 1px, transparent 1px);
-    background-size: 20px 20px; }
+    /* 很淡的葉梗重複底紋。內嵌 SVG,不多一個檔案。 */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cg fill='none' stroke='%235f7a52' stroke-opacity='.085' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M28 232c22-16 34-38 34-64'/%3E%3Cpath d='M62 168c-14 4-23 15-26 29M62 168c2-14-3-26-12-35'/%3E%3Cpath d='M150 44c-8 26-4 50 12 70'/%3E%3Cpath d='M162 114c12-6 25-4 36 5M162 114c-11-8-17-19-17-32'/%3E%3Cpath d='M216 210c-18-6-30-18-34-34'/%3E%3Cpath d='M96 96c6 10 6 20 0 30'/%3E%3C/g%3E%3Cg fill='%23c8617a' fill-opacity='.055'%3E%3Ccircle cx='62' cy='104' r='7'/%3E%3Ccircle cx='150' cy='40' r='5.5'/%3E%3Ccircle cx='218' cy='176' r='6'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 260px 260px; }
   .wrapx { max-width: 68rem; margin-inline: auto; padding-inline: var(--space-3); }
 
   /* 第一屏：概念要在第一眼就看得到,所以花架直接搬上來,
@@ -55,6 +56,8 @@
   .badge { display:inline-block; background: var(--stem); color: var(--accent-fg);
     font-size: var(--step-s); letter-spacing:.06em; padding:.3em .8em; border-radius:999px;
     margin-bottom: var(--space-3); }
+  h1, h2, .tag2 h3 { font-family: "Noto Serif TC", "Noto Serif CJK TC",
+    "Source Han Serif TC", "Songti TC", Georgia, serif; }
   .top h1 { font-size: clamp(2.9rem, 8.2vw, 7rem); line-height:1.02;
     letter-spacing:-.02em; margin:0 0 var(--space-3); }
   .top h1 span { display:block }
@@ -99,8 +102,21 @@
   .tag2 .season { position:absolute; top:var(--space-3); right:var(--space-3);
     font-size:.68rem; letter-spacing:.1em; color:var(--gold) }
 
-  .band { padding-block: var(--space-6) var(--space-5); }
-  .band h2 { font-size: var(--step-2); margin:0 0 var(--space-2) }
+  .band { padding-block: var(--space-6) var(--space-5); position:relative; }
+  /* 段落之間的分隔:一條中間開花的細線,不是直接畫一條線 */
+  .band + .band::before { content:''; position:absolute; top:0; left:0; right:0;
+    height:1px; background:
+      linear-gradient(90deg, transparent, var(--line) 18%, var(--line) 44%, transparent 46%),
+      linear-gradient(90deg, transparent 54%, var(--line) 56%, var(--line) 82%, transparent); }
+  .band + .band::after { content:''; position:absolute; top:-4px; left:50%;
+    width:9px; height:9px; margin-left:-4.5px; border-radius:50%;
+    background: var(--bloom); opacity:.75; }
+  .band h2 { font-size: var(--step-2); margin:0 0 var(--space-2);
+    padding-left: 2.1rem; position:relative; }
+  /* 每一段標題前面插一支花。同一支花重複出現,是這個站的記號。 */
+  .band h2::before { content:''; position:absolute; left:0; top:50%;
+    width:26px; height:34px; margin-top:-17px;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='34'%3E%3Cg fill='none' stroke='%235f7a52' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M13 33V13'/%3E%3Cpath d='M13 22c-5 0-8-3-9-8 5-1 8 2 9 8zM13 18c5-1 8-4 8-9-5 0-8 3-8 9z'/%3E%3C/g%3E%3Ccircle cx='13' cy='8' r='4.6' fill='%23c8617a' fill-opacity='.85'/%3E%3C/svg%3E") no-repeat center/contain; }
   .band .sub { color:var(--fg-muted); margin:0 0 var(--space-4); max-width:44ch }
   /* 摺線以下也是牌子:同樣的紙、同樣的打孔,概念從第一屏管到頁尾 */
   .steps { display:grid; gap:var(--space-2);

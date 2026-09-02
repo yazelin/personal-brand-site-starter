@@ -56,6 +56,20 @@
   h1 span, h2 span { display: inline-block; }
 
   /* 冊頁的頁首。整頁只出現這一次 */
+  /* 事務所字標。專業服務的份量來自可查證的形式要件,不是語氣。 */
+  .mast { display: flex; flex-wrap: wrap; align-items: flex-end;
+    justify-content: space-between; gap: var(--space-2) var(--space-4);
+    padding: var(--space-4) 0 var(--space-3); }
+  .mast__id b { display: block; font-size: var(--step-2); font-weight: 700;
+    letter-spacing: 0.02em;
+    font-family: "Noto Serif TC", "Noto Serif CJK TC", "Source Han Serif TC",
+                 "Songti TC", Georgia, serif; }
+  .mast__id span { display: block; font-size: 0.72rem; letter-spacing: 0.2em;
+    color: var(--fg-muted); margin-top: 0.25rem; }
+  .mast__reg { display: grid; gap: 0.1rem; text-align: right;
+    font-size: 0.72rem; letter-spacing: 0.06em; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums; }
+  @media (max-width: 46rem){ .mast__reg { text-align: left } }
   .slug { display: flex; flex-wrap: wrap; gap: 0.2rem var(--space-3);
     padding: var(--space-3) 0 0.45rem; border-bottom: 1px solid var(--fg);
     font-size: 0.72rem; letter-spacing: 0.14em; color: var(--fg-muted);
@@ -178,6 +192,19 @@
     .pg__t, .pg__v { grid-column: auto; grid-row: auto; text-align: left; }
   }
 
+  /* 事務所資訊。真實事務所的網站一定有這一區,少了就像個人接案。 */
+  .office { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+    gap: 0.35rem var(--space-4); margin: 0 0 var(--space-3); }
+  .office > div { display: grid; grid-template-columns: 5.2rem minmax(0, 1fr);
+    gap: var(--space-2); align-items: baseline; }
+  .office dt { font-size: 0.72rem; letter-spacing: 0.14em; color: var(--fg-muted); }
+  .office dd { margin: 0; font-size: var(--step-s); }
+  .disclaim { flex-basis: 100%; width: 100%; font-size: 0.72rem; color: var(--fg-muted);
+    margin: 0 0 var(--space-2); border-top: 1px solid var(--rule);
+    padding-top: var(--space-2); }
+  footer .office { flex-basis: 100%; width: 100%; }
+  .copy { font-size: 0.72rem; color: var(--fg-muted); }
+
   /* 卷末註記。這一卷收在哪裡 */
   .vol__end { border-top: 1px solid var(--fg); background: var(--tint);
     padding: var(--space-2) var(--space-3); font-size: 0.76rem;
@@ -232,8 +259,18 @@
 
 <main id="main" class="file">
 
+  <div class="mast">
+    <div class="mast__id">
+      <b>蔡孟儒律師事務所</b>
+      <span>TSAI &amp; ASSOCIATES · 桃園市中壢區</span>
+    </div>
+    <div class="mast__reg">
+      <span>律師證書字號　台檢證字第 12345 號</span>
+      <span>桃園律師公會　會員字號 1234</span>
+    </div>
+  </div>
   <div class="slug">
-    <b>案卷</b><span>蔡孟儒律師事務所</span><span>桃園市中壢區</span>
+    <b>案卷</b><span>勞資與車禍</span>
     <span class="end">全卷共 32 頁 · 封面不編頁 · 2026.08 製</span>
   </div>
 
@@ -468,11 +505,16 @@
 
 <footer>
   <div class="wrap">
-    <span>© 2026 蔡孟儒律師事務所 · 桃園市中壢區</span>
-    <ul>
-      <li><a href="tel:034261200">03-426-1200</a></li>
-      <li><a href="mailto:tsai@example.tw">Email</a></li>
-    </ul>
+    <dl class="office">
+      <div><dt>事務所</dt><dd>蔡孟儒律師事務所</dd></div>
+      <div><dt>地址</dt><dd>桃園市中壢區中央西路二段 100 號 5 樓</dd></div>
+      <div><dt>電話</dt><dd><a href="tel:034261200">03-426-1200</a>　傳真 03-426-1201</dd></div>
+      <div><dt>信箱</dt><dd><a href="mailto:tsai@example.tw">tsai@example.tw</a></dd></div>
+      <div><dt>執業資格</dt><dd>律師證書字號 台檢證字第 12345 號 · 桃園律師公會會員字號 1234</dd></div>
+      <div><dt>受理時間</dt><dd>週一至週五 09:00–18:00，開庭日不定，先來信約時間</dd></div>
+    </dl>
+    <p class="disclaim">本頁為示範用途。人物、證號、地址與聯絡方式皆為虛構，請勿當作真實事務所資訊。</p>
+    <span class="copy">© 2026 蔡孟儒律師事務所</span>
   </div>
 </footer>
 
