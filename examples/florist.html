@@ -62,9 +62,6 @@
   h2 span { display:inline-block }
   .top .lede { font-size: var(--step-1); color: var(--fg-muted); max-width:22em; margin:0 }
   /* 首屏右邊那疊今日花牌,跟下面花架同一種牌 */
-  .today { display:grid; gap:var(--space-2); }
-  .today .tagline { font-size:.74rem; letter-spacing:.16em; color:var(--stem);
-    text-transform:uppercase; margin:0 0 .2rem }
   .facts3 { display:grid; gap:.55rem; margin:var(--space-4) 0 0;
     grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); }
   .facts3 div { position:relative; background: var(--paper); border:1px solid var(--line);
@@ -77,14 +74,6 @@
   .facts3 a { color: inherit }
   .facts3 .now { border-color: var(--bloom); }
   .facts3 .now b { color: var(--bloom) }
-  /* 首屏就先掛兩張真的花牌,重複單元第一眼就看得到 */
-  .peek { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-2);
-    margin-bottom:var(--space-2) }
-  .tag2.mini { padding:var(--space-2) var(--space-3) var(--space-3); }
-  .tag2.mini .swatch { height:4.2rem; margin:var(--space-2) 0 .5rem }
-  .tag2.mini h3 { font-size: var(--step-1); margin:.1rem 0 .4rem }
-  .tag2.mini .sci { margin:0 }
-  @media (max-width:900px){ .peek { grid-template-columns:1fr 1fr } }
 
   /* 花材牌：一張一張的小標籤,各自輕輕浮動 */
   .rack { display:grid; gap:var(--space-3);
@@ -99,10 +88,10 @@
   /* 牌子上面那個洞與繩子 */
   .tag2::before { content:''; position:absolute; top:10px; left:50%; width:9px; height:9px;
     margin-left:-4.5px; border:1px solid var(--line); border-radius:50%; background:var(--bg) }
-  .tag2 .swatch { height:5.5rem; border-radius:8px; margin:var(--space-3) 0 var(--space-2);
-    background: radial-gradient(52% 56% at 38% 40%, var(--bloom) 0%, transparent 62%),
-      radial-gradient(46% 50% at 68% 64%, var(--gold) 0%, transparent 64%),
-      linear-gradient(160deg, #e9efe2, #dbe6d3); }
+  /* 花牌上的照片。原本是 CSS 漸層畫的色塊,看起來像沒載入的圖。 */
+  .tag2 .swatch { display:block; width:100%; height:8.5rem; object-fit:cover;
+    border-radius:8px; margin:var(--space-3) 0 var(--space-2);
+    background: var(--card); }
   .tag2 .sci { font-size:.72rem; letter-spacing:.12em; color:var(--stem); font-style:italic }
   .tag2 h3 { font-size:var(--step-1); margin:.15rem 0 .3rem }
   .tag2 p { margin:0 0 var(--space-2); font-size:var(--step-s); color:var(--fg-muted) }
@@ -170,22 +159,22 @@
     <p class="sub">每週一早上換一次。想要的花當週沒有的話，先打電話問，通常能調到。</p>
     <div class="rack">
       <article class="tag2"><span class="season">當季</span>
-        <div class="swatch" aria-hidden="true"></div>
+        <img class="swatch" src="img/f-ranunculus.webp" width="600" height="600" loading="lazy" alt="洋牡丹，珊瑚色與蜜桃色的層層花瓣，配幾片尤加利葉">
         <p class="sci">Ranunculus</p><h3>洋牡丹束</h3>
         <p>春天限定，開得慢，能撐一週。適合探病與道謝。</p>
         <span class="fee">880 元起</span></article>
       <article class="tag2"><span class="season">常備</span>
-        <div class="swatch" aria-hidden="true"></div>
+        <img class="swatch" src="img/f-eustoma.webp" width="600" height="600" loading="lazy" alt="桔梗，淡粉與奶油色的花朵，細長的綠色花莖">
         <p class="sci">Eustoma</p><h3>桔梗小束</h3>
         <p>一年四季都有，顏色最多。送同事、送老師都不會出錯。</p>
         <span class="fee">680 元起</span></article>
       <article class="tag2"><span class="season">當季</span>
-        <div class="swatch" aria-hidden="true"></div>
+        <img class="swatch" src="img/f-dahlia.webp" width="600" height="600" loading="lazy" alt="三朵大理花，深玫瑰色與杏色，配深綠葉材">
         <p class="sci">Dahlia</p><h3>大理花桌花</h3>
         <p>花頭大，放在餐桌或櫃檯很有存在感。開幕與喬遷常訂這個。</p>
         <span class="fee">1,600 元起</span></article>
       <article class="tag2"><span class="season">訂製</span>
-        <div class="swatch" aria-hidden="true"></div>
+        <img class="swatch" src="img/f-mixed.webp" width="600" height="600" loading="lazy" alt="以牛皮紙包起的混合季節花束，淡粉與奶油色配灰綠葉材">
         <p class="sci">Bouquet</p><h3>說預算就好</h3>
         <p>告訴我價位、送誰、什麼場合，剩下交給我配。這是最多人選的。</p>
         <span class="fee">600–3,000 元</span></article>
