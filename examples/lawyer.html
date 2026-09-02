@@ -73,8 +73,16 @@
   .vol__bar .col { margin-left: auto; opacity: 0.75; letter-spacing: 0.1em; }
 
   /* 封面。卷脊在左，卷面在右，收案欄在右上角 */
-  .cover { display: grid; grid-template-columns: auto minmax(0, 1fr);
+  .cover { display: grid; grid-template-columns: auto minmax(0, 1.32fr) minmax(0, .68fr);
     align-items: stretch; }
+  /* 封面上就是那宗卷本身。範例的圖是生成的,不是真實事務所的照片。 */
+  .filepic { position:relative; overflow:hidden; border-left:1px solid var(--line);
+    background: var(--tint); }
+  .filepic img { display:block; width:100%; height:100%; min-height:22rem;
+    object-fit:cover; object-position:38% center; }
+  @media (max-width: 900px){
+    .filepic img { min-height:0; aspect-ratio:16/10 }
+  }
   .spine { position: relative; writing-mode: vertical-rl; letter-spacing: 0.34em;
     font-size: 0.74rem; color: var(--fg-muted); background: var(--tint);
     border-right: 1px solid var(--line); padding: var(--space-4) 0.75rem;
@@ -87,7 +95,11 @@
 
   .cover__in { padding: var(--space-4) var(--space-3) var(--space-3);
     position: relative; }
-  .cover__in h1 { font-size: var(--step-3); margin: 0 0 var(--space-2); }
+  .cover__in h1 { font-size: clamp(2.1rem, 3.9vw, 3.5rem); line-height:1.18;
+    text-wrap: balance;
+    letter-spacing:-.01em; margin: 0 0 var(--space-3); }
+  .cover__in h1 span { display:block }
+  .cover__in h1 span + span { color: var(--accent) }
   .cover .eyebrow { margin-bottom: var(--space-1); }
   .lede { color: var(--fg-muted); max-width: 30em; margin: 0 0 var(--space-3);
     text-wrap: balance; }
@@ -184,6 +196,7 @@
   }
   @media (max-width: 40rem) {
     .cover { grid-template-columns: 1fr; }
+    .filepic { border-left:0; border-top:1px solid var(--line) }
     .spine { writing-mode: horizontal-tb; letter-spacing: 0.24em;
       border-right: 0; border-bottom: 1px solid var(--line);
       padding: 0.4rem var(--space-3); justify-content: flex-start; }
@@ -234,6 +247,13 @@
           <a class="btn btn-primary" href="mailto:tsai@example.tw">寄信問我接不接</a>
           <a class="btn btn-ghost" href="#scope">先看我不辦哪些</a>
         </div>
+      </div>
+      <div class="filepic">
+        <img src="img/lawyer-hero.webp"
+             srcset="img/lawyer-hero@800.webp 800w, img/lawyer-hero.webp 1600w"
+             sizes="(max-width:900px) 92vw, 34vw"
+             width="1600" height="900" fetchpriority="high"
+             alt="深色木桌上一宗以棉帶綁起的牛皮紙卷宗，旁邊是一疊帶頁次標籤的文件、一支深藍鋼筆與一盒暗紅印泥。">
       </div>
     </div>
   </section>

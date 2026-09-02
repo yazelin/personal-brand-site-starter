@@ -89,8 +89,7 @@ ln -s ~/personal-brand-site-starter ~/.claude/skills/brand-site
 補了價格與相簿連結、調亮文字之後是 19 分。
 
 **多數人不是軟體工程師。** `docs/trades.md` 收了四大類二十個行業的受眾在意什麼、
-最常缺什麼，而且花店、早餐店、鋼琴老師、房仲都各有一個完整範例
-（在 `examples/`，第一屏都先答完那一行的三個必問）。
+最常缺什麼。`examples/` 裡有三個做到位的完整範例，第一屏都先答完那一行的三個必問。
 
 ## 七種美學族
 
@@ -110,7 +109,7 @@ ln -s ~/personal-brand-site-starter ~/.claude/skills/brand-site
 **挑族的時候不要問顏色，問「你希望它是漂的、閃的、流的，還是不動的」。**
 那個問法比問風格準得多，因為每一族的動畫性格完全不同。
 
-**七族每一族都有完整範例**，在 `examples/`，
+**三個完整範例**在 `examples/`，各代表一種人：在地店家、專業服務、創作者。
 [線上可以看](https://yazelin.github.io/personal-brand-site-starter/examples/)。
 
 ## 六種版面
@@ -202,7 +201,7 @@ node tools/check.mjs site/index.html
 
 ```
 SKILL.md               裝成 Claude Code skill 用的入口
-examples/              四個行業的完整範例，做出來就會長那樣
+examples/              三個完整範例,做出來就會長那樣
 AGENTS.md              總控，AI 從這裡開始讀
 skills/                五個階段各一份作業指引
 templates/             六種版面骨架，preview.html 可以一次比較

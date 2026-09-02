@@ -28,21 +28,63 @@
     background-size: 20px 20px; }
   .wrapx { max-width: 68rem; margin-inline: auto; padding-inline: var(--space-3); }
 
-  /* 第一屏：急著訂花的人要的四件事全部在這裡 */
-  .top { padding-block: var(--space-5) var(--space-4); }
+  /* 第一屏：概念要在第一眼就看得到,所以花架直接搬上來,
+     行政資訊做成同一種牌,不另開一組方框。 */
+  .top { position:relative; overflow:hidden;
+    padding-block: var(--space-5) var(--space-5); }
+  /* 生成式的花形當底。範例放不了真實照片(紅線),所以視覺由 CSS 畫。 */
+  .top::before, .top::after { content:''; position:absolute; border-radius:50%;
+    pointer-events:none; z-index:0; }
+  .top::before { width:46rem; height:46rem; right:-14rem; top:-18rem;
+    background: radial-gradient(circle at 40% 45%, rgba(200,97,122,.20), rgba(200,97,122,0) 62%); }
+  .top::after { width:38rem; height:38rem; left:-13rem; bottom:-17rem;
+    background: radial-gradient(circle at 55% 40%, rgba(95,122,82,.20), rgba(95,122,82,0) 62%); }
+  .top > .wrapx { position:relative; z-index:1;
+    display:grid; gap:var(--space-4) var(--space-5); align-items:stretch;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+  @media (max-width:900px){ .top > .wrapx { grid-template-columns:1fr } }
+  /* 花束照。範例的圖是生成的,不是真實店家的作品,examples/index.html 有說明。 */
+  .shotwrap { position:relative; border-radius:14px; overflow:hidden;
+    box-shadow:0 18px 44px rgba(80,64,40,.16);
+    align-self:stretch; min-height:26rem; }
+  .shotwrap img { display:block; width:100%; height:100%; min-height:26rem;
+    object-fit:cover; object-position:34% center; }
+  @media (max-width:900px){
+    .shotwrap, .shotwrap img { min-height:0 }
+    .shotwrap img { aspect-ratio:16/9; height:auto } }
   .badge { display:inline-block; background: var(--stem); color: var(--accent-fg);
     font-size: var(--step-s); letter-spacing:.06em; padding:.3em .8em; border-radius:999px;
     margin-bottom: var(--space-3); }
-  .top h1 { font-size: clamp(2rem,6vw,3.6rem); line-height:1.16; margin:0 0 var(--space-3); }
-  h1 span, h2 span { display:inline-block }
-  .top .lede { font-size: var(--step-1); color: var(--fg-muted); max-width:34ch; margin:0 }
-  .facts3 { display:grid; gap:var(--space-2); margin-top:var(--space-4);
-    grid-template-columns:repeat(auto-fit,minmax(12rem,1fr)); }
-  .facts3 div { background: var(--paper); border:1px solid var(--line); border-radius:10px;
-    padding:var(--space-2) var(--space-3); }
-  .facts3 b { display:block; font-size:.74rem; letter-spacing:.14em; color:var(--stem);
-    margin-bottom:.2rem }
+  .top h1 { font-size: clamp(2.9rem, 8.2vw, 7rem); line-height:1.02;
+    letter-spacing:-.02em; margin:0 0 var(--space-3); }
+  .top h1 span { display:block }
+  .top h1 span + span { color: var(--stem) }
+  h2 span { display:inline-block }
+  .top .lede { font-size: var(--step-1); color: var(--fg-muted); max-width:22em; margin:0 }
+  /* 首屏右邊那疊今日花牌,跟下面花架同一種牌 */
+  .today { display:grid; gap:var(--space-2); }
+  .today .tagline { font-size:.74rem; letter-spacing:.16em; color:var(--stem);
+    text-transform:uppercase; margin:0 0 .2rem }
+  .facts3 { display:grid; gap:.55rem; margin:var(--space-4) 0 0;
+    grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); }
+  .facts3 div { position:relative; background: var(--paper); border:1px solid var(--line);
+    border-radius:10px; padding:1.9rem var(--space-3) .9rem;
+    display:flex; flex-direction:column; gap:.25rem; }
+  /* 每一張牌的上緣都有打孔,跟下面的花牌是同一件東西 */
+  .facts3 div::before { content:''; position:absolute; top:.65rem; left:50%; margin-left:-4.5px;
+    width:9px; height:9px; border:1px solid var(--line); border-radius:50%; background:var(--bg) }
+  .facts3 b { font-size:.72rem; letter-spacing:.14em; color:var(--stem) }
   .facts3 a { color: inherit }
+  .facts3 .now { border-color: var(--bloom); }
+  .facts3 .now b { color: var(--bloom) }
+  /* 首屏就先掛兩張真的花牌,重複單元第一眼就看得到 */
+  .peek { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-2);
+    margin-bottom:var(--space-2) }
+  .tag2.mini { padding:var(--space-2) var(--space-3) var(--space-3); }
+  .tag2.mini .swatch { height:4.2rem; margin:var(--space-2) 0 .5rem }
+  .tag2.mini h3 { font-size: var(--step-1); margin:.1rem 0 .4rem }
+  .tag2.mini .sci { margin:0 }
+  @media (max-width:900px){ .peek { grid-template-columns:1fr 1fr } }
 
   /* 花材牌：一張一張的小標籤,各自輕輕浮動 */
   .rack { display:grid; gap:var(--space-3);
@@ -71,10 +113,20 @@
   .band { padding-block: var(--space-6) var(--space-5); }
   .band h2 { font-size: var(--step-2); margin:0 0 var(--space-2) }
   .band .sub { color:var(--fg-muted); margin:0 0 var(--space-4); max-width:44ch }
-  .steps { display:grid; gap:var(--space-2) }
-  .steps div { display:grid; grid-template-columns:2.2rem 1fr; gap:var(--space-2);
-    padding-bottom:var(--space-2); border-bottom:1px dashed var(--line) }
-  .steps b { color:var(--stem); font-variant-numeric:tabular-nums }
+  /* 摺線以下也是牌子:同樣的紙、同樣的打孔,概念從第一屏管到頁尾 */
+  .steps { display:grid; gap:var(--space-2);
+    grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)) }
+  .steps div { position:relative; background:var(--paper); border:1px solid var(--line);
+    border-radius:10px; padding:1.9rem var(--space-3) var(--space-3);
+    display:grid; gap:.4rem }
+  .steps div::before { content:''; position:absolute; top:.65rem; left:50%; margin-left:-4.5px;
+    width:9px; height:9px; border:1px solid var(--line); border-radius:50%; background:var(--bg) }
+  .steps b { color:var(--stem); font-variant-numeric:tabular-nums;
+    font-size:.72rem; letter-spacing:.16em }
+  .steps strong { color: var(--fg) }
+  /* 不做的事那一組:牌子翻面,底色沉下去 */
+  .steps.off div { background: var(--card); border-style:dashed }
+  .steps.off b { color: var(--fg-muted) }
   .end3 { background: var(--card); border-radius:14px; padding:var(--space-5) var(--space-4);
     text-align:center; margin-bottom:var(--space-5) }
   .end3 h2 { font-size:var(--step-2) }
@@ -89,18 +141,27 @@
 <main id="main">
 
   <section class="top"><div class="wrapx">
-    <p class="badge">今天下午三點前訂，明天就能送到</p>
-    <h1><span>青田花室</span><span>一天只做二十束</span></h1>
-    <p class="lede">台北青田街的小花店。只用當季花材，所以每週的花不一樣。</p>
-    <div class="facts3">
+    <div>
+      <p class="badge">今天下午三點前訂，明天就能送到</p>
+      <h1><span>青田花室</span><span>一天只做二十束</span></h1>
+      <p class="lede">台北青田街的小花店。只用當季花材，所以每週的花不一樣。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="tel:0212345678">打電話訂花</a>
+        <a class="btn btn-ghost" href="#rack">看這週的花與價錢</a>
+      </div>
+    </div>
+    <div class="shotwrap">
+      <img src="img/florist-hero.webp"
+           srcset="img/florist-hero@800.webp 800w, img/florist-hero.webp 1600w"
+           sizes="(max-width:900px) 92vw, 44vw"
+           width="1600" height="1200" fetchpriority="high"
+           alt="一束以洋牡丹、桔梗與尤加利葉綁成的花束，放在米白色檯面上，粉橘與奶油色為主。">
+    </div>
+    <div class="facts3" style="grid-column:1/-1">
+      <div class="now"><b>今天</b>還有 6 束可訂</div>
       <div><b>電話</b><a href="tel:0212345678">02-1234-5678</a></div>
       <div><b>營業</b>週二至週日 11:00–19:30（週一休）</div>
       <div><b>地址</b><a href="https://maps.example.tw" rel="noopener">台北市大安區青田街 12 巷 3 號</a></div>
-      <div><b>今天</b>還有 6 束可訂</div>
-    </div>
-    <div class="actions">
-      <a class="btn btn-primary" href="tel:0212345678">打電話訂花</a>
-      <a class="btn btn-ghost" href="#rack">看這週的花與價錢</a>
     </div>
   </div></section>
 
@@ -145,7 +206,7 @@
   <section class="band"><div class="wrapx">
     <h2>不做的事</h2>
     <p class="sub">先說清楚，省得彼此浪費時間。</p>
-    <div class="steps">
+    <div class="steps off">
       <div><b>—</b><span>不做罐頭花籃與制式開幕花圈。</span></div>
       <div><b>—</b><span>不接大型會場布置，那需要團隊，我只有一個人。</span></div>
       <div><b>—</b><span>不用永生花與乾燥花做主體。喜歡那種的我可以介紹別家。</span></div>

@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#x25A6;</text></svg>">
-<meta name="description" content="十八個行業的完整範例，每一個都是零依賴的單一 HTML 檔，用同一套流程做出來。">
+<meta name="description" content="三個做到位的範例，每一個都是零依賴的單一 HTML 檔，用同一套流程做出來。">
 <meta property="og:title" content="用這個 repo 做出來會長什麼樣">
-<meta property="og:description" content="十八個行業的完整範例，每一個都是零依賴的單一 HTML 檔，用同一套流程做出來。">
+<meta property="og:description" content="三個做到位的範例，每一個都是零依賴的單一 HTML 檔，用同一套流程做出來。">
 <meta property="og:type" content="website">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>用這個 repo 做出來會長什麼樣</title>
@@ -48,150 +48,56 @@
 <body>
 <main>
   <h1>用這個 repo 做出來會長什麼樣</h1>
-  <p class="sub"><strong>二十四個虛構的人，二十種行業，七種美學族。</strong>族是性格，概念是骨架，兩件事分開。
-  每一個都跑完整條流程：訪談問出定位、問模型要一個屬於他這一行的概念、把概念寫成純 CSS。
-  每一份都是零依賴的單一 HTML，沒有框架、沒有 build step、沒有圖片。</p>
+  <p class="sub">三個範例，三種人：在地店家、專業服務、創作者。<b>刻意只留三個。</b>
+    原本有二十四個，但量過之後發現它們的首屏字級中位數只有 49px、
+    二十二個首屏完全沒有視覺，看起來全部一樣。與其給你二十四個長得像的，
+    不如給三個真的做到位的，讓你看得出「做到位」是什麼意思。</p>
+
+  <div class="grid">
+    <a class="card" href="florist.html">
+      <img src="thumbs/florist.jpg" alt="花店網站的首屏，大字標題配一束粉橘色花束照" width="560" height="324" loading="lazy">
+      <div><h3>青田花室 · 在地花店</h3>
+        <p>一天只做二十束<br>概念是 <b>花材牌</b>。每一束、每一項營業資訊都是一張牌，
+          連牌子上的打孔都一樣，整頁是一個花材架。</p></div></a>
+
+    <a class="card" href="lawyer.html">
+      <img src="thumbs/lawyer.jpg" alt="律師事務所網站的首屏，牛皮紙卷宗照與案卷式版面" width="560" height="324" loading="lazy">
+      <div><h3>蔡孟儒 · 律師</h3>
+        <p>只辦勞資與車禍<br>概念是 <b>案卷</b>。從卷一封面、卷脊、收案戳，
+          一路編頁次到卷六，接不接案在事務所裡就是開不開卷。</p></div></a>
+
+    <a class="card" href="vj.html">
+      <img src="thumbs/vj.jpg" alt="現場視覺工作者網站的首屏，深色底上有流動的彩色光暈" width="560" height="324" loading="lazy">
+      <div><h3>鄭亦帆 · 現場視覺</h3>
+        <p>音樂進來，畫面自己會動<br>概念是 <b>CUE 表</b>。流體鋪滿整個視窗，
+          左邊一條貫穿全頁的時間軸，每一節都是一個 cue。</p></div></a>
+  </div>
 
   <section class="fam">
-    <div class="fam__head"><h2>訊號</h2><span>動的性格是<b>流</b>。動效鋪滿畫面，名字用漸層剪成看動效的窗</span></div>
+    <div class="fam__head"><h2>看這三個的時候看什麼</h2>
+      <span>這三件事決定一個站像不像一個人做的</span></div>
     <div class="grid">
-      <a class="card" href="vj.html" style="text-decoration:none">
-        <img src="thumbs/vj.jpg" alt="彩色流體在深色畫面上流動" width="560" height="324" loading="lazy">
-        <div><h3>鄭亦帆 · 現場視覺</h3><p>音樂進來，畫面自己會動<br>概念是 <b>CUE 表</b>。流體鋪滿整個視窗，左邊一條貫穿全頁的時間軸。</p></div></a>
+      <div class="card"><div><h3>概念有沒有撐住整頁</h3>
+        <p>不是首屏貼一條裝飾邊就算。往下捲，看容器、重複的單元、
+          分節的編號是不是同一件東西。這一條最決定成品像不像他。</p></div></div>
+      <div class="card"><div><h3>首屏有沒有視覺主體</h3>
+        <p>一個只有黑框卡片的頁面，讀者的直覺是「隨手做的」。
+          沒有照片也要有東西，動效與生成視覺都算。</p></div></div>
+      <div class="card"><div><h3>字級落差夠不夠</h3>
+        <p>中文系統字的字重檔位少，層次要靠字級與字重的落差撐。
+          首屏標題跟內文一樣大，看起來就是一份文件。</p></div></div>
     </div>
   </section>
 
-  <section class="fam">
-    <div class="fam__head"><h2>圖鑑</h2><span>動的性格是<b>漂</b>。深藍夜海配奶白米黃，每張卡各自浮動</span></div>
-    <div class="grid">
-      <a class="card" href="illustrator.html" style="text-decoration:none">
-        <img src="thumbs/illustrator.jpg" alt="深藍夜色配奶白大標與琥珀色計數" width="560" height="324" loading="lazy">
-        <div><h3>阮巧宜 · 插畫家</h3><p>台灣早餐店圖鑑，畫到第七十三家<br>概念是 <b>圖鑑內頁</b>。每家店一張標本卡，編號 001 排下去。</p></div></a>
-    </div>
-  </section>
+  <p class="note"><b>這三個人是虛構的，圖是 AI 生成的。</b>
+    信箱、電話、地址都是示範用的假資料，照片不是真實店家與事務所拍的。
+    <b>你自己的站不要這樣做。</b><code>docs/images.md</code> 有一條紅線：
+    不要用網路上找來的照片假裝是你的作品。範例因為人是虛構的才用生成圖，
+    你有真實的作品照、工作現場、人像，那些一定比生成圖有用。</p>
 
-  <section class="fam">
-    <div class="fam__head"><h2>霓虹街機</h2><span>動的性格是<b>閃</b>。洋紅配青配黃，霓虹燈管的壞掉感</span></div>
-    <div class="grid">
-      <a class="card" href="gamedev.html" style="text-decoration:none">
-        <img src="thumbs/gamedev.jpg" alt="粉紅霓虹輝光大標配 CRT 掃描線" width="560" height="324" loading="lazy">
-        <div><h3>阿光 · 獨立遊戲</h3><p>一個人做完的遊戲，第四款<br>概念是 <b>選關畫面</b>。作品排成 STAGE，狀態用 HUD 小字。</p></div></a>
-    </div>
-  </section>
-
-  <section class="fam">
-    <div class="fam__head"><h2>終端</h2><span>動的性格是<b>開機與待機</b>。深青配螢光青，面板堆疊，有小角色</span></div>
-    <div class="grid">
-      <a class="card" href="toolmaker.html" style="text-decoration:none">
-        <img src="thumbs/toolmaker.jpg" alt="深青底的開機序列與服務面板" width="560" height="324" loading="lazy">
-        <div><h3>邱世恆 · 獨立開發者</h3><p>做給自己用的工具，順便給你用<br>概念是 <b>開機序列</b>。區塊是啟動中的服務，右下角有待機的小角色。</p></div></a>
-    </div>
-  </section>
-
-  <section class="fam">
-    <div class="fam__head"><h2>粗獷</h2><span>動的性格是<b>彈</b>。粗黑框、不模糊的位移陰影、對撞色、超大字</span></div>
-    <div class="grid">
-      <a class="card" href="copywriter.html" style="text-decoration:none">
-        <img src="thumbs/copywriter.jpg" alt="鮮黃貼紙配粗黑框與硬陰影" width="560" height="324" loading="lazy">
-        <div><h3>柯宜蓁 · 品牌文案</h3><p>你的產品不難懂，是你講得太客氣<br>概念是 <b>貼紙牆</b>。每塊歪一點點，hover 會位移。</p></div></a>
-    </div>
-  </section>
-
-  <section class="fam">
-    <div class="fam__head"><h2>復古介面</h2><span>動的性格是<b>掃描與閃爍</b>。視窗邊框、鉻面、CRT 抖動</span></div>
-    <div class="grid">
-      <a class="card" href="chiptune.html" style="text-decoration:none">
-        <img src="thumbs/chiptune.jpg" alt="舊系統視窗介面配綠色跑馬燈" width="560" height="324" loading="lazy">
-        <div><h3>徐子懷 · chiptune 音樂人</h3><p>用壞掉的音源做完整的專輯<br>概念是 <b>舊系統的視窗</b>。每個區塊一個視窗，整片有掃描線。</p></div></a>
-    </div>
-  </section>
-
-  <section class="fam">
-    <div class="fam__head"><h2>實體店與在地服務</h2>
-      <span>受眾要的是幾點開、在哪、多少錢、來不來得及。這四份的第一屏都先答完這些</span></div>
-    <div class="grid">
-      <a class="card" href="florist.html" style="text-decoration:none">
-        <img src="thumbs/florist.jpg" alt="暖紙感底色上的花材牌，每張牌有洞與學名排版" width="560" height="324" loading="lazy">
-        <div><h3>青田花室 · 花店</h3><p>一天只做二十束<br>概念是<b>花材牌</b>。電話、營業時間、地址、今天還剩幾束全在第一屏，「來得及嗎」單獨一區。</p></div></a>
-      <a class="card" href="breakfast.html" style="text-decoration:none">
-        <img src="thumbs/breakfast.jpg" alt="紅黃對撞色的蒸籠層層堆疊" width="560" height="324" loading="lazy">
-        <div><h3>福安早點 · 早餐店</h3><p>五點半第一籠，賣完就收<br>概念是<b>蒸籠</b>。一疊籠共用同一道粗框，一籠到五籠往下疊。內容少，靠結構撐。</p></div></a>
-      <a class="card" href="musicteacher.html" style="text-decoration:none">
-        <img src="thumbs/musicteacher.jpg" alt="米白紙上的五線譜與鉛筆圈記" width="560" height="324" loading="lazy">
-        <div><h3>蘇怡文 · 鋼琴老師</h3><p>不用先練到某個程度，才敢來上第一堂<br>概念是<b>練習譜</b>。小節號用 counter 從第一屏連到頁尾，第一屏四小節依序是程度、價格、地點、時段。</p></div></a>
-      <a class="card" href="realtor.html" style="text-decoration:none">
-        <img src="thumbs/realtor.jpg" alt="實價登錄查詢表，十二個行政區只有兩個亮著" width="560" height="324" loading="lazy">
-        <div><h3>賴宗翰 · 房仲</h3><p>我只熟這兩區，所以敢說哪幾條街別買<br>概念是<b>實價登錄明細</b>。行政區選單十個灰掉，用重複讓「只熟兩區」自己講出來。</p></div></a>
-      <a class="card" href="plumber.html" style="text-decoration:none">
-        <img src="thumbs/plumber.jpg" alt="黑黃警示條配電箱面板與螺絲頭卡片" width="560" height="324" loading="lazy">
-        <div><h3>文賢水電 · 水電師傅</h3><p>只跑三重、蘆洲、五股<br>概念是<b>配電箱</b>。撥桿合上的是接的、扳下來的是不接的，用重複的單元講邊界。</p></div></a>
-      <a class="card" href="cafe.html" style="text-decoration:none">
-        <img src="thumbs/cafe.jpg" alt="木桌色底上立著一張奶油紙折卡，右上角一圈咖啡漬" width="560" height="324" loading="lazy">
-        <div><h3>長桌咖啡 · 咖啡店</h3><p>一個人來，不限時<br>概念是<b>桌卡</b>。七張卡照客人動線排，不是編號。「沒有」也是一個欄位，受眾只掃右欄就知道合不合用。</p></div></a>
-      <a class="card" href="hairstylist.html" style="text-decoration:none">
-        <img src="thumbs/hairstylist.jpg" alt="暖炭底色上一條分線與垂下的髮束，左側有鴨嘴夾" width="560" height="324" loading="lazy">
-        <div><h3>藍柏鈞 · 髮型設計師</h3><p>你早上只有十分鐘，我照那十分鐘剪<br>概念是<b>剪髮分區</b>。不能放照片，所以把長度做成一把尺：耳上到肩胛骨六個地標，五種剪法標在同一把尺上。</p></div></a>
-      <a class="card" href="vet.html" style="text-decoration:none">
-        <img src="thumbs/vet.jpg" alt="夜間值班室墨色的分診卡，左緣有分級色帶" width="560" height="324" loading="lazy">
-        <div><h3>和安小動物醫院 · 獸醫</h3><p>只看貓狗，晚上十一點前都問得到人<br>概念是<b>分診卡</b>。色帶就是分級，卡 02 直接回答「現在就來還是可以等明天」。</p></div></a>
-    </div>
-  </section>
-
-  <section class="fam">
-    <div class="fam__head"><h2>專業服務與研究</h2>
-      <span>受眾怕被推銷、也怕自己這種規模對方不接。先寫邊界與收費，比任何專業形容詞有用</span></div>
-    <div class="grid">
-      <a class="card" href="researcher.html" style="text-decoration:none">
-        <img src="thumbs/researcher.jpg" alt="料箱格與零件編號的研究頁" width="560" height="324" loading="lazy">
-        <div><h3>曾郁婷 · 助理教授</h3><p>我教機械手臂從一箱亂堆的零件裡，把指定的那一個拿出來<br>概念是<b>料箱</b>。第一屏用一句人話講清楚研究什麼，同行、產業界、想加入的學生各找得到自己那一段。</p></div></a>
-      <a class="card" href="advisor.html" style="text-decoration:none">
-        <img src="thumbs/advisor.jpg" alt="冷灰紙上的保單條款，左側直排條號欄與螢光筆畫過的一句" width="560" height="324" loading="lazy">
-        <div><h3>杜孟軒 · 保險理財顧問</h3><p>我怎麼賺你的錢，寫在第一條<br>概念是<b>保單條款</b>。每一條結尾的「但書」寫的是對自己不方便的那一面，例如「你聽完決定不投保，顧問費照收」。</p></div></a>
-      <a class="card" href="lawyer.html" style="text-decoration:none">
-        <img src="thumbs/lawyer.jpg" alt="牛皮卷宗封面與藏青卷首列，右上角收案欄" width="560" height="324" loading="lazy">
-        <div><h3>沈冠廷 · 律師</h3><p>只辦勞資與車禍，其他的告訴你該找誰<br>概念是<b>案卷</b>。一排卷宗架，四個實心有卷號、四個虛線寫「無」。列「不辦」跟列「辦」用同樣的版面重量。</p></div></a>
-      <a class="card" href="accountant.html" style="text-decoration:none">
-        <img src="thumbs/accountant.jpg" alt="記帳傳票的欄位與借貸欄" width="560" height="324" loading="lazy">
-        <div><h3>莊惠茹 · 記帳士</h3><p>年營業額三千萬以下，一個人的公司也算<br>概念是<b>記帳傳票</b>。標題直接回答「我這種規模你接嗎」，並寫明這頁沒有任何節稅方法。</p></div></a>
-    </div>
-  </section>
-
-  <section class="fam">
-    <div class="fam__head"><h2>教學與訓練</h2>
-      <span>掏錢的跟上課的常常不是同一個人。家長問一班幾個人，學員問適不適合我，兩份的第一屏都先答完</span></div>
-    <div class="grid">
-      <a class="card" href="tutor.html" style="text-decoration:none">
-        <img src="thumbs/tutor.jpg" alt="米白紙上的課桌與六格座位，虛線格是還空著的位子" width="560" height="324" loading="lazy">
-        <div><h3>賴老師 · 國中數學與理化</h3><p>一班六個人，坐滿就不收<br>概念是<b>座位表</b>。方格實心是有人、虛線是空著，班級人數用畫的，文字同時寫「還有兩個位子」。</p></div></a>
-      <a class="card" href="coach.html" style="text-decoration:none">
-        <img src="thumbs/coach.jpg" alt="冷灰紙上的訓練課表，右半有斜紋底的排不進來欄" width="560" height="324" loading="lazy">
-        <div><h3>葉冠廷 · 一對一肌力訓練</h3><p>先看你排不排得進這張課表<br>概念是<b>訓練課表</b>。「排不進來」跟「排得進來」同寬同字級，用斜線空格而不是紅字警告。</p></div></a>
-    </div>
-  </section>
-
-  <section class="fam">
-    <div class="fam__head"><h2>克制</h2><span>動的性格是<b>幾乎不動</b>。單色、文件隱喻、方格。內容要被仔細讀的人用</span></div>
-    <div class="grid">
-      <a class="card" href="lecturer.html" style="text-decoration:none">
-        <img src="thumbs/lecturer.jpg" alt="藍圖格線與工程圖框" width="560" height="324" loading="lazy">
-        <div><h3>周允中 · 內訓講師</h3><p>讓工程師講的話，業務聽得懂<br>概念是 <b>工程圖說</b>。整頁是一張圖。</p></div></a>
-      <a class="card" href="backend.html" style="text-decoration:none">
-        <img src="thumbs/backend.jpg" alt="深色機櫃面板與綠燈" width="560" height="324" loading="lazy">
-        <div><h3>何柏瑋 · 後端工程師</h3><p>半夜不會被叫起來的系統<br>概念是 <b>機櫃</b>。U01 到 U05 五片面板。</p></div></a>
-      <a class="card" href="photographer.html" style="text-decoration:none">
-        <img src="thumbs/photographer.jpg" alt="底片齒孔與印樣格線" width="560" height="324" loading="lazy">
-        <div><h3>林昀真 · 婚禮攝影</h3><p>你們自己也會記得的那幾秒<br>概念是 <b>接觸印樣</b>。作品排成印樣網格。</p></div></a>
-      <a class="card" href="counselor.html" style="text-decoration:none">
-        <img src="thumbs/counselor.jpg" alt="米色紙底的會談紀錄單" width="560" height="324" loading="lazy">
-        <div><h3>許亦晴 · 諮商心理師</h3><p>先把事情講出來，再決定要不要處理<br>概念是 <b>會談紀錄單</b>。「處理」欄永遠留白。</p></div></a>
-    </div>
-  </section>
-
-  <p class="note">這十八個人是虛構的，內容是為了示範寫的，信箱都是 <code>example.tw</code>。
-  概念是問三個不同模型家族之後收斂出來的，每一個都拿去跟<strong>同樣文案、只有版面不同</strong>
-  的中性版做整頁左右比對，克制那四個合計概念版 18 票、中性版 3 票。其餘五族還沒做對打測試。<br>
-  做法寫在 <code>docs/concept.md</code>，量測方法與已知的限制寫在 <code>docs/craft.md</code>，
-  表現那一族的手法寫在 <code>skills/03-build/SKILL.md</code>。</p>
+  <p class="note">每一個都是單一 HTML 檔，沒有 build、沒有套件，
+    只吃 <code>templates/tokens.css</code> 與 <code>templates/base.css</code>。
+    右鍵看原始碼就是全部。</p>
 </main>
 <footer style="max-width:60rem;margin:6rem auto 3rem;padding:2rem 1.25rem 0;
   border-top:1px solid currentColor;opacity:.55;font-size:.9rem;line-height:2">

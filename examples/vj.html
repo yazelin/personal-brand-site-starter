@@ -91,6 +91,10 @@
     white-space: nowrap; }
 
   /* 設備與可接的檔期，用調音台推桿的感覺排 */
+  /* 場次上面先給一張真的畫面。範例的圖是生成的,不是真實演出的照片。 */
+  .setpic { margin: var(--space-3) 0 var(--space-4); }
+  .setpic img { display:block; width:100%; aspect-ratio:16/9; object-fit:cover;
+    border-radius:10px; border:1px solid rgba(255,255,255,.08); }
   .fader { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
     gap: var(--space-3); }
   .fader div { border-top: 2px solid var(--c1); padding-top: var(--space-2); }
@@ -142,6 +146,13 @@
     <div class="cue__id"><b>02</b>SET</div>
     <div>
       <h2>跑過的場</h2>
+      <figure class="setpic">
+        <img src="img/vj-hero.webp"
+             srcset="img/vj-hero@800.webp 800w, img/vj-hero.webp 1600w"
+             sizes="(max-width:46rem) 92vw, 62vw"
+             width="1600" height="900" loading="lazy"
+             alt="演唱會舞台側面，三面 LED 螢幕播著青色與洋紅的流動視覺，樂手剪影在前，燈光穿過煙霧。">
+      </figure>
       <ul class="set">
         <li><span class="yr">2025</span>
           <div><h3>小巨蛋 · 樂團巡演最終場</h3>
